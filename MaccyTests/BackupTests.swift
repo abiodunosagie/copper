@@ -124,6 +124,8 @@ class BackupTests: XCTestCase {
     let archive = Backup.archive(of: history.all.map(\.item))
 
     history.restore(archive)
+    history.restore(archive)
     XCTAssertEqual(history.all.count, 1)
+    XCTAssertEqual(history.all.first?.item.numberOfCopies, 1, "re-importing must not inflate the copy count")
   }
 }

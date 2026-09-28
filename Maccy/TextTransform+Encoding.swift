@@ -95,12 +95,14 @@ extension TextTransform {
       text.unicodeScalars.map { $0.isASCII ? String($0) : String(format: "\\u{%04X}", $0.value) }.joined()
     },
     TextTransform(id: "unicodeUnescape", name: "Unicode unescape", category: .encoding) { text in
-      let pattern = #"\\u\{?([0-9A-Fa-f]{4,6})\}?"#
+      // Braced escapes take 1 to 6 hex digits; bare escapes take exactly 4, so "\\u0041ab" is "A" + "ab".
+      let pattern = #"\\u\{([0-9A-Fa-f]{1,6})\}|\\u([0-9A-Fa-f]{4})"#
       guard let regex = try? NSRegularExpression(pattern: pattern) else { return nil }
       var result = text
       for match in regex.matches(in: text, range: NSRange(text.startIndex..., in: text)).reversed() {
+        let hexGroup = match.range(at: 1).location != NSNotFound ? 1 : 2
         guard let whole = Range(match.range, in: result),
-              let hexRange = Range(match.range(at: 1), in: text),
+              let hexRange = Range(match.range(at: hexGroup), in: text),
               let value = UInt32(text[hexRange], radix: 16),
               let scalar = UnicodeScalar(value) else { continue }
         result.replaceSubrange(whole, with: String(Character(scalar)))

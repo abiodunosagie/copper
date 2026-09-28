@@ -102,6 +102,42 @@ class SecretDetectorTests: XCTestCase {
     XCTAssertEqual(Defaults.Keys.secretExpiryMinutes.defaultValue, 60)
   }
 
+  func testSecretsInRichTextOrSecondItemsAreFound() {
+    let secret = fake("gh", "p_", run(36))
+    let rtf = NSAttributedString(string: secret).rtf(from: NSRange(location: 0, length: secret.utf16.count))
+    let rtfOnly = [HistoryItemContent(type: NSPasteboard.PasteboardType.rtf.rawValue, value: rtf)]
+    XCTAssertNotNil(Clipboard.scannableText(of: rtfOnly).flatMap(SecretDetector.detect))
+
+    let twoItems = [
+      HistoryItemContent(type: NSPasteboard.PasteboardType.string.rawValue, value: Data("harmless".utf8)),
+      HistoryItemContent(type: NSPasteboard.PasteboardType.string.rawValue, value: Data(secret.utf8))
+    ]
+    XCTAssertNotNil(Clipboard.scannableText(of: twoItems).flatMap(SecretDetector.detect))
+  }
+
+  func testTextDerivedFromASecretKeepsItsExpiry() {
+    Defaults[.secretHandling] = .expire
+    let expiry = Date.now.addingTimeInterval(600)
+    let hookExpectation = expectation(description: "Hook is called")
+    clipboard.onNewCopy { item in
+      XCTAssertEqual(item.expiresAt, expiry)
+      hookExpectation.fulfill()
+    }
+    // The derived text is not itself secret-shaped, but it came from a secret.
+    MainActor.assumeIsolated {
+      clipboard.copyInMaccy("not a secret by itself", expiresAt: expiry)
+    }
+    waitForExpectations(timeout: 2)
+  }
+
+  func testNotificationBodyHidesSecrets() {
+    let item = HistoryItem()
+    item.title = "plain title"
+    XCTAssertEqual(item.notificationBody, "plain title")
+    item.expiresAt = .now
+    XCTAssertFalse(item.notificationBody.contains("plain title"))
+  }
+
   func testLogDescriptionRedactsSecrets() {
     let item = HistoryItem()
     item.title = "plain title"

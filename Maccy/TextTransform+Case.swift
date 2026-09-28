@@ -51,8 +51,9 @@ extension TextTransform {
       words($0).map(capitalizedWord).joined(separator: "-")
     },
     TextTransform(id: "dotCase", name: "dot.case", category: .textCase) { words($0).joined(separator: ".") },
+    // Case mappings can grow ("ß" uppercases to "SS"), so build a String, never a Character per input.
     TextTransform(id: "swapCase", name: "sWAP cASE", category: .textCase) { text in
-      String(text.map { $0.isUppercase ? Character($0.lowercased()) : Character($0.uppercased()) })
+      text.map { $0.isUppercase ? $0.lowercased() : $0.uppercased() }.joined()
     }
   ]
 }

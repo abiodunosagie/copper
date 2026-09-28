@@ -84,6 +84,11 @@ class HistoryItem {
     self.contents = contents
   }
 
+  // Safe text for system notifications: a detected secret is never shown.
+  var notificationBody: String {
+    expiresAt == nil ? title : NSLocalizedString("secret_copied_notification", comment: "")
+  }
+
   // Safe text for logs: detected secrets are redacted.
   var logDescription: String { expiresAt == nil ? title : "<redacted secret>" }
 

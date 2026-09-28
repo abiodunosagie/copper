@@ -13,6 +13,7 @@ class Clipboard {
   private let pasteboard = NSPasteboard.general
 
   private var timer: Timer?
+  private var pendingExpiresAt: Date?
 
   private let dynamicTypePrefix = "dyn."
   private let microsoftSourcePrefix = "com.microsoft.ole.source."
@@ -63,7 +64,10 @@ class Clipboard {
   }
 
   @MainActor
-  func copyInMaccy(_ string: String) {
+  // `expiresAt` carries a secret's expiry over to text derived from it, such as a transform result.
+  func copyInMaccy(_ string: String, expiresAt: Date? = nil) {
+    pendingExpiresAt = expiresAt
+    defer { pendingExpiresAt = nil }
     pasteboard.clearContents()
     pasteboard.setString(string, forType: .string)
     pasteboard.setString(NSPasteboard.PasteboardType.fromMaccy.rawValue, forType: .source)
@@ -104,7 +108,7 @@ class Clipboard {
     sync()
 
     Task {
-      Notifier.notify(body: item.title, sound: .knock)
+      Notifier.notify(body: item.notificationBody, sound: .knock)
       checkForChangesInPasteboard()
     }
   }
@@ -217,12 +221,15 @@ class Clipboard {
       return
     }
 
-    let secretExpiresAt: Date?
-    switch SecretDetector.decision(for: pasteboard.string(forType: .string)) {
+    var secretExpiresAt: Date?
+    switch SecretDetector.decision(for: Self.scannableText(of: contents)) {
     case .skip:
       return
     case .save(let expiresAt):
       secretExpiresAt = expiresAt
+    }
+    if let pendingExpiresAt {
+      secretExpiresAt = min(secretExpiresAt ?? pendingExpiresAt, pendingExpiresAt)
     }
 
     let historyItem = HistoryItem(contents: contents)
@@ -237,6 +244,23 @@ class Clipboard {
     historyItem.title = historyItem.generateTitle()
 
     onNewCopyHooks.forEach({ $0(historyItem) })
+  }
+
+  // Every plain-text flavor of every pasteboard item; rich text only when there is no plain text.
+  static func scannableText(of contents: [HistoryItemContent]) -> String? {
+    func text(_ type: NSPasteboard.PasteboardType) -> [String] {
+      contents.filter { $0.type == type.rawValue }.compactMap(\.value).compactMap { data in
+        switch type {
+        case .string: return String(data: data, encoding: .utf8)
+        case .rtf: return NSAttributedString(rtf: data, documentAttributes: nil)?.string
+        default: return NSAttributedString(html: data, documentAttributes: nil)?.string
+        }
+      }
+    }
+
+    let plain = text(.string)
+    let texts = plain.isEmpty ? text(.rtf) + text(.html) : plain
+    return texts.isEmpty ? nil : texts.joined(separator: "\n")
   }
 
   private func shouldIgnore(_ types: Set<NSPasteboard.PasteboardType>) -> Bool {

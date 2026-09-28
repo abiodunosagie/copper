@@ -25,6 +25,17 @@ class HistoryTests: XCTestCase { // swiftlint:disable:this type_body_length
     Defaults[.pinTo] = savedPinTo
   }
 
+  func testRecopyingAPinnedItemRefreshesTheVisibleList() {
+    let first = historyItem("foo")
+    history.add(first)
+    first.pin = "f"
+
+    let merged = history.add(historyItem("foo"))
+    XCTAssertEqual(history.items, history.all)
+    XCTAssertTrue(history.items.contains(merged))
+    XCTAssertEqual(history.items.count, 1)
+  }
+
   func testExpiredSecretsAreDeletedUnlessPinned() {
     let secret = historyItem("secret")
     secret.expiresAt = Date.now.addingTimeInterval(60)

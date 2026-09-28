@@ -68,7 +68,7 @@ struct HistoryItemView: View {
       }
       if item.item.image != nil && !item.title.isEmpty {
         Button("history_item_copy_image_text") {
-          Clipboard.shared.copyInMaccy(item.title)
+          Clipboard.shared.copyInMaccy(item.title, expiresAt: item.item.expiresAt)
         }
       }
       Menu("history_item_transform_menu") {

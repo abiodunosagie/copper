@@ -41,6 +41,8 @@ class TextTransformTests: XCTestCase {
     XCTAssertEqual(apply("dotCase", "hello world"), "hello.world")
     XCTAssertEqual(apply("sentenceCase", "HELLO. how ARE you?"), "Hello. How are you?")
     XCTAssertEqual(apply("swapCase", "aBc"), "AbC")
+    // Case mappings that grow must not crash.
+    XCTAssertEqual(apply("swapCase", "Straße \u{FB01}"), "sTRASSE FI")
   }
 
   func testWhitespace() {
@@ -85,6 +87,7 @@ class TextTransformTests: XCTestCase {
     XCTAssertEqual(apply("rot13", "Hello"), "Uryyb")
     XCTAssertNil(apply("base64Decode", "%%%not base64"))
     XCTAssertNil(apply("hexDecode", "abc"))
+    XCTAssertEqual(apply("unicodeUnescape", "\\u0041ab \\u{1F600}"), "Aab \u{1F600}")
   }
 
   func testJSON() {

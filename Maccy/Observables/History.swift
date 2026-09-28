@@ -187,10 +187,8 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
         all.remove(at: removedItemIndex)
       }
     } else if notify {
-      // Never put a detected secret into a system notification.
-      let body = item.expiresAt == nil ? item.title : NSLocalizedString("secret_copied_notification", comment: "")
       Task {
-        Notifier.notify(body: body, sound: .write)
+        Notifier.notify(body: item.notificationBody, sound: .write)
       }
     }
 
@@ -201,25 +199,29 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     sessionLog[Clipboard.shared.changeCount] = item
 
     var itemDecorator: HistoryItemDecorator
-    if let pin = item.pin {
+    if let pin = item.pin, let removedItemIndex {
+      // A re-copied pinned item keeps its place.
+      // If pin to bottom -> last element should be inserted to the removedItemIndex - 1
+      // Or to the last all array place.
       itemDecorator = HistoryItemDecorator(item, shortcuts: KeyShortcut.create(character: pin))
-      if let removedItemIndex {
-        // If pin to bottom -> last element should be inserted to the removedItemIndex - 1
-        // Or to the last all array place.
-        all.insert(itemDecorator, at: min(removedItemIndex, all.count))
-      }
+      all.insert(itemDecorator, at: min(removedItemIndex, all.count))
     } else {
-      itemDecorator = HistoryItemDecorator(item)
+      if let pin = item.pin {
+        itemDecorator = HistoryItemDecorator(item, shortcuts: KeyShortcut.create(character: pin))
+      } else {
+        itemDecorator = HistoryItemDecorator(item)
+      }
 
       let sortedItems = sorter.sort(all.map(\.item) + [item])
       if let index = sortedItems.firstIndex(of: item) {
         all.insert(itemDecorator, at: index)
       }
-
-      items = all
-      updateUnpinnedShortcuts()
-      AppState.shared.popup.needsResize = true
     }
+
+    // Refresh the visible list for pinned and unpinned items alike, so it never keeps a deleted item.
+    items = all
+    updateUnpinnedShortcuts()
+    AppState.shared.popup.needsResize = true
 
     return itemDecorator
   }
@@ -495,6 +497,10 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       item.numberOfCopies = backupItem.numberOfCopies
 
       let decorator = add(item, notify: false)
+      // add() sums copy counts when merging with an existing item; a restore keeps the larger count instead,
+      // so importing the same backup twice never inflates it.
+      let mergedCount = decorator.item.numberOfCopies - backupItem.numberOfCopies
+      decorator.item.numberOfCopies = max(backupItem.numberOfCopies, mergedCount)
       if backupItem.isPinned && decorator.isUnpinned {
         togglePin(decorator)
       }
@@ -512,7 +518,8 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       return
     }
 
-    Clipboard.shared.copyInMaccy(result)
+    // Text derived from a secret expires with it.
+    Clipboard.shared.copyInMaccy(result, expiresAt: item.item.expiresAt)
   }
 
   @MainActor
