@@ -15,11 +15,14 @@ enum ContentKind: Equatable {
   static let shortHexColorLength = 4   // #RGB
 
   static func of(_ item: HistoryItem) -> ContentKind {
+    // A secret stays a secret after it is pinned or when secrets are kept, so it is never
+    // shown in full or fetched as a link.
     if item.expiresAt != nil { return .secret }
     if item.imageData != nil { return .image }
     if !item.fileURLs.isEmpty { return .file }
 
     let text = item.previewableText
+    if SecretDetector.detect(in: text) != nil { return .secret }
     if let url = linkURL(in: text) { return .link(url) }
     if let color = color(in: text) { return .color(color) }
     if looksLikeCode(text) { return .code }

@@ -18,7 +18,7 @@ final class QuickLookController: NSObject, QLPreviewPanelDataSource {
       return
     }
     // Detected secrets are never written to disk for a preview.
-    guard let item, item.expiresAt == nil, let url = previewFile(for: item) else {
+    guard let item, ContentKind.of(item) != .secret, let url = previewFile(for: item) else {
       NSSound.beep()
       return
     }

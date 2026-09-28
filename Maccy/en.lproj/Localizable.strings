@@ -67,3 +67,7 @@
 "collection_new_cancel" = "Cancel";
 "collection_new_placeholder" = "Work, Snippets, Clients...";
 "history_item_quick_look" = "Quick Look";
+"card_secret_kept" = "Secret, kept";
+"collection_delete_title" = "Delete the collection \"%@\"?";
+"collection_delete_info" = "Its items stay in your history, they just leave the collection.";
+"collection_delete_confirm" = "Delete";

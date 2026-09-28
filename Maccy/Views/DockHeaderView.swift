@@ -149,7 +149,9 @@ struct DockHeaderView: View {
     .accessibilityAddTraits(active ? .isSelected : [])
     .contextMenu {
       Button("dock_collection_delete", role: .destructive) {
-        appState.history.deleteCollection(name)
+        if CollectionActions.confirmDelete(name) {
+          appState.history.deleteCollection(name)
+        }
       }
     }
   }

@@ -12,6 +12,17 @@ enum CollectionActions {
     return dotColors[index % dotColors.count]
   }
 
+  // Deleting keeps the items; it only removes the label. Still asked first, like Clear.
+  static func confirmDelete(_ name: String) -> Bool {
+    let alert = NSAlert()
+    alert.alertStyle = .warning
+    alert.messageText = String(format: NSLocalizedString("collection_delete_title", comment: ""), name)
+    alert.informativeText = NSLocalizedString("collection_delete_info", comment: "")
+    alert.addButton(withTitle: NSLocalizedString("collection_delete_confirm", comment: ""))
+    alert.addButton(withTitle: NSLocalizedString("collection_new_cancel", comment: ""))
+    return alert.runModal() == .alertFirstButtonReturn
+  }
+
   // Asks for a new collection name and creates it. Returns the name, or nil when cancelled or invalid.
   @discardableResult
   static func createCollection() -> String? {

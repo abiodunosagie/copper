@@ -177,6 +177,7 @@
 		16BADE990A751449B964EC58 /* CollectionActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */; };
 		58A3A6A570C7DAF07DC24234 /* LinkPreviewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39DF8503E0BC513DF7DACD /* LinkPreviewLoader.swift */; };
 		D37013170ED230FF31403212 /* QuickLookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D732EAF255750310C8FCE1AF /* QuickLookController.swift */; };
+		DA258891B5F433B63D3ACCCE /* History+Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAC9D38523949B5C39461A7 /* History+Collections.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -635,6 +636,7 @@
 		E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionActions.swift; sourceTree = "<group>"; };
 		BD39DF8503E0BC513DF7DACD /* LinkPreviewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreviewLoader.swift; sourceTree = "<group>"; };
 		D732EAF255750310C8FCE1AF /* QuickLookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookController.swift; sourceTree = "<group>"; };
+		FAAC9D38523949B5C39461A7 /* History+Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "History+Collections.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -834,6 +836,7 @@
 				DAA072D82C41C5AD006DDFD2 /* Footer.swift */,
 				DAA072DA2C41C5DD006DDFD2 /* FooterItem.swift */,
 				DA3BCB912C3EEC3C00B01BC1 /* History.swift */,
+				FAAC9D38523949B5C39461A7 /* History+Collections.swift */,
 				DA3BCB932C3EECBB00B01BC1 /* HistoryItemDecorator.swift */,
 				DA3BCB8D2C3E015000B01BC1 /* ModifierFlags.swift */,
 				DAE8F5D32C43262B00851CA9 /* Popup.swift */,
@@ -1267,6 +1270,7 @@
 				DA49EE7928B594DC002752E0 /* NSRunningApplication+WindowFrame.swift in Sources */,
 				DAA54BFA2C3C951900B7FDD8 /* FloatingPanel.swift in Sources */,
 				DA3BCB922C3EEC3C00B01BC1 /* History.swift in Sources */,
+				DA258891B5F433B63D3ACCCE /* History+Collections.swift in Sources */,
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,

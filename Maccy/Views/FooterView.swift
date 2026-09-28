@@ -7,9 +7,6 @@ struct FooterView: View {
   @Environment(AppState.self) private var appState
   @Environment(ModifierFlags.self) private var modifierFlags
   @Default(.showFooter) private var showFooter
-  @State private var showClear = true
-  @State private var showClearAll = false
-
 
   var body: some View {
     VStack(spacing: 0) {
@@ -19,20 +16,15 @@ struct FooterView: View {
 
       ZStack {
         FooterItemView(item: footer.items[0])
-          .invisible(!showClear)
+          .invisible(!footer.items[0].isVisible)
         FooterItemView(item: footer.items[1])
-          .invisible(!showClearAll)
+          .invisible(!footer.items[1].isVisible)
       }
       .onChange(of: modifierFlags.flags) {
-        let clearAll = footer.isClearAllChord(modifierFlags.flags)
-        showClear = !clearAll
-        showClearAll = clearAll
-        footer.showClearAll(clearAll)
+        footer.showClearAll(footer.isClearAllChord(modifierFlags.flags))
       }
       .onAppear {
         // The footer is shared with the docked panel; start from a known state.
-        showClear = true
-        showClearAll = false
         footer.showClearAll(false)
       }
 

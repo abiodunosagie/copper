@@ -158,6 +158,10 @@ struct CardItemView: View {
         Image(systemName: "timer")
           .accessibilityHidden(true)
         Text(String(format: NSLocalizedString("card_secret_expires", comment: ""), Self.remaining(until: expiresAt)))
+      } else if isSecret {
+        Image(systemName: "lock")
+          .accessibilityHidden(true)
+        Text("card_secret_kept")
       } else if let collection = item.item.collection {
         Text(verbatim: collection)
       } else {

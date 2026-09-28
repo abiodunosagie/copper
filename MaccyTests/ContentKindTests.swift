@@ -95,4 +95,38 @@ class ContentKindTests: XCTestCase {
     XCTAssertFalse(FileManager.default.fileExists(atPath: url.path))
     XCTAssertNil(QuickLookController.shared.previewFile(for: item("")))
   }
+
+  @MainActor
+  func testOnlyPlainPublicPagesAreFetched() {
+    let safe = ["https://communitee.co/", "https://www.apple.com/macbook-air/", "http://example.org/blog/post-1"]
+    for link in safe {
+      XCTAssertTrue(LinkPreviewLoader.isSafeToFetch(URL(string: link)!), link)
+    }
+
+    let unsafe = [
+      "https://user:pass@example.com/",
+      "https://example.com/reset-password?id=42",
+      "https://app.example.com/auth/magic?id=1",
+      "https://example.com/verify/abc",
+      "https://example.com/page?token=abc",
+      "https://example.com/unsubscribe/123",
+      "https://192.168.1.10/admin",
+      "https://127.0.0.1:8080/",
+      "https://[::1]/",
+      "https://printer.local/",
+      "https://wiki.corp/",
+      "ftp://example.com/file",
+      "https://example.com/?q=" + ["gh", "p_", String(repeating: "a", count: 36)].joined()
+    ]
+    for link in unsafe {
+      XCTAssertFalse(LinkPreviewLoader.isSafeToFetch(URL(string: link)!), link)
+    }
+  }
+
+  func testSecretsStaySecretWithoutAnExpiry() {
+    // Pinned secrets and secrets kept by the "Keep" setting have no expiry but are still secrets.
+    let secretURL = item("https://api.example.com/hook?k=" + ["AI", "za", String(repeating: "b", count: 35)].joined())
+    XCTAssertNil(secretURL.expiresAt)
+    XCTAssertEqual(ContentKind.of(secretURL), .secret)
+  }
 }

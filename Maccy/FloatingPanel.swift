@@ -77,7 +77,9 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   private func applyCornerRadius(docked: Bool) {
-    contentView?.layer?.cornerRadius = docked ? DockTheme.panelCornerRadius : Popup.cornerRadius + Popup.horizontalPadding
+    contentView?.layer?.cornerRadius = docked
+      ? DockTheme.panelCornerRadius
+      : Popup.cornerRadius + Popup.horizontalPadding
   }
 
   // True when a docked panel is open on a different screen than the mouse.
