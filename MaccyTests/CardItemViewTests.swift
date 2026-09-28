@@ -22,15 +22,30 @@ class CardItemViewTests: XCTestCase {
   func testMaskedShowsOnlyThePrefix() {
     XCTAssertEqual(CardItemView.masked("abcdefghijklmnop"), "abcdefgh••••••••")
     XCTAssertEqual(CardItemView.masked("short"), "short")
-    XCTAssertEqual(CardItemView.masked(String(repeating: "x", count: 100)).count, 20)
+    let longSecret = String(repeating: "x", count: 100)
+    XCTAssertEqual(CardItemView.masked(longSecret).count, CardItemView.secretPreviewLength + CardItemView.maxMaskedDots)
   }
 
   func testLinkDetection() {
-    XCTAssertEqual(CardItemView.linkURL(in: "https://example.com/a")?.host, "example.com")
-    XCTAssertEqual(CardItemView.linkURL(in: " www.parishandcompany.com ")?.host, "www.parishandcompany.com")
-    XCTAssertNil(CardItemView.linkURL(in: "see https://example.com"))
-    XCTAssertNil(CardItemView.linkURL(in: "ftp://example.com"))
-    XCTAssertNil(CardItemView.linkURL(in: "localhost"))
-    XCTAssertNil(CardItemView.linkURL(in: ""))
+    XCTAssertEqual(ContentKind.linkURL(in: "https://example.com/a")?.host, "example.com")
+    XCTAssertEqual(ContentKind.linkURL(in: " www.parishandcompany.com ")?.host, "www.parishandcompany.com")
+    XCTAssertNil(ContentKind.linkURL(in: "see https://example.com"))
+    XCTAssertNil(ContentKind.linkURL(in: "ftp://example.com"))
+    XCTAssertNil(ContentKind.linkURL(in: "localhost"))
+    XCTAssertNil(ContentKind.linkURL(in: ""))
+  }
+
+  func testCodeDetectionIsConservative() {
+    XCTAssertTrue(ContentKind.looksLikeCode("final user = ref.watch(\n  authProvider,\n);"))
+    XCTAssertTrue(ContentKind.looksLikeCode("func a() {\n  return 1\n}"))
+    XCTAssertFalse(ContentKind.looksLikeCode("Can we move the call to Wednesday?\nI will send the link."))
+    XCTAssertFalse(ContentKind.looksLikeCode("single line { }"))
+  }
+
+  func testColorDetection() {
+    XCTAssertNotNil(ContentKind.color(in: " #5B4DC7 "))
+    XCTAssertNotNil(ContentKind.color(in: "#fa0"))
+    XCTAssertNil(ContentKind.color(in: "#5B4DC"))
+    XCTAssertNil(ContentKind.color(in: "5B4DC7"))
   }
 }

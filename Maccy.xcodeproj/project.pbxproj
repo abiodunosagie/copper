@@ -169,6 +169,10 @@
 		178DF7340112D94DD8D671D2 /* PopupPositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */; };
 		C72BE82FD4E57589B665222E /* CardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EB2B4DE518A5C426B1173E /* CardItemView.swift */; };
 		4FA7B7B631B945581A8448EF /* CardItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6D770205840C2AF998BB86 /* CardItemViewTests.swift */; };
+		1B267E3F36D3748849BC8BAA /* ContentKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD44E9B12898A5DCEAB2BBC1 /* ContentKind.swift */; };
+		7935CCDD92FB29593A2B8379 /* DockTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A867044F80963410ED44ED /* DockTheme.swift */; };
+		FFF98EA3D8DDAC3AB55B0091 /* DockHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */; };
+		A837C45EBF5B10D2E45EAE55 /* DockFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EBEE149EE5C40E39707101 /* DockFooterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -619,6 +623,10 @@
 		332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPositionTests.swift; sourceTree = "<group>"; };
 		C1EB2B4DE518A5C426B1173E /* CardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemView.swift; sourceTree = "<group>"; };
 		AC6D770205840C2AF998BB86 /* CardItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemViewTests.swift; sourceTree = "<group>"; };
+		FD44E9B12898A5DCEAB2BBC1 /* ContentKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentKind.swift; sourceTree = "<group>"; };
+		99A867044F80963410ED44ED /* DockTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockTheme.swift; sourceTree = "<group>"; };
+		23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockHeaderView.swift; sourceTree = "<group>"; };
+		C3EBEE149EE5C40E39707101 /* DockFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockFooterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -746,6 +754,9 @@
 				DA1969192C3F369800258481 /* HeaderView.swift */,
 				2F0EC7782E7727E3003E2EA9 /* HeightReaderModifier.swift */,
 				DA1969112C3F0DD200258481 /* HistoryItemView.swift */,
+				C3EBEE149EE5C40E39707101 /* DockFooterView.swift */,
+				23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */,
+				99A867044F80963410ED44ED /* DockTheme.swift */,
 				C1EB2B4DE518A5C426B1173E /* CardItemView.swift */,
 				DAA072D42C40AC52006DDFD2 /* HistoryListView.swift */,
 				2F0EC7882E7743D9003E2EA9 /* HoverSelectionModifier.swift */,
@@ -913,6 +924,7 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				FD44E9B12898A5DCEAB2BBC1 /* ContentKind.swift */,
 				A352032B46F2482CB56B9BFB /* Backup.swift */,
 				741AC50031998B2DA6B58416 /* TextTransform.swift */,
 				5695D554D5383D7DCDC3883B /* TextTransform+Developer.swift */,
@@ -1211,6 +1223,9 @@
 				2F9B42F12F1A499D006548E5 /* ToolbarView.swift in Sources */,
 				DAA5ACB22C1B3F8800B58513 /* GeneralSettingsPane.swift in Sources */,
 				DA1969122C3F0DD200258481 /* HistoryItemView.swift in Sources */,
+				A837C45EBF5B10D2E45EAE55 /* DockFooterView.swift in Sources */,
+				FFF98EA3D8DDAC3AB55B0091 /* DockHeaderView.swift in Sources */,
+				7935CCDD92FB29593A2B8379 /* DockTheme.swift in Sources */,
 				C72BE82FD4E57589B665222E /* CardItemView.swift in Sources */,
 				DA0EF1881E444B2A00E58577 /* Clipboard.swift in Sources */,
 				DA3F1B452C90084600267632 /* Sauce+KeyboardShortcuts.swift in Sources */,
@@ -1241,6 +1256,7 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				1B267E3F36D3748849BC8BAA /* ContentKind.swift in Sources */,
 				17EE5487950A5F725B4A1F73 /* Backup.swift in Sources */,
 				174DA6E07CDBC99A5CBBD5C2 /* TextTransform.swift in Sources */,
 				3BA2B643F1A89932D93386B6 /* TextTransform+Developer.swift in Sources */,

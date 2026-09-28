@@ -1,171 +1,188 @@
 import AppKit
-import Defaults
-import SwiftHEXColors
 import SwiftUI
 
-extension Color {
-  // Copper's accent, used for the selected card, shortcuts and pins.
-  static let copper = Color(red: 0.816, green: 0.541, blue: 0.333)
-}
-
-// One history item drawn as a card in the docked panel: app icon, shortcut and age on top,
-// the content in the middle (text, image, link or color) and details at the bottom.
+// One history item as a card in the docked panel, in the approved Copper design:
+// app icon, type and age on top; the content in the middle; details and the shortcut badge below.
 struct CardItemView: View {
-  static let cornerRadius: CGFloat = 14
-  static let spacing: CGFloat = 8
+  static let spacing: CGFloat = 10
+  static let secretPreviewLength = 8
+  static let maxMaskedDots = 12
+  static let imageMaxHeight: CGFloat = 140
 
   @Bindable var item: HistoryItemDecorator
   var isSelected: Bool
   var selectionIndex: Int?
 
   @Environment(ModifierFlags.self) private var modifierFlags
-  @Environment(\.colorScheme) private var colorScheme
 
   private var contentText: String { item.item.previewableText }
 
-  private var linkURL: URL? { Self.linkURL(in: contentText) }
-
-  // A single web address, with or without "https://" ("www.example.com" counts too).
-  static func linkURL(in text: String) -> URL? {
-    var candidate = text.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !candidate.isEmpty, !candidate.contains(where: \.isWhitespace) else { return nil }
-    if candidate.lowercased().hasPrefix("www.") {
-      candidate = "https://" + candidate
-    }
-    guard let url = URL(string: candidate), let scheme = url.scheme?.lowercased(),
-          ["http", "https"].contains(scheme), let host = url.host, host.contains(".") else { return nil }
-    return url
-  }
-
-  private var swatchColor: NSColor? {
-    let text = contentText.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard text.hasPrefix("#"), text.count == 7 || text.count == 4 else { return nil }
-    return NSColor(hexString: text)
-  }
-
-  private var detail: String {
-    if item.item.expiresAt != nil {
-      return NSLocalizedString("card_secret_detail", comment: "")
-    }
-    if let image = item.item.image {
-      let size = image.pixelSize
-      return "\(Int(size.width)) × \(Int(size.height))"
-    }
-    let text = contentText
-    let lines = text.split(separator: "\n", omittingEmptySubsequences: false).count
-    let characters = String(format: NSLocalizedString("card_characters", comment: ""), text.count)
-    return lines > 1 ? characters + " · " + String(format: NSLocalizedString("card_lines", comment: ""), lines) : characters
-  }
-
-  private var cardBackground: Color {
-    colorScheme == .dark ? Color.white.opacity(isSelected ? 0.11 : 0.06) : Color.black.opacity(isSelected ? 0.07 : 0.04)
-  }
-
   var body: some View {
+    // Classify once per render; header, content and footer all depend on it.
+    let kind = ContentKind.of(item.item)
     VStack(alignment: .leading, spacing: 10) {
-      header
-      content
-      footer
+      header(kind)
+      content(kind)
+      footer(kind)
     }
     .padding(12)
     .frame(maxWidth: .infinity, alignment: .leading)
-    .background(cardBackground, in: RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous))
+    .background(
+      isSelected ? DockTheme.cardSelected : DockTheme.card,
+      in: RoundedRectangle(cornerRadius: DockTheme.cardCornerRadius, style: .continuous)
+    )
     .overlay {
-      RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous)
-        .strokeBorder(isSelected ? Color.copper : Color.primary.opacity(0.08), lineWidth: isSelected ? 2 : 1)
+      RoundedRectangle(cornerRadius: DockTheme.cardCornerRadius, style: .continuous)
+        .strokeBorder(isSelected ? DockTheme.accent : DockTheme.border, lineWidth: isSelected ? 2 : 1)
     }
-    .contentShape(RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous))
+    .contentShape(RoundedRectangle(cornerRadius: DockTheme.cardCornerRadius, style: .continuous))
   }
 
-  private var header: some View {
-    HStack(spacing: 8) {
-      AppImageView(appImage: item.applicationImage, size: NSSize(width: 24, height: 24))
-
-      if let shortcut = item.shortcuts.first(where: { $0.isVisible(item.shortcuts, modifierFlags.flags) })
-          ?? item.shortcuts.first {
-        KeyboardShortcutView(shortcut: shortcut)
-          .font(.system(size: 13, weight: .semibold))
-          .foregroundStyle(Color.copper)
-      }
+  private func header(_ kind: ContentKind) -> some View {
+    HStack(spacing: 7) {
+      AppImageView(appImage: item.applicationImage, size: NSSize(width: 20, height: 20))
+      Text(kind.title)
+        .font(.system(size: 12, weight: .medium))
+        .foregroundStyle(DockTheme.secondaryText)
 
       if let selectionIndex {
         Text("\(selectionIndex + 1)")
-          .font(.caption.weight(.semibold))
+          .font(.system(size: 11, weight: .semibold))
           .padding(.horizontal, 6)
-          .padding(.vertical, 2)
-          .background(Color.copper, in: Capsule())
-          .foregroundStyle(.white)
+          .padding(.vertical, 1)
+          .background(DockTheme.accent, in: Capsule())
+          .foregroundStyle(DockTheme.onAccent)
       }
 
       Spacer(minLength: 4)
 
       if item.isPinned {
         Image(systemName: "pin.fill")
-          .font(.system(size: 11))
-          .foregroundStyle(Color.copper)
+          .font(.system(size: 10))
+          .foregroundStyle(DockTheme.accent)
           .accessibilityHidden(true)
       }
-
       Text(Self.age(of: item.item.lastCopiedAt))
         .font(.system(size: 11))
-        .foregroundStyle(.secondary)
+        .foregroundStyle(DockTheme.mutedText)
     }
   }
 
   @ViewBuilder
-  private var content: some View {
-    if let image = item.item.image {
-      Image(nsImage: image)
-        .resizable()
-        .scaledToFit()
-        .frame(maxWidth: .infinity, maxHeight: 150)
-        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-    } else if let color = swatchColor {
+  private func content(_ kind: ContentKind) -> some View {
+    switch kind {
+    case .image:
+      imageContent
+    case .color(let color):
       RoundedRectangle(cornerRadius: 10, style: .continuous)
         .fill(Color(nsColor: color))
-        .frame(height: 64)
+        .frame(height: 72)
         .overlay(alignment: .bottomLeading) {
           Text(contentText.trimmingCharacters(in: .whitespacesAndNewlines).uppercased())
-            .font(.system(size: 13, weight: .medium, design: .monospaced))
-            .foregroundStyle(color.brightnessComponent > 0.6 ? .black : .white)
-            .padding(8)
+            .font(.system(size: 14, weight: .medium, design: .monospaced))
+            .foregroundStyle(color.brightnessComponent > 0.6 ? Color.black : Color.white)
+            .padding(10)
         }
-    } else if let url = linkURL {
+    case .link(let url):
       VStack(alignment: .leading, spacing: 4) {
         Text(url.host(percentEncoded: false) ?? url.absoluteString)
-          .font(.system(size: 14, weight: .semibold))
+          .font(.system(size: 13, weight: .semibold))
+          .foregroundStyle(DockTheme.text)
           .lineLimit(1)
         Text(url.absoluteString)
           .font(.system(size: 12))
-          .foregroundStyle(.secondary)
+          .foregroundStyle(DockTheme.mutedText)
           .lineLimit(2)
           .truncationMode(.middle)
       }
-    } else if item.item.expiresAt != nil {
+    case .code:
+      Text(contentText)
+        .font(.system(size: 12, design: .monospaced))
+        .foregroundStyle(DockTheme.codeText)
+        .lineLimit(6)
+        .padding(8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(DockTheme.codeBackground, in: RoundedRectangle(cornerRadius: 8))
+    case .secret:
       Text(Self.masked(contentText))
         .font(.system(size: 14, design: .monospaced))
+        .foregroundStyle(DockTheme.text)
         .lineLimit(1)
-    } else {
+    case .text, .file:
       Text(item.title.isEmpty ? contentText : item.title)
-        .font(.system(size: 14))
+        .font(.system(size: 13))
+        .foregroundStyle(DockTheme.text)
         .lineLimit(4)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
   }
 
-  private var footer: some View {
-    HStack(spacing: 6) {
-      if let expiresAt = item.item.expiresAt {
+  @ViewBuilder
+  private var imageContent: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      if let image = item.item.image {
+        Image(nsImage: image)
+          .resizable()
+          .scaledToFit()
+          .frame(maxWidth: .infinity, maxHeight: Self.imageMaxHeight)
+          .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+      }
+      // For images the title holds the text recognized in them.
+      if !item.title.isEmpty {
+        Text(String(format: NSLocalizedString("card_text_found", comment: ""), item.title))
+          .font(.system(size: 12))
+          .foregroundStyle(DockTheme.secondaryText)
+          .lineLimit(2)
+      }
+    }
+  }
+
+  private func footer(_ kind: ContentKind) -> some View {
+    let isSecret = kind == .secret
+    return HStack(spacing: 6) {
+      if isSecret, let expiresAt = item.item.expiresAt {
         Image(systemName: "timer")
           .accessibilityHidden(true)
         Text(String(format: NSLocalizedString("card_secret_expires", comment: ""), Self.remaining(until: expiresAt)))
       } else {
-        Text(detail)
+        Text(detail(kind))
       }
-      Spacer(minLength: 0)
+
+      Spacer(minLength: 4)
+
+      if let shortcut = visibleShortcut {
+        KeyboardShortcutView(shortcut: shortcut)
+          .font(.system(size: 11, design: .monospaced))
+          .padding(.horizontal, 6)
+          .padding(.vertical, 1)
+          .overlay(RoundedRectangle(cornerRadius: 5).strokeBorder(DockTheme.controlBorder))
+      }
     }
     .font(.system(size: 11))
-    .foregroundStyle(item.item.expiresAt != nil ? Color.copper : .secondary)
+    .foregroundStyle(isSecret ? DockTheme.accent : DockTheme.mutedText)
+  }
+
+  private var visibleShortcut: KeyShortcut? {
+    item.shortcuts.first { $0.isVisible(item.shortcuts, modifierFlags.flags) } ?? item.shortcuts.first
+  }
+
+  private func detail(_ kind: ContentKind) -> String {
+    switch kind {
+    case .image:
+      guard let size = item.item.image?.pixelSize else { return "" }
+      return "\(Int(size.width)) × \(Int(size.height))"
+    case .color(let color):
+      let rgb = color.usingColorSpace(.sRGB) ?? color
+      return "rgb(\(Int(rgb.redComponent * 255)), \(Int(rgb.greenComponent * 255)), \(Int(rgb.blueComponent * 255)))"
+    case .link:
+      return item.application ?? ""
+    default:
+      let text = contentText
+      let lines = text.split(separator: "\n", omittingEmptySubsequences: false).count
+      let characters = String(format: NSLocalizedString("card_characters", comment: ""), text.count)
+      guard lines > 1 else { return characters }
+      return characters + " · " + String(format: NSLocalizedString("card_lines", comment: ""), lines)
+    }
   }
 
   // "now", "5m", "3h", "2d": the compact age shown on each card.
@@ -173,21 +190,24 @@ struct CardItemView: View {
     let seconds = max(0, Int(now.timeIntervalSince(date)))
     switch seconds {
     case ..<60: return NSLocalizedString("card_age_now", comment: "")
-    case ..<3_600: return "\(seconds / 60)m"
-    case ..<86_400: return "\(seconds / 3_600)h"
-    default: return "\(seconds / 86_400)d"
+    case ..<3_600: return String(format: NSLocalizedString("card_minutes", comment: ""), seconds / 60)
+    case ..<86_400: return String(format: NSLocalizedString("card_hours", comment: ""), seconds / 3_600)
+    default: return String(format: NSLocalizedString("card_days", comment: ""), seconds / 86_400)
     }
   }
 
-  // "1m", "45m", "2h": time left before a secret is deleted, rounded up so it never shows 0.
+  // Time left before a secret is deleted, rounded up so it never shows 0.
   static func remaining(until date: Date, now: Date = .now) -> String {
     let minutes = max(1, Int((date.timeIntervalSince(now) / 60).rounded(.up)))
-    return minutes < 60 ? "\(minutes)m" : "\(minutes / 60)h"
+    return minutes < 60
+      ? String(format: NSLocalizedString("card_minutes", comment: ""), minutes)
+      : String(format: NSLocalizedString("card_hours", comment: ""), minutes / 60)
   }
 
-  // Shows the first 8 characters of a secret, the rest as dots.
+  // Shows the start of a secret, the rest as dots.
   static func masked(_ text: String) -> String {
     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-    return String(trimmed.prefix(8)) + String(repeating: "•", count: min(12, max(0, trimmed.count - 8)))
+    let dots = min(maxMaskedDots, max(0, trimmed.count - secretPreviewLength))
+    return String(trimmed.prefix(secretPreviewLength)) + String(repeating: "•", count: dots)
   }
 }

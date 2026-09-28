@@ -89,6 +89,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
       return
     }
 
+    contentView?.layer?.cornerRadius = Popup.cornerRadius + Popup.horizontalPadding
     AppState.shared.preview.contentWidth = Defaults[.windowSize].width
     let size = Defaults[.windowSize]
     let miniumHeight: CGFloat = AppState.shared.popup.minimumHeight
@@ -116,6 +117,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     let dockFrame = popupPosition.dockedFrame(width: width, in: screen.visibleFrame)
     AppState.shared.preview.contentWidth = dockFrame.width
     setFrame(dockFrame, display: true)
+    contentView?.layer?.cornerRadius = DockTheme.panelCornerRadius
     orderFrontRegardless()
     makeKey()
     isPresented = true

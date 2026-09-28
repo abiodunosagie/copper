@@ -1,3 +1,4 @@
+import Defaults
 import SwiftData
 import SwiftUI
 
@@ -7,10 +8,14 @@ struct ContentView: View {
   @State private var scenePhase: ScenePhase = .background
 
   @FocusState private var searchFocused: Bool
+  @Default(.popupPosition) private var popupPosition
+  @Environment(\.colorScheme) private var systemColorScheme
 
   var body: some View {
     ZStack {
-      if #available(macOS 26.0, *) {
+      if popupPosition.isDocked {
+        DockTheme.background
+      } else if #available(macOS 26.0, *) {
         GlassEffectView()
       } else {
         VisualEffectView()
@@ -19,10 +24,14 @@ struct ContentView: View {
       KeyHandlingView(searchQuery: $appState.history.searchQuery, searchFocused: $searchFocused) {
         VStack(spacing: 0) {
           SlideoutView(controller: appState.preview) {
-            HeaderView(
-              controller: appState.preview,
-              searchFocused: $searchFocused
-            )
+            if popupPosition.isDocked {
+              DockHeaderView(searchFocused: $searchFocused)
+            } else {
+              HeaderView(
+                controller: appState.preview,
+                searchFocused: $searchFocused
+              )
+            }
 
             VStack(alignment: .leading, spacing: 0) {
               HistoryListView(
@@ -30,14 +39,18 @@ struct ContentView: View {
                 searchFocused: $searchFocused
               )
 
-              FooterView(footer: appState.footer)
+              if popupPosition.isDocked {
+                DockFooterView(footer: appState.footer)
+              } else {
+                FooterView(footer: appState.footer)
+              }
             }
             .animation(.default.speed(3), value: appState.history.items)
             .animation(
               .default.speed(3),
               value: appState.history.pasteStack?.id
             )
-            .padding(.horizontal, Popup.horizontalPadding)
+            .padding(.horizontal, popupPosition.isDocked ? 0 : Popup.horizontalPadding)
             .onAppear {
               searchFocused = true
             }
@@ -57,6 +70,8 @@ struct ContentView: View {
       }
     }
     .animation(.easeInOut(duration: 0.2), value: appState.searchVisible)
+    // The docked panel is always the dark Copper design; the classic popup follows the system.
+    .environment(\.colorScheme, popupPosition.isDocked ? .dark : systemColorScheme)
     .environment(appState)
     .environment(modifierFlags)
     .environment(\.scenePhase, scenePhase)

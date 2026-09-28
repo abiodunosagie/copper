@@ -5,10 +5,11 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 mkdir -p build
+app_name="Copper"
 
-osascript -e 'quit app "Copper"' 2>/dev/null || true
+osascript -e "quit app \"$app_name\"" 2>/dev/null || true
 for _ in {1..50}; do
-  pgrep -x Copper > /dev/null || break
+  pgrep -x "$app_name" > /dev/null || break
   sleep 0.2
 done
 
@@ -21,5 +22,5 @@ xcodebuild test \
   -allowProvisioningUpdates > build/test.log 2>&1 && result=0 || result=$?
 
 grep -E "\\.swift:[0-9]+:[0-9]+: error|TEST (SUCCEEDED|FAILED)" build/test.log | sort -u || true
-open -a Copper 2>/dev/null || true
+open -a "$app_name" 2>/dev/null || true
 exit $result

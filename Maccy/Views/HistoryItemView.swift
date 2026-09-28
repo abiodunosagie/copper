@@ -69,6 +69,7 @@ struct HistoryItemView: View {
   private var card: some View {
     CardItemView(item: item, isSelected: item.isSelected, selectionIndex: item.multiSelectionIndex)
       .padding(.vertical, CardItemView.spacing / 2)
+      .padding(.horizontal, 12)
       .id(item.id)
       .accessibilityElement(children: .ignore)
       .accessibilityLabel(Text(item.accessibilityLabel))

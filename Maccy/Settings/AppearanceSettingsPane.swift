@@ -6,6 +6,13 @@ import Settings
 struct AppearanceSettingsPane: View {
   @Default(.popupPosition) private var popupAt
   @Default(.dockWidth) private var dockWidth
+
+  private let dockWidthFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimum = NSNumber(value: PopupPosition.dockWidthRange.lowerBound)
+    formatter.maximum = NSNumber(value: PopupPosition.dockWidthRange.upperBound)
+    return formatter
+  }()
   @Default(.popupScreen) private var popupScreen
   @Default(.pinTo) private var pinTo
   @Default(.imageMaxHeight) private var imageHeight
@@ -70,7 +77,7 @@ struct AppearanceSettingsPane: View {
 
           if popupAt.isDocked {
             Text("DockWidth", tableName: "AppearanceSettings")
-            TextField("", value: $dockWidth, format: .number)
+            TextField("", value: $dockWidth, formatter: dockWidthFormatter)
               .frame(width: 50)
               .accessibilityLabel(Text("DockWidth", tableName: "AppearanceSettings"))
             Stepper("", value: $dockWidth, in: PopupPosition.dockWidthRange, step: 20)
