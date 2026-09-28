@@ -12,6 +12,7 @@ struct TextTransform: Identifiable {
     case hashing = "Hash"
     case text = "Text"
     case developer = "Developer"
+    case flutter = "Flutter"
 
     var id: Self { self }
 
@@ -37,7 +38,7 @@ struct TextTransform: Identifiable {
 
   static let all: [TextTransform] =
     caseTransforms + whitespaceTransforms + lineTransforms + encodingTransforms +
-    jsonTransforms + hashTransforms + textTransforms + developerTransforms
+    jsonTransforms + hashTransforms + textTransforms + developerTransforms + flutterTransforms
 }
 
 // MARK: - Shared helpers

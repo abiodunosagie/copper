@@ -12,7 +12,7 @@ class TextTransformTests: XCTestCase {
 
   func testRegistryIsLargeAndUnique() {
     // Exact count, so a transform that goes missing fails the test.
-    XCTAssertEqual(TextTransform.all.count, 79)
+    XCTAssertEqual(TextTransform.all.count, 82)
     XCTAssertEqual(Set(TextTransform.all.map(\.id)).count, TextTransform.all.count)
     for category in TextTransform.Category.allCases {
       XCTAssertFalse(TextTransform.transforms(in: category).isEmpty, "\(category) is empty")
@@ -126,5 +126,39 @@ class TextTransformTests: XCTestCase {
       apply("queryToJSON", "https://x.y/?b=2&a=hello%20there"),
       "{\n  \"a\" : \"hello there\",\n  \"b\" : \"2\"\n}"
     )
+  }
+
+  func testFlutterColors() {
+    XCTAssertEqual(apply("hexToFlutterColor", "#5B4DC7"), "Color(0xFF5B4DC7)")
+    XCTAssertEqual(apply("hexToFlutterColor", "fa0"), "Color(0xFFFFAA00)")
+    XCTAssertEqual(apply("hexToFlutterColor", "#805B4DC7"), "Color(0x805B4DC7)")
+    XCTAssertNil(apply("hexToFlutterColor", "#12"))
+    XCTAssertEqual(apply("flutterColorToHex", "const Color(0xFF5B4DC7)"), "#5B4DC7")
+    XCTAssertEqual(apply("flutterColorToHex", "Color(0x805B4DC7)"), "#5B4DC780")
+    XCTAssertNil(apply("flutterColorToHex", "Colors.blue"))
+  }
+
+  func testDartModelFromJSON() throws {
+    let json = """
+    {"id": 7, "full_name": "Ada", "price": 9.5, "active": true,
+     "address": {"city": "Lagos"}, "tags": ["a", "b"], "orders": [{"order_id": 1}], "note": null}
+    """
+    let dart = try XCTUnwrap(apply("dartModel", json))
+    XCTAssertTrue(dart.contains("class Model {"))
+    XCTAssertTrue(dart.contains("final int? id;"))
+    XCTAssertTrue(dart.contains("final String? fullName;"))
+    XCTAssertTrue(dart.contains("final double? price;"))
+    XCTAssertTrue(dart.contains("final bool? active;"))
+    XCTAssertTrue(dart.contains("final Address? address;"))
+    XCTAssertTrue(dart.contains("class Address {"))
+    XCTAssertTrue(dart.contains("final List<String>? tags;"))
+    XCTAssertTrue(dart.contains("final List<Order>? orders;"))
+    XCTAssertTrue(dart.contains("class Order {"))
+    XCTAssertTrue(dart.contains("final dynamic note;"))
+    XCTAssertTrue(dart.contains("'full_name': fullName,"))
+    XCTAssertTrue(dart.contains("(json['price'] as num?)?.toDouble()"))
+    XCTAssertNil(apply("dartModel", "not json"))
+    XCTAssertNil(apply("dartModel", "[1, 2]"))
+    XCTAssertNotNil(apply("dartModel", "[{\"a\": 1}]"), "a list of objects uses the first one")
   }
 }

@@ -188,6 +188,7 @@
 		CB4A9AB1C07ACBA25191F32D /* PeerShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67542CD1E8A79F27A3D9B0D3 /* PeerShareTests.swift */; };
 		71A7E0376BB72979FE3C56A3 /* NSImage+PNG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39DF757F33029A257F402C /* NSImage+PNG.swift */; };
 		3B573D6DC77B2F4666840F91 /* FooterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22B5E9A9F4E859120E05277 /* FooterTests.swift */; };
+		67A7A31CF411F44FB156AFA8 /* TextTransform+Flutter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5C83718D6459807C0DEA5 /* TextTransform+Flutter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -657,6 +658,7 @@
 		67542CD1E8A79F27A3D9B0D3 /* PeerShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerShareTests.swift; sourceTree = "<group>"; };
 		0A39DF757F33029A257F402C /* NSImage+PNG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+PNG.swift"; sourceTree = "<group>"; };
 		D22B5E9A9F4E859120E05277 /* FooterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTests.swift; sourceTree = "<group>"; };
+		3DA5C83718D6459807C0DEA5 /* TextTransform+Flutter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextTransform+Flutter.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -972,6 +974,7 @@
 				FD44E9B12898A5DCEAB2BBC1 /* ContentKind.swift */,
 				A352032B46F2482CB56B9BFB /* Backup.swift */,
 				741AC50031998B2DA6B58416 /* TextTransform.swift */,
+				3DA5C83718D6459807C0DEA5 /* TextTransform+Flutter.swift */,
 				5695D554D5383D7DCDC3883B /* TextTransform+Developer.swift */,
 				EE06F7E27549C18E5DCE6F22 /* TextTransform+Text.swift */,
 				073FD54544D22B08281B0960 /* TextTransform+Hash.swift */,
@@ -1318,6 +1321,7 @@
 				1B267E3F36D3748849BC8BAA /* ContentKind.swift in Sources */,
 				17EE5487950A5F725B4A1F73 /* Backup.swift in Sources */,
 				174DA6E07CDBC99A5CBBD5C2 /* TextTransform.swift in Sources */,
+				67A7A31CF411F44FB156AFA8 /* TextTransform+Flutter.swift in Sources */,
 				3BA2B643F1A89932D93386B6 /* TextTransform+Developer.swift in Sources */,
 				36DF9D1F710AB4EFCE6C44DD /* TextTransform+Text.swift in Sources */,
 				779D3FFEE3902633F271F48F /* TextTransform+Hash.swift in Sources */,
