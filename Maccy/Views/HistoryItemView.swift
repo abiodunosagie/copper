@@ -107,6 +107,10 @@ struct HistoryItemView: View {
         Clipboard.shared.copyInMaccy(item.title, expiresAt: item.item.expiresAt)
       }
     }
+    Button("history_item_quick_look") {
+      QuickLookController.shared.toggle(item.item)
+    }
+    .keyboardShortcut(.space, modifiers: .option)
     Menu("history_item_collection_menu") {
       ForEach(collections, id: \.self) { name in
         Toggle(name, isOn: Binding(

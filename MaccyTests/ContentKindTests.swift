@@ -84,4 +84,15 @@ class ContentKindTests: XCTestCase {
     XCTAssertLessThanOrEqual(CGFloat(thumbnail.pixelsWide), LinkPreviewLoader.maxThumbnailWidth * 2)
     XCTAssertNil(LinkPreviewLoader.thumbnailData(NSImage(size: .zero)))
   }
+
+  @MainActor
+  func testQuickLookWritesTextToATemporaryFile() throws {
+    let url = try XCTUnwrap(QuickLookController.shared.previewFile(for: item("quick look me")))
+    XCTAssertEqual(url.pathExtension, "txt")
+    XCTAssertEqual(try String(contentsOf: url, encoding: .utf8), "quick look me")
+
+    QuickLookController.shared.cleanUp()
+    XCTAssertFalse(FileManager.default.fileExists(atPath: url.path))
+    XCTAssertNil(QuickLookController.shared.previewFile(for: item("")))
+  }
 }

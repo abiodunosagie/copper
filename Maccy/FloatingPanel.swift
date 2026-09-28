@@ -259,8 +259,8 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   // Close automatically when out of focus, e.g. outside click.
   override func resignKey() {
     super.resignKey()
-    // Don't hide if confirmation is shown.
-    if NSApp.alertWindow == nil {
+    // Don't hide if confirmation or Quick Look is shown.
+    if NSApp.alertWindow == nil && !QuickLookController.shared.isVisible {
       close()
     }
   }

@@ -156,6 +156,9 @@ struct KeyHandlingView<Content: View>: View {
         case .togglePreview:
           appState.preview.togglePreview()
           return .handled
+        case .quickLook:
+          QuickLookController.shared.toggle(appState.navigator.leadHistoryItem?.item)
+          return .handled
         default:
           ()
         }

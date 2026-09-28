@@ -109,6 +109,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     migrateUserDefaults()
+    QuickLookController.shared.cleanUp()
     disableUnusedGlobalHotkeys()
 
     panel = FloatingPanel(

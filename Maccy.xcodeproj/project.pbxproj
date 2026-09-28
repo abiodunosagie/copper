@@ -176,6 +176,7 @@
 		4F96258FAB606B9CD970A98B /* ContentKindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */; };
 		16BADE990A751449B964EC58 /* CollectionActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */; };
 		58A3A6A570C7DAF07DC24234 /* LinkPreviewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39DF8503E0BC513DF7DACD /* LinkPreviewLoader.swift */; };
+		D37013170ED230FF31403212 /* QuickLookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D732EAF255750310C8FCE1AF /* QuickLookController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -633,6 +634,7 @@
 		4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentKindTests.swift; sourceTree = "<group>"; };
 		E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionActions.swift; sourceTree = "<group>"; };
 		BD39DF8503E0BC513DF7DACD /* LinkPreviewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreviewLoader.swift; sourceTree = "<group>"; };
+		D732EAF255750310C8FCE1AF /* QuickLookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -932,6 +934,7 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				D732EAF255750310C8FCE1AF /* QuickLookController.swift */,
 				BD39DF8503E0BC513DF7DACD /* LinkPreviewLoader.swift */,
 				FD44E9B12898A5DCEAB2BBC1 /* ContentKind.swift */,
 				A352032B46F2482CB56B9BFB /* Backup.swift */,
@@ -1267,6 +1270,7 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				D37013170ED230FF31403212 /* QuickLookController.swift in Sources */,
 				58A3A6A570C7DAF07DC24234 /* LinkPreviewLoader.swift in Sources */,
 				1B267E3F36D3748849BC8BAA /* ContentKind.swift in Sources */,
 				17EE5487950A5F725B4A1F73 /* Backup.swift in Sources */,
