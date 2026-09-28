@@ -36,6 +36,11 @@ extension Defaults.Keys {
   static let ignoreOnlyNextEvent = Key<Bool>("ignoreOnlyNextEvent", default: false, suite: preferencesSuite)
   static let ignoreRegexp = Key<[String]>("ignoreRegexp", default: [], suite: preferencesSuite)
   static let secretHandling = Key<SecretHandling>("secretHandling", default: .expire, suite: preferencesSuite)
+  // 0 keeps secrets on the system clipboard; otherwise they are wiped after this many seconds.
+  static let clearSecretFromClipboardSeconds = Key<Int>(
+    "clearSecretFromClipboardSeconds", default: 60, suite: preferencesSuite
+  )
+  static let pauseInSensitiveApps = Key<Bool>("pauseInSensitiveApps", default: true, suite: preferencesSuite)
   static let secretExpiryMinutes = Key<Int>("secretExpiryMinutes", default: 60, suite: preferencesSuite)
   static let ignoredApps = Key<[String]>("ignoredApps", default: [], suite: preferencesSuite)
   static let ignoredPasteboardTypes = Key<Set<String>>(

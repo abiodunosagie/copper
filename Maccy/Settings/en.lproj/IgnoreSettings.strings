@@ -15,3 +15,8 @@
 "SecretExpiryLabel" = "Delete after";
 "SecretExpiryUnit" = "minutes";
 "SecretsDescription" = "Detects keys from AWS, GitHub, GitLab, Anthropic, OpenAI, Stripe, Paystack, Google, Slack, SendGrid, npm, Hugging Face, Vercel, Supabase and Resend, plus JSON Web Tokens and private keys. Pinned items never expire.";
+"SecretClearLabel" = "Remove a copied secret from the clipboard after:";
+"SecretClearNever" = "Never";
+"SecretClearSeconds" = "%d seconds";
+"SecretClearMinutes" = "%d min";
+"PauseInSensitiveApps" = "Do not record copies from password managers";

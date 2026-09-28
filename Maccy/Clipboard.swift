@@ -229,6 +229,24 @@ class Clipboard {
     historyItem.application = sourceApp?.bundleIdentifier
 
     onNewCopyHooks.forEach({ $0(historyItem) })
+
+    if ContentKind.of(historyItem) == .secret {
+      scheduleSecretClear()
+    }
+  }
+
+  // Wipes the system clipboard a while after a secret lands on it, unless something else was
+  // copied since. The secret stays in Copper's history until its own expiry.
+  private func scheduleSecretClear() {
+    let seconds = Defaults[.clearSecretFromClipboardSeconds]
+    guard seconds > 0 else { return }
+    let secretChangeCount = pasteboard.changeCount
+    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(seconds)) { [weak self] in
+      guard let self, self.pasteboard.changeCount == secretChangeCount else { return }
+      self.pasteboard.clearContents()
+      // Not a copy: move past this change so it is never recorded.
+      self.changeCount = self.pasteboard.changeCount
+    }
   }
 
   // Every plain-text flavor of every pasteboard item; rich text only when there is no plain text.
@@ -258,7 +276,18 @@ class Clipboard {
       !types.isDisjoint(with: ignoredTypes)
   }
 
+  // Password managers and similar apps whose copies are never recorded while the setting is on.
+  static let sensitiveApps: Set<String> = [
+    "com.1password.1password", "com.agilebits.onepassword7", "com.bitwarden.desktop",
+    "org.keepassxc.keepassxc", "com.lastpass.LastPass", "com.dashlane.dashlanephonefinal",
+    "com.apple.Passwords", "com.apple.keychainaccess", "me.proton.pass.electron",
+    "in.sinew.Enpass-Desktop", "com.nordpass.macos.NordPass", "com.keepersecurity.passwordmanager"
+  ]
+
   private func shouldIgnore(_ sourceAppBundle: String) -> Bool {
+    if Defaults[.pauseInSensitiveApps] && Self.sensitiveApps.contains(sourceAppBundle) {
+      return true
+    }
     if Defaults[.ignoreAllAppsExceptListed] {
       return !Defaults[.ignoredApps].contains(sourceAppBundle)
     } else {

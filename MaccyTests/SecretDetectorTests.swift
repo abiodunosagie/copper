@@ -133,6 +133,39 @@ class SecretDetectorTests: XCTestCase {
     waitForExpectations(timeout: 2)
   }
 
+  func testSecretIsWipedFromTheClipboardLater() {
+    let saved = Defaults[.clearSecretFromClipboardSeconds]
+    defer { Defaults[.clearSecretFromClipboardSeconds] = saved }
+    Defaults[.clearSecretFromClipboardSeconds] = 1
+    Defaults[.secretHandling] = .expire
+    clipboard.start()
+
+    pasteboard.declareTypes([.string], owner: nil)
+    pasteboard.setString(fake("gh", "p_", run(36)), forType: .string)
+    let wiped = expectation(description: "clipboard wiped")
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+      XCTAssertNil(self.pasteboard.string(forType: .string))
+      wiped.fulfill()
+    }
+    waitForExpectations(timeout: 4)
+  }
+
+  func testOrdinaryCopiesStayOnTheClipboard() {
+    let saved = Defaults[.clearSecretFromClipboardSeconds]
+    defer { Defaults[.clearSecretFromClipboardSeconds] = saved }
+    Defaults[.clearSecretFromClipboardSeconds] = 1
+    clipboard.start()
+
+    pasteboard.declareTypes([.string], owner: nil)
+    pasteboard.setString("just a note", forType: .string)
+    let kept = expectation(description: "clipboard kept")
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+      XCTAssertEqual(self.pasteboard.string(forType: .string), "just a note")
+      kept.fulfill()
+    }
+    waitForExpectations(timeout: 4)
+  }
+
   func testNotificationBodyHidesSecrets() {
     let item = HistoryItem()
     item.title = "plain title"
