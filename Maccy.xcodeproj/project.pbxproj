@@ -189,6 +189,8 @@
 		71A7E0376BB72979FE3C56A3 /* NSImage+PNG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39DF757F33029A257F402C /* NSImage+PNG.swift */; };
 		3B573D6DC77B2F4666840F91 /* FooterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22B5E9A9F4E859120E05277 /* FooterTests.swift */; };
 		67A7A31CF411F44FB156AFA8 /* TextTransform+Flutter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5C83718D6459807C0DEA5 /* TextTransform+Flutter.swift */; };
+		CBDD753D25656B288679BA2D /* DateQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3785380EBAE60C78E0B89A21 /* DateQuery.swift */; };
+		2A731834F0AEF6EC1509980D /* DateQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618CF6A2E9C7BBCD643CC3ED /* DateQueryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -659,6 +661,8 @@
 		0A39DF757F33029A257F402C /* NSImage+PNG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+PNG.swift"; sourceTree = "<group>"; };
 		D22B5E9A9F4E859120E05277 /* FooterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTests.swift; sourceTree = "<group>"; };
 		3DA5C83718D6459807C0DEA5 /* TextTransform+Flutter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextTransform+Flutter.swift"; sourceTree = "<group>"; };
+		3785380EBAE60C78E0B89A21 /* DateQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateQuery.swift; sourceTree = "<group>"; };
+		618CF6A2E9C7BBCD643CC3ED /* DateQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateQueryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -843,6 +847,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				618CF6A2E9C7BBCD643CC3ED /* DateQueryTests.swift */,
 				D22B5E9A9F4E859120E05277 /* FooterTests.swift */,
 				67542CD1E8A79F27A3D9B0D3 /* PeerShareTests.swift */,
 				4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */,
@@ -965,6 +970,7 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				3785380EBAE60C78E0B89A21 /* DateQuery.swift */,
 				DBD9BEE66FD1357909658E55 /* PeerShareService.swift */,
 				70DE228DFC0D9D953A85C7F4 /* PeerPairing.swift */,
 				40AB2B8B873CD7D723BFDE01 /* PeerFrame.swift */,
@@ -1211,6 +1217,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				2A731834F0AEF6EC1509980D /* DateQueryTests.swift in Sources */,
 				3B573D6DC77B2F4666840F91 /* FooterTests.swift in Sources */,
 				CB4A9AB1C07ACBA25191F32D /* PeerShareTests.swift in Sources */,
 				4F96258FAB606B9CD970A98B /* ContentKindTests.swift in Sources */,
@@ -1312,6 +1319,7 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				CBDD753D25656B288679BA2D /* DateQuery.swift in Sources */,
 				8D4CD5428EFEADC188155E6D /* PeerShareService.swift in Sources */,
 				D9445884768EE857E7DED14C /* PeerPairing.swift in Sources */,
 				9CA75EDA8650172EE8EA386A /* PeerFrame.swift in Sources */,

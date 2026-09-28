@@ -38,7 +38,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
   var searchQuery: String = "" {
     didSet {
       throttler.throttle { [self] in
-        updateItems(search.search(string: searchQuery, within: all))
+        updateItems(search.searchWithDates(string: searchQuery, within: all))
 
         if searchQuery.isEmpty {
           // Under the Pinned filter there are no unpinned items, so fall back to the first pinned one.
@@ -615,7 +615,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
   }
 
   func refilter() {
-    updateItems(search.search(string: searchQuery, within: all))
+    updateItems(search.searchWithDates(string: searchQuery, within: all))
     AppState.shared.navigator.highlightFirst()
     AppState.shared.popup.needsResize = true
   }

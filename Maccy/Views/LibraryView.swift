@@ -57,7 +57,7 @@ struct LibraryView: View {
     let scope = scope ?? .all
     let inScope = appState.history.all.filter(scope.matches)
     // Same search as the panel, so the search mode setting (exact, fuzzy, regex) applies here too.
-    return search.search(string: query, within: inScope).map(\.object)
+    return search.searchWithDates(string: query, within: inScope).map(\.object)
   }
 
   var body: some View {
