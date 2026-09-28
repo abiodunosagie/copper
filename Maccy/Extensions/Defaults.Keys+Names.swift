@@ -73,6 +73,8 @@ extension Defaults.Keys {
   // Sending items to Copper on other Macs; the pairing code lives in the Keychain (PeerPairing).
   static let peerShareEnabled = Key<Bool>("peerShareEnabled", default: false, suite: preferencesSuite)
   static let peerShareName = Key<String>("peerShareName", default: "", suite: preferencesSuite)
+  // Random tag for the default broadcast name ("Copper 4F2A"), created on first use.
+  static let peerShareTag = Key<String>("peerShareTag", default: "", suite: preferencesSuite)
   static let loadLinkPreviews = Key<Bool>("loadLinkPreviews", default: true, suite: preferencesSuite)
   static let unlimitedHistory = Key<Bool>("unlimitedHistory", default: false, suite: preferencesSuite)
   // 0 keeps items forever; otherwise unpinned items not copied for this many days are deleted.

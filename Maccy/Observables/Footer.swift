@@ -47,10 +47,6 @@ class Footer: ItemsContainer {
   }
 
   init() { // swiftlint:disable:this function_body_length
-    defer {
-      // Clear shows until the Clear all chord is held.
-      items[1].isVisible = false
-    }
     items = [
       FooterItem(
         title: "clear",
@@ -106,5 +102,7 @@ class Footer: ItemsContainer {
         AppState.shared.quit()
       }
     ]
+    // Clear shows until the Clear all chord is held.
+    items[1].isVisible = false
   }
 }

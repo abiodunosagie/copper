@@ -221,27 +221,12 @@ class Clipboard {
       return
     }
 
-    var secretExpiresAt: Date?
-    switch SecretDetector.decision(for: Self.scannableText(of: contents)) {
-    case .skip:
-      return
-    case .save(let expiresAt):
-      secretExpiresAt = expiresAt
-    }
-    if let pendingExpiresAt {
-      secretExpiresAt = min(secretExpiresAt ?? pendingExpiresAt, pendingExpiresAt)
-    }
-
-    let historyItem = HistoryItem(contents: contents)
-    historyItem.expiresAt = secretExpiresAt
-
-    if #unavailable(macOS 15.0) {
-      // On macOS 14 the history item needs to be inserted into storage directly after creating it.
-      try? History.shared.insertIntoStorage(historyItem)
-    }
-
+    guard let historyItem = HistoryItem.forHistory(
+      contents: contents,
+      scannedText: Self.scannableText(of: contents),
+      inheritedExpiry: pendingExpiresAt
+    ) else { return }
     historyItem.application = sourceApp?.bundleIdentifier
-    historyItem.title = historyItem.generateTitle()
 
     onNewCopyHooks.forEach({ $0(historyItem) })
   }

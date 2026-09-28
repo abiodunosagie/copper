@@ -14,7 +14,9 @@ enum LinkPreviewLoader {
   static let retryInterval: TimeInterval = 86_400
 
   static func loadIfNeeded(for item: HistoryItem, url: URL) async {
-    guard Defaults[.loadLinkPreviews], item.linkTitle == nil, isSafeToFetch(url) else { return }
+    guard Defaults[.loadLinkPreviews], item.linkTitle == nil, item.receivedFromPeerAt == nil, isSafeToFetch(url) else {
+      return
+    }
     // Secrets are never fetched, whatever the secret setting or pin state.
     guard ContentKind.of(item) != .secret else { return }
     // One attempt per item per day, so failures never turn into a burst of requests.
@@ -38,11 +40,11 @@ enum LinkPreviewLoader {
     }
 
     // The item may have been deleted or replaced by a re-copy while the page loaded.
-    guard item.modelContext != nil, !item.isDeleted else { return }
+    guard item.isLive else { return }
     item.linkTitle = metadata.title
     if let imageProvider = metadata.imageProvider ?? metadata.iconProvider,
        let image = await loadImage(from: imageProvider) {
-      guard item.modelContext != nil, !item.isDeleted else { return }
+      guard item.isLive else { return }
       item.linkImageData = thumbnailData(image)
     }
     do {
@@ -99,7 +101,6 @@ enum LinkPreviewLoader {
     image.draw(in: NSRect(origin: .zero, size: size))
     thumbnail.unlockFocus()
 
-    guard let tiff = thumbnail.tiffRepresentation, let bitmap = NSBitmapImageRep(data: tiff) else { return nil }
-    return bitmap.representation(using: .png, properties: [:])
+    return thumbnail.pngData
   }
 }

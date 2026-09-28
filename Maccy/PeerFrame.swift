@@ -2,18 +2,16 @@ import Foundation
 
 // One item sent between Copper apps: a 4-byte big-endian length, then a JSON body.
 struct PeerFrame: Codable, Equatable {
-  enum Kind: String, Codable {
-    case text
-    case image
+  enum Content: Codable, Equatable {
+    case text(String)
+    case image(Data)
   }
 
   static let headerLength = 4
   static let maxBodyLength = 10 * 1_024 * 1_024
 
-  var kind: Kind
   var from: String
-  var text: String?
-  var imagePNG: Data?
+  var content: Content
 
   enum FrameError: Error {
     case tooLarge
@@ -36,8 +34,11 @@ struct PeerFrame: Codable, Equatable {
   }
 
   static func decode(body: Data) throws -> PeerFrame {
-    guard let frame = try? JSONDecoder().decode(PeerFrame.self, from: body),
-          frame.text != nil || frame.imagePNG != nil else { throw FrameError.malformed }
-    return frame
+    guard let frame = try? JSONDecoder().decode(PeerFrame.self, from: body) else { throw FrameError.malformed }
+    switch frame.content {
+    case .text(let text) where text.isEmpty: throw FrameError.malformed
+    case .image(let data) where data.isEmpty: throw FrameError.malformed
+    default: return frame
+    }
   }
 }

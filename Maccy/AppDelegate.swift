@@ -50,7 +50,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     PeerShareService.shared.update()
     Task {
-      for await _ in Defaults.updates([.peerShareEnabled, .peerShareName], initial: false) {
+      // The name is applied when it is submitted in Settings, not on every keystroke.
+      for await _ in Defaults.updates(.peerShareEnabled, initial: false) {
         PeerShareService.shared.update()
       }
     }

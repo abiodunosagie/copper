@@ -77,6 +77,8 @@ class HistoryItem {
   var linkTitle: String?
   @Attribute(.externalStorage) var linkImageData: Data?
   var linkPreviewFetchedAt: Date?
+  // Set for items received from another Mac; their links are never fetched for a preview.
+  var receivedFromPeerAt: Date?
   var title = ""
 
   @Relationship(deleteRule: .cascade, inverse: \HistoryItemContent.item)
@@ -89,6 +91,31 @@ class HistoryItem {
     self.lastCopiedAt = lastCopiedAt
     self.contents = contents
   }
+
+  // A new item ready for History.add, with the secret rules applied to `scannedText`.
+  // Returns nil when the secret setting says not to save it. `inheritedExpiry` carries a
+  // secret's expiry over to text derived from it.
+  @MainActor
+  static func forHistory(
+    contents: [HistoryItemContent], scannedText: String?, inheritedExpiry: Date? = nil
+  ) -> HistoryItem? {
+    guard case .save(var expiresAt) = SecretDetector.decision(for: scannedText) else { return nil }
+    if let inheritedExpiry {
+      expiresAt = min(expiresAt ?? inheritedExpiry, inheritedExpiry)
+    }
+
+    let item = HistoryItem(contents: contents)
+    item.expiresAt = expiresAt
+    if #unavailable(macOS 15.0) {
+      // On macOS 14 the history item needs to be inserted into storage directly after creating it.
+      try? History.shared.insertIntoStorage(item)
+    }
+    item.title = item.generateTitle()
+    return item
+  }
+
+  // False once the item was deleted or replaced, for example by a re-copy.
+  var isLive: Bool { modelContext != nil && !isDeleted }
 
   // What a card hands to another app when dragged out: files, then an image, then text.
   var dragItemProvider: NSItemProvider {

@@ -15,6 +15,7 @@ final class QuickLookController: NSObject, QLPreviewPanelDataSource {
   func toggle(_ item: HistoryItem?) {
     if isVisible {
       QLPreviewPanel.shared().orderOut(nil)
+      cleanUp()
       return
     }
     // Detected secrets are never written to disk for a preview.
@@ -32,7 +33,7 @@ final class QuickLookController: NSObject, QLPreviewPanelDataSource {
     panel.makeKeyAndOrderFront(nil)
   }
 
-  // Removes temporary preview files, for example at launch.
+  // Removes temporary preview files: when a preview is closed, when the panel closes, and at launch.
   func cleanUp() {
     try? FileManager.default.removeItem(at: folder)
   }
@@ -46,8 +47,7 @@ final class QuickLookController: NSObject, QLPreviewPanelDataSource {
     try? FileManager.default.removeItem(at: folder)
     try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
 
-    if let image = item.image, let tiff = image.tiffRepresentation,
-       let png = NSBitmapImageRep(data: tiff)?.representation(using: .png, properties: [:]) {
+    if let png = item.image?.pngData {
       let url = folder.appending(path: "Copper image.png")
       return (try? png.write(to: url)) != nil ? url : nil
     }

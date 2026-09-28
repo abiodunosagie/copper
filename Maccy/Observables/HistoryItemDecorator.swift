@@ -25,18 +25,22 @@ class HistoryItemDecorator: Identifiable, Hashable, HasVisibility {
   }
   var shortcuts: [KeyShortcut] = []
 
+  // App names are looked up once per bundle id and shared, since views read them on every render.
+  @MainActor private static var applicationNames: [String: String?] = [:]
+
   var application: String? {
     if item.universalClipboard {
       return "iCloud"
     }
+    guard let bundle = item.application else { return nil }
 
-    guard let bundle = item.application,
-      let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundle)
-    else {
-      return nil
+    return MainActor.assumeIsolated {
+      if let cached = Self.applicationNames[bundle] { return cached }
+      let name = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundle)?
+        .deletingPathExtension().lastPathComponent
+      Self.applicationNames[bundle] = name
+      return name
     }
-
-    return url.deletingPathExtension().lastPathComponent
   }
 
   var hasImage: Bool { item.image != nil }

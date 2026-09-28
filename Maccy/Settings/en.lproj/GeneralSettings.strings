@@ -21,8 +21,11 @@
 "PeerShare" = "Other Macs:";
 "PeerShareEnable" = "Send and receive items on this network";
 "PeerShareName" = "This Mac's name:";
-"PeerShareCode" = "Pairing code:";
+"PeerShareCode" = "Code from your other Mac:";
 "PeerShareSaveCode" = "Save code";
-"PeerShareCodeTooShort" = "Use at least 8 characters.";
 "PeerShareCodeSaved" = "Code saved in the Keychain.";
-"PeerShareDescription" = "Use the same pairing code on each Mac. Items are encrypted with it, and a Mac with a different code cannot connect. Received items go to history, not the clipboard. Detected secrets are never sent.";
+"PeerShareGenerate" = "Create pairing code";
+"PeerShareCopy" = "Copy";
+"PeerShareCodeInvalid" = "That is not a Copper pairing code. Create one on one Mac and paste it here on the other.";
+"PeerShareCodeKeychainFailed" = "The code could not be saved in the Keychain. Please try again.";
+"PeerShareDescription" = "Create a pairing code on one Mac and paste it on the other. Items are encrypted with it, and a Mac without it cannot connect. Received items go to history, not the clipboard, and their links are not previewed. Detected secrets are never sent. Other Macs see this Mac by the name above; leave it empty to use a neutral one.";

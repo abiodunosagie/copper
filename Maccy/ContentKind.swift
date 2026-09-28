@@ -18,7 +18,10 @@ enum ContentKind: Equatable {
     // A secret stays a secret after it is pinned or when secrets are kept, so it is never
     // shown in full or fetched as a link.
     if item.expiresAt != nil { return .secret }
-    if item.imageData != nil { return .image }
+    if item.imageData != nil {
+      // For images the title holds the text recognized in them; a key in a screenshot is still a key.
+      return SecretDetector.detect(in: item.title) != nil ? .secret : .image
+    }
     if !item.fileURLs.isEmpty { return .file }
 
     let text = item.previewableText

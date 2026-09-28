@@ -6,6 +6,7 @@ enum LibraryScope: Hashable {
   case all
   case pinned
   case kind(ContentFilter)
+  // Source app bundle id (iCloud items use "iCloud"); the sidebar shows its display name.
   case app(String)
   case collection(String)
 
@@ -14,7 +15,7 @@ enum LibraryScope: Hashable {
     case .all: return true
     case .pinned: return item.isPinned
     case .kind(let filter): return filter.matches(item)
-    case .app(let name): return item.application == name
+    case .app(let bundle): return LibraryView.sourceKey(item) == bundle
     case .collection(let name): return item.item.collection == name
     }
   }
@@ -24,6 +25,7 @@ enum LibraryScope: Hashable {
 // Clicking a card copies it.
 struct LibraryView: View {
   static let cardMinimumWidth: CGFloat = 240
+  static let copiedBadgeSeconds = 1.5
 
   @Environment(AppState.self) private var appState
   @Default(.collections) private var collections
@@ -32,19 +34,30 @@ struct LibraryView: View {
   @State private var query = ""
   @State private var copiedItemID: UUID?
 
-  private var appNames: [String] {
-    Set(appState.history.all.compactMap(\.application)).sorted()
+  // One entry per source app: (key, display name), sorted by name.
+  private var sourceApps: [(key: String, name: String)] {
+    var names: [String: String] = [:]
+    for item in appState.history.all {
+      if let key = Self.sourceKey(item), names[key] == nil {
+        names[key] = item.application ?? key
+      }
+    }
+    return names.map { (key: $0.key, name: $0.value) }.sorted { $0.name < $1.name }
   }
+
+  static func sourceKey(_ item: HistoryItemDecorator) -> String? {
+    item.item.universalClipboard ? "iCloud" : item.item.application
+  }
+
+  private let search = Search()
 
   private var visibleItems: [HistoryItemDecorator] {
     // totalCount is observed; reading it refreshes the grid when items are added or removed.
     _ = appState.history.totalCount
     let scope = scope ?? .all
-    let needle = query.trimmingCharacters(in: .whitespaces)
-    return appState.history.all.filter { item in
-      scope.matches(item) && (needle.isEmpty || item.title.localizedCaseInsensitiveContains(needle)
-        || item.item.previewableText.localizedCaseInsensitiveContains(needle))
-    }
+    let inScope = appState.history.all.filter(scope.matches)
+    // Same search as the panel, so the search mode setting (exact, fuzzy, regex) applies here too.
+    return search.search(string: query, within: inScope).map(\.object)
   }
 
   var body: some View {
@@ -59,10 +72,10 @@ struct LibraryView: View {
             Text(filter.title).tag(LibraryScope.kind(filter))
           }
         }
-        if !appNames.isEmpty {
+        if !sourceApps.isEmpty {
           Section("library_apps") {
-            ForEach(appNames, id: \.self) { name in
-              Text(verbatim: name).tag(LibraryScope.app(name))
+            ForEach(sourceApps, id: \.key) { app in
+              Text(verbatim: app.name).tag(LibraryScope.app(app.key))
             }
           }
         }
@@ -127,8 +140,12 @@ struct LibraryView: View {
         }
       }
       .onTapGesture {
-        Clipboard.shared.copy(item.item)
+        Clipboard.shared.copy(item.item, removeFormatting: Defaults[.removeFormattingByDefault])
         copiedItemID = item.id
+        Task {
+          try? await Task.sleep(for: .seconds(Self.copiedBadgeSeconds))
+          if copiedItemID == item.id { copiedItemID = nil }
+        }
       }
       .onDrag { item.item.dragItemProvider }
       .contextMenu {

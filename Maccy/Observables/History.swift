@@ -85,6 +85,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
   }
   // Tracked mirror of `all.count`: `all` is not observed, so views showing the count read this.
   private(set) var totalCount = 0
+  @ObservationIgnored private var isLoaded = false
 
   init() {
     Task {
@@ -124,6 +125,10 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
 
   @MainActor
   func load() async throws {
+    // Loaded once per launch; later changes arrive through add and delete. Loading again would
+    // replace every decorator and reset what views hold onto.
+    guard !isLoaded else { return }
+    isLoaded = true
     let descriptor = FetchDescriptor<HistoryItem>()
     let results = try Storage.shared.context.fetch(descriptor)
     all = sorter.sort(results).map { HistoryItemDecorator($0) }
