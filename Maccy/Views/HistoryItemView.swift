@@ -66,6 +66,11 @@ struct HistoryItemView: View {
       Button(LocalizedStringKey(item.isPinned ? "history_item_unpin_action" : "history_item_pin_action")) {
         appState.history.togglePin(item)
       }
+      if item.item.image != nil && !item.title.isEmpty {
+        Button("history_item_copy_image_text") {
+          Clipboard.shared.copyInMaccy(item.title)
+        }
+      }
       Menu("history_item_transform_menu") {
         ForEach(TextTransform.Category.allCases) { category in
           Menu(category.rawValue) {

@@ -68,6 +68,9 @@ extension Defaults.Keys {
   static let showSpecialSymbols = Key<Bool>("showSpecialSymbols", default: true, suite: preferencesSuite)
   static let showTitle = Key<Bool>("showTitle", default: true, suite: preferencesSuite)
   static let size = Key<Int>("historySize", default: 200, suite: preferencesSuite)
+  static let unlimitedHistory = Key<Bool>("unlimitedHistory", default: false, suite: preferencesSuite)
+  // 0 keeps items forever; otherwise unpinned items not copied for this many days are deleted.
+  static let historyRetentionDays = Key<Int>("historyRetentionDays", default: 0, suite: preferencesSuite)
   static let sortBy = Key<Sorter.By>("sortBy", default: .lastCopiedAt, suite: preferencesSuite)
   static let suppressClearAlert = Key<Bool>("suppressClearAlert", default: false, suite: preferencesSuite)
   static let windowSize = Key<NSSize>("windowSize", default: NSSize(width: 450, height: 800), suite: preferencesSuite)

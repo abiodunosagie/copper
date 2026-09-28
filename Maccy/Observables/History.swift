@@ -120,17 +120,27 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
 
   @MainActor
   private func limitHistorySize(to maxSize: Int) {
+    guard !Defaults[.unlimitedHistory] else { return }
+
     let unpinned = all.filter(\.isUnpinned)
     if unpinned.count >= maxSize {
       unpinned[maxSize...].forEach(delete)
     }
   }
 
-  // Deletes unpinned items whose secret expiry has passed.
+  // Deletes unpinned items whose secret expiry has passed or that are older than the retention period.
   @MainActor
   func deleteExpiredItems(now: Date = .now) {
+    let retentionDays = Defaults[.historyRetentionDays]
+    let retentionCutoff = retentionDays > 0 ? now.addingTimeInterval(-Double(retentionDays) * 86_400) : nil
+
     all
-      .filter { $0.isUnpinned && ($0.item.expiresAt.map { $0 <= now } ?? false) }
+      .filter { decorator in
+        guard decorator.isUnpinned else { return false }
+        if let expiresAt = decorator.item.expiresAt, expiresAt <= now { return true }
+        if let retentionCutoff, decorator.item.lastCopiedAt < retentionCutoff { return true }
+        return false
+      }
       .forEach(delete)
   }
 

@@ -12,3 +12,9 @@
 "FirstCopiedAt" = "Time of first copy";
 "NumberOfCopies" = "Number of copies";
 "SortByTooltip" = "Default: Time of last copy.";
+"Unlimited" = "Unlimited";
+"KeepFor" = "Keep items for:";
+"KeepForTooltip" = "Unpinned items not copied within this time are deleted. Pinned items are always kept.";
+"KeepForever" = "Forever";
+"KeepOneDay" = "1 day";
+"KeepDays" = "%d days";

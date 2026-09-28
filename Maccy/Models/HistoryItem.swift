@@ -240,7 +240,9 @@ class HistoryItem {
 
     let requestHandler = VNImageRequestHandler(cgImage: cgImage)
     let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
-    request.recognitionLevel = .fast
+    request.recognitionLevel = .accurate
+    request.usesLanguageCorrection = true
+    request.automaticallyDetectsLanguage = true
 
     do {
       try requestHandler.perform([request])

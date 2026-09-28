@@ -25,6 +25,60 @@ class HistoryTests: XCTestCase { // swiftlint:disable:this type_body_length
     Defaults[.pinTo] = savedPinTo
   }
 
+  func testExpiredSecretsAreDeletedUnlessPinned() {
+    let secret = historyItem("secret")
+    secret.expiresAt = Date.now.addingTimeInterval(60)
+    let pinnedSecret = historyItem("pinned secret")
+    pinnedSecret.expiresAt = Date.now.addingTimeInterval(60)
+    let plain = historyItem("plain")
+    history.add(secret)
+    history.add(pinnedSecret)
+    history.add(plain)
+    pinnedSecret.pin = "b"
+
+    history.deleteExpiredItems(now: Date.now.addingTimeInterval(30))
+    XCTAssertEqual(history.all.count, 3)
+
+    history.deleteExpiredItems(now: Date.now.addingTimeInterval(120))
+    XCTAssertEqual(Set(history.all.map(\.title)), ["pinned secret", "plain"])
+  }
+
+  func testRetentionDeletesOldUnpinnedItems() {
+    let savedRetention = Defaults[.historyRetentionDays]
+    defer { Defaults[.historyRetentionDays] = savedRetention }
+    Defaults[.historyRetentionDays] = 7
+
+    let old = historyItem("old")
+    let oldPinned = historyItem("old pinned")
+    let recent = historyItem("recent")
+    history.add(old)
+    history.add(oldPinned)
+    history.add(recent)
+    oldPinned.pin = "b"
+    old.lastCopiedAt = Date.now.addingTimeInterval(-8 * 86_400)
+    oldPinned.lastCopiedAt = Date.now.addingTimeInterval(-8 * 86_400)
+
+    history.deleteExpiredItems()
+    XCTAssertEqual(Set(history.all.map(\.title)), ["old pinned", "recent"])
+
+    Defaults[.historyRetentionDays] = 0
+    recent.lastCopiedAt = Date.now.addingTimeInterval(-1_000 * 86_400)
+    history.deleteExpiredItems()
+    XCTAssertEqual(history.all.count, 2)
+  }
+
+  func testUnlimitedHistoryIgnoresSize() {
+    let savedUnlimited = Defaults[.unlimitedHistory]
+    defer { Defaults[.unlimitedHistory] = savedUnlimited }
+    Defaults[.size] = 2
+    Defaults[.unlimitedHistory] = true
+
+    for index in 0..<5 {
+      history.add(historyItem("item \(index)"))
+    }
+    XCTAssertEqual(history.all.count, 5)
+  }
+
   func testDefaultIsEmpty() {
     XCTAssertEqual(history.items, [])
   }
