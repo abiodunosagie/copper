@@ -5,6 +5,8 @@ import Foundation
 enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible, Defaults.Serializable {
   case dockedRight
   case dockedLeft
+  case dockedBottom
+  case dockedTop
   case cursor
   case statusItem
   case window
@@ -14,10 +16,14 @@ enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible,
   var id: Self { self }
 
   // Docked positions glue a full-height panel to a screen edge, like a sidebar.
-  var isDocked: Bool { self == .dockedRight || self == .dockedLeft }
+  var isDocked: Bool { [.dockedRight, .dockedLeft, .dockedBottom, .dockedTop].contains(self) }
+  // Top and bottom docks lay the cards out in a row instead of a column.
+  var isHorizontalDock: Bool { self == .dockedBottom || self == .dockedTop }
+  static let dockEdges: [PopupPosition] = [.dockedRight, .dockedLeft, .dockedBottom, .dockedTop]
 
   static let dockMargin: CGFloat = 8
   static let dockWidthRange: ClosedRange<Double> = 240...520
+  static let dockHeightRange: ClosedRange<Double> = 240...480
 
   var description: String {
     switch self {
@@ -25,6 +31,10 @@ enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible,
       return NSLocalizedString("PopupDockedRight", tableName: "AppearanceSettings", comment: "")
     case .dockedLeft:
       return NSLocalizedString("PopupDockedLeft", tableName: "AppearanceSettings", comment: "")
+    case .dockedBottom:
+      return NSLocalizedString("PopupDockedBottom", tableName: "AppearanceSettings", comment: "")
+    case .dockedTop:
+      return NSLocalizedString("PopupDockedTop", tableName: "AppearanceSettings", comment: "")
     case .cursor:
       return NSLocalizedString("PopupAtCursor", tableName: "AppearanceSettings", comment: "")
     case .statusItem:
@@ -75,9 +85,16 @@ enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible,
     return constrained(point, ofSize: size, to: screen)
   }
 
-  // Full-height frame glued to the left or right edge of `visibleFrame` (menu bar and Dock excluded).
-  func dockedFrame(width: CGFloat, in visibleFrame: NSRect) -> NSRect {
+  // Frame glued to an edge of `visibleFrame` (menu bar and Dock excluded): full height on the
+  // left and right, full width at the top and bottom. `thickness` is the width or the height.
+  func dockedFrame(width thickness: CGFloat, in visibleFrame: NSRect) -> NSRect {
     let margin = Self.dockMargin
+    if isHorizontalDock {
+      let height = min(thickness, visibleFrame.height - 2 * margin)
+      let originY = self == .dockedTop ? visibleFrame.maxY - height - margin : visibleFrame.minY + margin
+      return NSRect(x: visibleFrame.minX + margin, y: originY, width: visibleFrame.width - 2 * margin, height: height)
+    }
+    let width = thickness
     let clampedWidth = min(width, visibleFrame.width - 2 * margin)
     let originX = self == .dockedLeft ? visibleFrame.minX + margin : visibleFrame.maxX - clampedWidth - margin
     return NSRect(

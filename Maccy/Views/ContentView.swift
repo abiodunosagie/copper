@@ -30,7 +30,7 @@ struct ContentView: View {
         VStack(spacing: 0) {
           SlideoutView(controller: appState.preview) {
             if popupPosition.isDocked {
-              DockHeaderView(searchFocused: $searchFocused)
+              DockHeaderView(searchFocused: $searchFocused, isRow: popupPosition.isHorizontalDock)
             } else {
               HeaderView(
                 controller: appState.preview,
@@ -39,10 +39,14 @@ struct ContentView: View {
             }
 
             VStack(alignment: .leading, spacing: 0) {
-              HistoryListView(
-                searchQuery: $appState.history.searchQuery,
-                searchFocused: $searchFocused
-              )
+              if popupPosition.isHorizontalDock {
+                HorizontalHistoryListView(searchFocused: $searchFocused)
+              } else {
+                HistoryListView(
+                  searchQuery: $appState.history.searchQuery,
+                  searchFocused: $searchFocused
+                )
+              }
 
               if popupPosition.isDocked {
                 DockFooterView(footer: appState.footer)

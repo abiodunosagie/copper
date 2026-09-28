@@ -93,6 +93,7 @@ extension Defaults.Keys {
   static let windowSize = Key<NSSize>("windowSize", default: NSSize(width: 450, height: 800), suite: preferencesSuite)
   // Only Appearance settings write this. ("dockWidth" was overwritten by resize code and is retired.)
   static let dockWidth = Key<Double>("dockPanelWidth", default: 300, suite: preferencesSuite)
+  static let dockHeight = Key<Double>("dockPanelHeight", default: 300, suite: preferencesSuite)
   static let windowPosition = Key<NSPoint>("windowPosition", default: NSPoint(x: 0.5, y: 0.8), suite: preferencesSuite)
   static let showApplicationIcons = Key<Bool>("showApplicationIcons", default: false, suite: preferencesSuite)
   static let showHexColorSwatch = Key<Bool>("showHexColorSwatch", default: true, suite: preferencesSuite)

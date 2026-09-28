@@ -197,6 +197,7 @@
 		3BEC74C2452E7D9AACCCCA06 /* SnippetsSettingsPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */; };
 		28E29ADCFE046733EE607DF8 /* IgnoreFoldersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB643950919796016DC3CA3F /* IgnoreFoldersSettingsView.swift */; };
 		9F92A9F456C0765EA597213B /* CardPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F4F052F8BC3182DCA3C339 /* CardPreviews.swift */; };
+		96B2F41EA7EB1E9A01E29436 /* HorizontalHistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06620AA0AF72E2EC2B0E4C1 /* HorizontalHistoryListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -675,6 +676,7 @@
 		F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsSettingsPane.swift; sourceTree = "<group>"; };
 		BB643950919796016DC3CA3F /* IgnoreFoldersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreFoldersSettingsView.swift; sourceTree = "<group>"; };
 		A2F4F052F8BC3182DCA3C339 /* CardPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPreviews.swift; sourceTree = "<group>"; };
+		F06620AA0AF72E2EC2B0E4C1 /* HorizontalHistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalHistoryListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -806,6 +808,7 @@
 				DA1969192C3F369800258481 /* HeaderView.swift */,
 				2F0EC7782E7727E3003E2EA9 /* HeightReaderModifier.swift */,
 				DA1969112C3F0DD200258481 /* HistoryItemView.swift */,
+				F06620AA0AF72E2EC2B0E4C1 /* HorizontalHistoryListView.swift */,
 				08E9B6027C95E0382294AF92 /* LibraryView.swift */,
 				65867568AA93009811FDC27A /* HistoryItemContextMenu.swift */,
 				E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */,
@@ -1303,6 +1306,7 @@
 				CD6169A94007D6E85FDD1C9F /* PlainTextAppsSettingsView.swift in Sources */,
 				65B26C4EE9590AB388048774 /* PeerShareSettingsView.swift in Sources */,
 				DA1969122C3F0DD200258481 /* HistoryItemView.swift in Sources */,
+				96B2F41EA7EB1E9A01E29436 /* HorizontalHistoryListView.swift in Sources */,
 				26B274E725B94F2C42B0D0F0 /* LibraryView.swift in Sources */,
 				D95EB33C0B254AB954D2EB7F /* HistoryItemContextMenu.swift in Sources */,
 				16BADE990A751449B964EC58 /* CollectionActions.swift in Sources */,

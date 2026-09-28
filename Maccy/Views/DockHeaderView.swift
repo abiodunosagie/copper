@@ -11,31 +11,54 @@ struct DockHeaderView: View {
   @Default(.size) private var size
   @Default(.collections) private var collections
 
+  // Top and bottom docks lay the header out in rows instead of a column.
+  var isRow = false
+
   var body: some View {
     @Bindable var history = appState.history
+    let search = SearchFieldView(placeholder: "dock_search_placeholder", query: $history.searchQuery)
+      .focused($searchFocused)
+      .foregroundStyle(DockTheme.text)
 
-    VStack(alignment: .leading, spacing: 10) {
-      titleBar
-
-      SearchFieldView(placeholder: "dock_search_placeholder", query: $history.searchQuery)
-        .focused($searchFocused)
-        .foregroundStyle(DockTheme.text)
-
-      filterRow
-
-      collectionRow
-
-      Text(itemCountLine)
-        .font(.system(size: 11))
-        .foregroundStyle(DockTheme.mutedText)
+    Group {
+      if isRow {
+        VStack(alignment: .leading, spacing: 8) {
+          HStack(spacing: 12) {
+            wordmark
+            search.frame(maxWidth: 300)
+            filterRow
+            Spacer(minLength: 4)
+            queueBadge
+            edgeMenu
+          }
+          HStack(spacing: 12) {
+            collectionRow
+            Spacer(minLength: 4)
+            itemCount
+          }
+        }
+      } else {
+        VStack(alignment: .leading, spacing: 10) {
+          HStack(spacing: 8) {
+            wordmark
+            Spacer(minLength: 4)
+            queueBadge
+            edgeMenu
+          }
+          search
+          filterRow
+          collectionRow
+          itemCount
+        }
+      }
     }
     .padding(.horizontal, DockTheme.barPadding)
-    .padding(.top, DockTheme.barPadding)
+    .padding(.top, isRow ? 10 : DockTheme.barPadding)
     .padding(.bottom, 6)
     .readHeight(appState, into: \.popup.headerHeight)
   }
 
-  private var titleBar: some View {
+  private var wordmark: some View {
     HStack(spacing: 8) {
       Image(systemName: "list.clipboard")
         .font(.system(size: 17, weight: .medium))
@@ -44,23 +67,48 @@ struct DockHeaderView: View {
       Text(verbatim: "Copper")
         .font(.system(size: 16, weight: .semibold))
         .foregroundStyle(DockTheme.text)
+    }
+  }
 
-      Spacer(minLength: 4)
+  private var itemCount: some View {
+    Text(itemCountLine)
+      .font(.system(size: 11))
+      .foregroundStyle(DockTheme.mutedText)
+  }
 
-      queueBadge
-
-      Button {
-        appState.popup.toggleDockEdge()
-      } label: {
-        Image(systemName: "rectangle.lefthalf.inset.filled")
-          .font(.system(size: 13))
-          .foregroundStyle(DockTheme.text)
-          .scaleEffect(x: popupPosition == .dockedRight ? -1 : 1)
-          .dockControl()
+  // Picks the screen edge the panel docks to.
+  private var edgeMenu: some View {
+    Menu {
+      ForEach(PopupPosition.dockEdges) { edge in
+        Button {
+          appState.popup.moveDock(to: edge)
+        } label: {
+          if edge == popupPosition {
+            Label(edge.description, systemImage: "checkmark")
+          } else {
+            Text(edge.description)
+          }
+        }
       }
-      .buttonStyle(.plain)
-      .help(Text("dock_move_edge"))
-      .accessibilityLabel(Text("dock_move_edge"))
+    } label: {
+      Image(systemName: Self.edgeIcon(popupPosition))
+        .font(.system(size: 13))
+        .foregroundStyle(DockTheme.text)
+        .dockControl()
+    }
+    .menuStyle(.borderlessButton)
+    .menuIndicator(.hidden)
+    .fixedSize()
+    .help(Text("dock_move_edge"))
+    .accessibilityLabel(Text("dock_move_edge"))
+  }
+
+  static func edgeIcon(_ position: PopupPosition) -> String {
+    switch position {
+    case .dockedLeft: return "rectangle.lefthalf.inset.filled"
+    case .dockedBottom: return "rectangle.bottomhalf.inset.filled"
+    case .dockedTop: return "rectangle.tophalf.inset.filled"
+    default: return "rectangle.righthalf.inset.filled"
     }
   }
 

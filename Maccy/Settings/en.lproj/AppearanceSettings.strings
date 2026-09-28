@@ -39,3 +39,6 @@
 "PopupDockedRight" = "Right edge";
 "PopupDockedLeft" = "Left edge";
 "DockWidth" = "Width:";
+"PopupDockedBottom" = "Bottom edge";
+"PopupDockedTop" = "Top edge";
+"DockHeight" = "Height:";

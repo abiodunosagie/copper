@@ -35,6 +35,21 @@ class PopupPositionTests: XCTestCase {
   }
 
   func testOnlyEdgePositionsAreDocked() {
-    XCTAssertEqual(PopupPosition.allCases.filter(\.isDocked), [.dockedRight, .dockedLeft])
+    XCTAssertEqual(PopupPosition.allCases.filter(\.isDocked), PopupPosition.dockEdges)
+    XCTAssertEqual(PopupPosition.allCases.filter(\.isHorizontalDock), [.dockedBottom, .dockedTop])
+  }
+
+  func testBottomAndTopDocksSpanTheWidth() {
+    let bottom = PopupPosition.dockedBottom.dockedFrame(width: 300, in: visibleFrame)
+    XCTAssertEqual(bottom.minY, visibleFrame.minY + margin)
+    XCTAssertEqual(bottom.height, 300)
+    XCTAssertEqual(bottom.width, visibleFrame.width - 2 * margin)
+
+    let top = PopupPosition.dockedTop.dockedFrame(width: 300, in: visibleFrame)
+    XCTAssertEqual(top.maxY, visibleFrame.maxY - margin)
+    XCTAssertEqual(top.minX, visibleFrame.minX + margin)
+
+    let short = NSRect(x: 0, y: 0, width: 1_000, height: 200)
+    XCTAssertEqual(PopupPosition.dockedBottom.dockedFrame(width: 480, in: short).height, short.height - 2 * margin)
   }
 }

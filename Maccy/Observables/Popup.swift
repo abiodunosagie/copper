@@ -81,11 +81,11 @@ class Popup {
     AppState.shared.appDelegate?.panel.open(height: height, at: popupPosition)
   }
 
-  // Moves the docked panel to the opposite screen edge and keeps it open there.
-  func toggleDockEdge() {
-    let newPosition: PopupPosition = Defaults[.popupPosition] == .dockedRight ? .dockedLeft : .dockedRight
-    Defaults[.popupPosition] = newPosition
-    open(height: height, at: newPosition)
+  // Moves the docked panel to another screen edge and keeps it open there.
+  func moveDock(to edge: PopupPosition) {
+    guard edge.isDocked else { return }
+    Defaults[.popupPosition] = edge
+    open(height: height, at: edge)
   }
 
   func reset() {

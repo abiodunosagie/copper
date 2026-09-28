@@ -148,6 +148,9 @@ class SlideoutController {
   }
 
   func togglePreview(trigger: SlideoutToggleTrigger = .manual) {
+    // A top or bottom dock spans the screen width; there is no side to slide a preview into.
+    // Quick Look (Option-Space) is the preview there.
+    guard !Defaults[.popupPosition].isHorizontalDock else { return }
     if !state.isOpen {
       let navigator = AppState.shared.navigator
       guard navigator.leadHistoryItem != nil || navigator.pasteStackSelected else { return }

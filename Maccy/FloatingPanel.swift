@@ -132,9 +132,10 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   private func openDocked(at popupPosition: PopupPosition) {
     guard let screen = PopupPosition.mouseScreen else { return }
 
-    let range = PopupPosition.dockWidthRange
-    let width = min(max(Defaults[.dockWidth], range.lowerBound), range.upperBound)
-    let dockFrame = popupPosition.dockedFrame(width: width, in: screen.visibleFrame)
+    let horizontal = popupPosition.isHorizontalDock
+    let range = horizontal ? PopupPosition.dockHeightRange : PopupPosition.dockWidthRange
+    let thickness = min(max(horizontal ? Defaults[.dockHeight] : Defaults[.dockWidth], range.lowerBound), range.upperBound)
+    let dockFrame = popupPosition.dockedFrame(width: thickness, in: screen.visibleFrame)
     setHostingSizing([])
     AppState.shared.preview.contentWidth = dockFrame.width
     setFrame(dockFrame, display: true)
