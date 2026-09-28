@@ -15,6 +15,10 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
 
   private var isDocked: Bool { Defaults[.popupPosition].isDocked }
 
+  // By default the SwiftUI content may grow the window to fit wide items. A docked panel's frame
+  // must come only from the screen edge and the width setting, so docking turns that off.
+  private var setHostingSizing: (NSHostingSizingOptions) -> Void = { _ in }
+
   init(
     contentRect: NSRect,
     identifier: String = "",
@@ -55,7 +59,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     standardWindowButton(.miniaturizeButton)?.isHidden = true
     standardWindowButton(.zoomButton)?.isHidden = true
 
-    contentView = NSHostingView(
+    let hostingView = NSHostingView(
       rootView: view()
         // The safe area is ignored because the title bar still interferes with the geometry
         .ignoresSafeArea()
@@ -64,6 +68,8 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
             self.saveWindowPosition()
         })
     )
+    setHostingSizing = { hostingView.sizingOptions = $0 }
+    contentView = hostingView
     contentView?.layer?.cornerRadius = Popup.cornerRadius + Popup.horizontalPadding
   }
 
@@ -89,6 +95,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
       return
     }
 
+    setHostingSizing(.standardBounds)
     contentView?.layer?.cornerRadius = Popup.cornerRadius + Popup.horizontalPadding
     AppState.shared.preview.contentWidth = Defaults[.windowSize].width
     let size = Defaults[.windowSize]
@@ -115,6 +122,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     let range = PopupPosition.dockWidthRange
     let width = min(max(Defaults[.dockWidth], range.lowerBound), range.upperBound)
     let dockFrame = popupPosition.dockedFrame(width: width, in: screen.visibleFrame)
+    setHostingSizing([])
     AppState.shared.preview.contentWidth = dockFrame.width
     setFrame(dockFrame, display: true)
     contentView?.layer?.cornerRadius = DockTheme.panelCornerRadius
