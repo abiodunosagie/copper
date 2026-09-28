@@ -167,6 +167,8 @@
 		36DF9D1F710AB4EFCE6C44DD /* TextTransform+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE06F7E27549C18E5DCE6F22 /* TextTransform+Text.swift */; };
 		3BA2B643F1A89932D93386B6 /* TextTransform+Developer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5695D554D5383D7DCDC3883B /* TextTransform+Developer.swift */; };
 		178DF7340112D94DD8D671D2 /* PopupPositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */; };
+		C72BE82FD4E57589B665222E /* CardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EB2B4DE518A5C426B1173E /* CardItemView.swift */; };
+		4FA7B7B631B945581A8448EF /* CardItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6D770205840C2AF998BB86 /* CardItemViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -615,6 +617,8 @@
 		EE06F7E27549C18E5DCE6F22 /* TextTransform+Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextTransform+Text.swift"; sourceTree = "<group>"; };
 		5695D554D5383D7DCDC3883B /* TextTransform+Developer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextTransform+Developer.swift"; sourceTree = "<group>"; };
 		332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPositionTests.swift; sourceTree = "<group>"; };
+		C1EB2B4DE518A5C426B1173E /* CardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemView.swift; sourceTree = "<group>"; };
+		AC6D770205840C2AF998BB86 /* CardItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -742,6 +746,7 @@
 				DA1969192C3F369800258481 /* HeaderView.swift */,
 				2F0EC7782E7727E3003E2EA9 /* HeightReaderModifier.swift */,
 				DA1969112C3F0DD200258481 /* HistoryItemView.swift */,
+				C1EB2B4DE518A5C426B1173E /* CardItemView.swift */,
 				DAA072D42C40AC52006DDFD2 /* HistoryListView.swift */,
 				2F0EC7882E7743D9003E2EA9 /* HoverSelectionModifier.swift */,
 				DA19690D2C3EEFA900258481 /* KeyboardShortcutView.swift */,
@@ -790,6 +795,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				AC6D770205840C2AF998BB86 /* CardItemViewTests.swift */,
 				332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */,
 				6FA433A6B4702502EB7A2EF2 /* BackupTests.swift */,
 				0655534B769A618ABEBF9E27 /* TextTransformTests.swift */,
@@ -1145,6 +1151,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				4FA7B7B631B945581A8448EF /* CardItemViewTests.swift in Sources */,
 				178DF7340112D94DD8D671D2 /* PopupPositionTests.swift in Sources */,
 				15DBFCF6462E7C37B452051A /* BackupTests.swift in Sources */,
 				EF18B21119F439194E949554 /* TextTransformTests.swift in Sources */,
@@ -1204,6 +1211,7 @@
 				2F9B42F12F1A499D006548E5 /* ToolbarView.swift in Sources */,
 				DAA5ACB22C1B3F8800B58513 /* GeneralSettingsPane.swift in Sources */,
 				DA1969122C3F0DD200258481 /* HistoryItemView.swift in Sources */,
+				C72BE82FD4E57589B665222E /* CardItemView.swift in Sources */,
 				DA0EF1881E444B2A00E58577 /* Clipboard.swift in Sources */,
 				DA3F1B452C90084600267632 /* Sauce+KeyboardShortcuts.swift in Sources */,
 				DA689FCC2C1D1D510009B887 /* MenuIcon.swift in Sources */,
