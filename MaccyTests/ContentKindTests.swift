@@ -129,4 +129,20 @@ class ContentKindTests: XCTestCase {
     XCTAssertNil(secretURL.expiresAt)
     XCTAssertEqual(ContentKind.of(secretURL), .secret)
   }
+
+  @MainActor
+  func testMergeJoinsInOrderAndKeepsTheEarliestExpiry() {
+    let first = item("one")
+    let second = item("two")
+    let secret = item("three")
+    let soon = Date.now.addingTimeInterval(60)
+    secret.expiresAt = soon
+
+    XCTAssertEqual(ItemActions.merged([first, second], separator: .newLine).text, "one\ntwo")
+    XCTAssertEqual(ItemActions.merged([first, second], separator: .comma).text, "one, two")
+    let withSecret = ItemActions.merged([first, secret], separator: .space)
+    XCTAssertEqual(withSecret.text, "one three")
+    XCTAssertEqual(withSecret.expiresAt, soon)
+    XCTAssertEqual(ItemActions.merged([item("")], separator: .space).text, "")
+  }
 }

@@ -40,6 +40,8 @@ extension Defaults.Keys {
   static let clearSecretFromClipboardSeconds = Key<Int>(
     "clearSecretFromClipboardSeconds", default: 60, suite: preferencesSuite
   )
+  // Bundle ids of apps that always receive plain text when Copper pastes into them.
+  static let plainTextApps = Key<[String]>("plainTextApps", default: [], suite: preferencesSuite)
   static let pauseInSensitiveApps = Key<Bool>("pauseInSensitiveApps", default: true, suite: preferencesSuite)
   static let secretExpiryMinutes = Key<Int>("secretExpiryMinutes", default: 60, suite: preferencesSuite)
   static let ignoredApps = Key<[String]>("ignoredApps", default: [], suite: preferencesSuite)

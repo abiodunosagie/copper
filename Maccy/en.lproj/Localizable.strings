@@ -80,3 +80,10 @@
 "library_copied" = "Copied";
 "history_item_send_to" = "Send to";
 "peer_received" = "New item from another Mac";
+"history_item_merge" = "Merge selected";
+"history_item_edit" = "Edit and copy...";
+"merge_new_lines" = "With new lines";
+"merge_commas" = "With commas";
+"merge_spaces" = "With spaces";
+"edit_title" = "Edit, then copy";
+"edit_copy" = "Copy";

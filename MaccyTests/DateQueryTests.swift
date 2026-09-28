@@ -32,7 +32,8 @@ class DateQueryTests: XCTestCase {
   }
 
   func testTodayAndWeeks() throws {
-    XCTAssertTrue(try XCTUnwrap(DateQuery.parse("today", now: now, calendar: calendar).range).contains(day(9, 30, hour: 1)))
+    let today = try XCTUnwrap(DateQuery.parse("today", now: now, calendar: calendar).range)
+    XCTAssertTrue(today.contains(day(9, 30, hour: 1)))
     let thisWeek = try XCTUnwrap(DateQuery.parse("this week", now: now, calendar: calendar).range)
     XCTAssertTrue(thisWeek.contains(day(9, 28)))
     XCTAssertFalse(thisWeek.contains(day(9, 27)))

@@ -29,3 +29,7 @@
 "PeerShareCodeInvalid" = "That is not a Copper pairing code. Create one on one Mac and paste it here on the other.";
 "PeerShareCodeKeychainFailed" = "The code could not be saved in the Keychain. Please try again.";
 "PeerShareDescription" = "Create a pairing code on one Mac and paste it on the other. Items are encrypted with it, and a Mac without it cannot connect. Received items go to history, not the clipboard, and their links are not previewed. Detected secrets are never sent. Other Macs see this Mac by the name above; leave it empty to use a neutral one.";
+"PlainTextApps" = "Paste as plain text in:";
+"PlainTextAppsAdd" = "Add app...";
+"PlainTextAppsRemove" = "Remove";
+"PlainTextAppsDescription" = "When Copper pastes into these apps, formatting is dropped, for example Slack or Terminal.";

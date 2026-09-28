@@ -96,6 +96,10 @@ struct GeneralSettingsPane: View {
         .controlSize(.small)
       }
 
+      Settings.Section(label: { Text("PlainTextApps", tableName: "GeneralSettings") }) {
+        PlainTextAppsSettingsView()
+      }
+
       Settings.Section(label: { Text("PeerShare", tableName: "GeneralSettings") }) {
         PeerShareSettingsView()
       }

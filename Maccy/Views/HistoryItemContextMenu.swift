@@ -17,6 +17,21 @@ struct HistoryItemContextMenu: View {
         Clipboard.shared.copyInMaccy(item.title, expiresAt: item.item.expiresAt)
       }
     }
+    let selected = appState.navigator.selection.items
+    if selected.count > 1 && selected.contains(item) {
+      Menu("history_item_merge") {
+        ForEach(ItemActions.Separator.allCases) { separator in
+          Button(separator.title) {
+            ItemActions.merge(selected.map(\.item), separator: separator)
+          }
+        }
+      }
+    }
+    if item.contentKind != .secret && item.item.fileURLs.isEmpty && item.item.image == nil {
+      Button("history_item_edit") {
+        ItemActions.edit(item.item)
+      }
+    }
     Button("history_item_quick_look") {
       QuickLookController.shared.toggle(item.item)
     }

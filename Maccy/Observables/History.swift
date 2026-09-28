@@ -383,9 +383,14 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       return
     }
 
+    // Apps listed in "Paste as plain text in" always get plain text when Copper pastes into them.
+    let targetWantsPlainText = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
+      .map(Defaults[.plainTextApps].contains) ?? false
+
     if modifierFlags.isEmpty {
       AppState.shared.popup.close()
-      Clipboard.shared.copy(item.item, removeFormatting: Defaults[.removeFormattingByDefault])
+      let removeFormatting = Defaults[.removeFormattingByDefault] || (Defaults[.pasteByDefault] && targetWantsPlainText)
+      Clipboard.shared.copy(item.item, removeFormatting: removeFormatting)
       if Defaults[.pasteByDefault] {
         Clipboard.shared.paste()
       }
@@ -396,7 +401,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
         Clipboard.shared.copy(item.item)
       case .paste:
         AppState.shared.popup.close()
-        Clipboard.shared.copy(item.item)
+        Clipboard.shared.copy(item.item, removeFormatting: targetWantsPlainText)
         Clipboard.shared.paste()
       case .pasteWithoutFormatting:
         AppState.shared.popup.close()
