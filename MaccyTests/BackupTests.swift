@@ -41,6 +41,20 @@ class BackupTests: XCTestCase {
     XCTAssertEqual(decoded.items, archive.items)
   }
 
+  func testCollectionsSurviveABackup() throws {
+    let filed = item("filed")
+    filed.collection = "Snippets"
+    let data = try Backup.encrypt(Backup.archive(of: [filed]), password: "p")
+    XCTAssertEqual(try Backup.decrypt(data, password: "p").items.first?.collection, "Snippets")
+  }
+
+  func testOldBackupsWithoutCollectionsStillDecode() throws {
+    let json = #"{"version":1,"exportedAt":0,"items":[{"title":"t","firstCopiedAt":0,"lastCopiedAt":0,"#
+      + #""numberOfCopies":1,"isPinned":false,"contents":[]}]}"#
+    let archive = try JSONDecoder().decode(Backup.Archive.self, from: Data(json.utf8))
+    XCTAssertNil(archive.items.first?.collection)
+  }
+
   func testEachExportUsesAFreshSalt() throws {
     let archive = Backup.Archive(items: [])
     XCTAssertNotEqual(try Backup.encrypt(archive, password: "p"), try Backup.encrypt(archive, password: "p"))

@@ -174,6 +174,7 @@
 		FFF98EA3D8DDAC3AB55B0091 /* DockHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */; };
 		A837C45EBF5B10D2E45EAE55 /* DockFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EBEE149EE5C40E39707101 /* DockFooterView.swift */; };
 		4F96258FAB606B9CD970A98B /* ContentKindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */; };
+		16BADE990A751449B964EC58 /* CollectionActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -629,6 +630,7 @@
 		23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockHeaderView.swift; sourceTree = "<group>"; };
 		C3EBEE149EE5C40E39707101 /* DockFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockFooterView.swift; sourceTree = "<group>"; };
 		4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentKindTests.swift; sourceTree = "<group>"; };
+		E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionActions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -756,6 +758,7 @@
 				DA1969192C3F369800258481 /* HeaderView.swift */,
 				2F0EC7782E7727E3003E2EA9 /* HeightReaderModifier.swift */,
 				DA1969112C3F0DD200258481 /* HistoryItemView.swift */,
+				E42274FAFCCDDBA20E38E9F7 /* CollectionActions.swift */,
 				C3EBEE149EE5C40E39707101 /* DockFooterView.swift */,
 				23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */,
 				99A867044F80963410ED44ED /* DockTheme.swift */,
@@ -1227,6 +1230,7 @@
 				2F9B42F12F1A499D006548E5 /* ToolbarView.swift in Sources */,
 				DAA5ACB22C1B3F8800B58513 /* GeneralSettingsPane.swift in Sources */,
 				DA1969122C3F0DD200258481 /* HistoryItemView.swift in Sources */,
+				16BADE990A751449B964EC58 /* CollectionActions.swift in Sources */,
 				A837C45EBF5B10D2E45EAE55 /* DockFooterView.swift in Sources */,
 				FFF98EA3D8DDAC3AB55B0091 /* DockHeaderView.swift in Sources */,
 				7935CCDD92FB29593A2B8379 /* DockTheme.swift in Sources */,

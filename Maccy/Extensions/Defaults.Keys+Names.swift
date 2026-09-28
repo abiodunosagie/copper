@@ -68,6 +68,8 @@ extension Defaults.Keys {
   static let showSpecialSymbols = Key<Bool>("showSpecialSymbols", default: true, suite: preferencesSuite)
   static let showTitle = Key<Bool>("showTitle", default: true, suite: preferencesSuite)
   static let size = Key<Int>("historySize", default: 200, suite: preferencesSuite)
+  // Collection names in the order the owner created them.
+  static let collections = Key<[String]>("collections", default: [], suite: preferencesSuite)
   static let unlimitedHistory = Key<Bool>("unlimitedHistory", default: false, suite: preferencesSuite)
   // 0 keeps items forever; otherwise unpinned items not copied for this many days are deleted.
   static let historyRetentionDays = Key<Int>("historyRetentionDays", default: 0, suite: preferencesSuite)

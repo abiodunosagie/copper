@@ -24,6 +24,7 @@ struct HistoryItemView: View {
 
   @Default(.showHexColorSwatch) private var showHexColorSwatch
   @Default(.popupPosition) private var popupPosition
+  @Default(.collections) private var collections
   @Environment(AppState.self) private var appState
 
   private var colorSwatchImage: NSImage? {
@@ -103,6 +104,27 @@ struct HistoryItemView: View {
     if item.item.image != nil && !item.title.isEmpty {
       Button("history_item_copy_image_text") {
         Clipboard.shared.copyInMaccy(item.title, expiresAt: item.item.expiresAt)
+      }
+    }
+    Menu("history_item_collection_menu") {
+      ForEach(collections, id: \.self) { name in
+        Toggle(name, isOn: Binding(
+          get: { item.item.collection == name },
+          set: { appState.history.setCollection($0 ? name : nil, for: item) }
+        ))
+      }
+      if !collections.isEmpty {
+        Divider()
+      }
+      Button("history_item_collection_new") {
+        if let name = CollectionActions.createCollection() {
+          appState.history.setCollection(name, for: item)
+        }
+      }
+      if item.item.collection != nil {
+        Button("history_item_collection_remove") {
+          appState.history.setCollection(nil, for: item)
+        }
       }
     }
     Menu("history_item_transform_menu") {

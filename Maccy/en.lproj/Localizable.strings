@@ -55,3 +55,14 @@
 "dock_item_count" = "%d items";
 "dock_unlimited" = "Unlimited";
 "dock_limit" = "keeps %d";
+"history_item_collection_menu" = "Collection";
+"history_item_collection_new" = "New collection...";
+"history_item_collection_remove" = "Remove from collection";
+"dock_collections" = "Collections";
+"dock_collection_new" = "+ New";
+"dock_collection_delete" = "Delete collection";
+"collection_new_title" = "New collection";
+"collection_new_info" = "Items keep their place in history; a collection is just a label you can filter by.";
+"collection_new_create" = "Create";
+"collection_new_cancel" = "Cancel";
+"collection_new_placeholder" = "Work, Snippets, Clients...";

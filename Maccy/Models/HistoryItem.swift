@@ -71,6 +71,8 @@ class HistoryItem {
   var pin: String?
   // Set when the item holds a detected secret; the item is deleted after this date unless pinned.
   var expiresAt: Date?
+  // Name of the collection the owner filed this item under, if any.
+  var collection: String?
   var title = ""
 
   @Relationship(deleteRule: .cascade, inverse: \HistoryItemContent.item)

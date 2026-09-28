@@ -9,6 +9,7 @@ struct DockHeaderView: View {
   @Default(.popupPosition) private var popupPosition
   @Default(.unlimitedHistory) private var unlimitedHistory
   @Default(.size) private var size
+  @Default(.collections) private var collections
 
   var body: some View {
     @Bindable var history = appState.history
@@ -21,6 +22,8 @@ struct DockHeaderView: View {
         .foregroundStyle(DockTheme.text)
 
       filterRow
+
+      collectionRow
 
       Text(itemCountLine)
         .font(.system(size: 11))
@@ -89,6 +92,57 @@ struct DockHeaderView: View {
         ForEach(ContentFilter.allCases) { filter in
           chip(filter)
         }
+      }
+    }
+  }
+
+  private var collectionRow: some View {
+    ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: 6) {
+        Text("dock_collections")
+          .font(.system(size: 11))
+          .foregroundStyle(DockTheme.mutedText)
+        ForEach(collections, id: \.self) { name in
+          collectionChip(name)
+        }
+        Button {
+          CollectionActions.createCollection()
+        } label: {
+          Text("dock_collection_new")
+            .font(.system(size: 11))
+            .padding(.horizontal, 9)
+            .frame(height: DockTheme.smallChipHeight)
+            .foregroundStyle(DockTheme.mutedText)
+            .overlay(Capsule().strokeBorder(DockTheme.controlBorder, style: StrokeStyle(lineWidth: 1, dash: [3])))
+        }
+        .buttonStyle(.plain)
+      }
+    }
+  }
+
+  private func collectionChip(_ name: String) -> some View {
+    let active = appState.history.collectionFilter == name
+    return Button {
+      appState.history.collectionFilter = active ? nil : name
+    } label: {
+      HStack(spacing: 5) {
+        Circle()
+          .fill(CollectionActions.dotColor(for: name, in: collections))
+          .frame(width: 7, height: 7)
+        Text(verbatim: name)
+          .font(.system(size: 11, weight: active ? .semibold : .regular))
+      }
+      .padding(.horizontal, 9)
+      .frame(height: DockTheme.smallChipHeight)
+      .foregroundStyle(DockTheme.text)
+      .background(active ? DockTheme.cardSelected : Color.clear, in: Capsule())
+      .overlay(Capsule().strokeBorder(active ? DockTheme.text : DockTheme.controlBorder))
+    }
+    .buttonStyle(.plain)
+    .accessibilityAddTraits(active ? .isSelected : [])
+    .contextMenu {
+      Button("dock_collection_delete", role: .destructive) {
+        appState.history.deleteCollection(name)
       }
     }
   }

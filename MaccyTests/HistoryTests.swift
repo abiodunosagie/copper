@@ -25,6 +25,37 @@ class HistoryTests: XCTestCase { // swiftlint:disable:this type_body_length
     Defaults[.pinTo] = savedPinTo
   }
 
+  func testCollectionsCreateFilterAndDelete() {
+    let savedCollections = Defaults[.collections]
+    defer {
+      Defaults[.collections] = savedCollections
+      history.collectionFilter = nil
+    }
+    Defaults[.collections] = []
+
+    XCTAssertTrue(history.createCollection(named: " Work "))
+    XCTAssertFalse(history.createCollection(named: "work"), "names are unique ignoring case")
+    XCTAssertFalse(history.createCollection(named: "   "))
+    XCTAssertEqual(Defaults[.collections], ["Work"])
+
+    let filed = history.add(historyItem("filed"))
+    history.add(historyItem("loose"))
+    history.setCollection("Work", for: filed)
+
+    history.collectionFilter = "Work"
+    XCTAssertEqual(history.items.map(\.title), ["filed"])
+
+    // A re-copy keeps the collection.
+    history.add(historyItem("filed"))
+    XCTAssertEqual(history.all.first { $0.title == "filed" }?.item.collection, "Work")
+
+    history.deleteCollection("Work")
+    XCTAssertNil(history.collectionFilter)
+    XCTAssertEqual(Defaults[.collections], [])
+    XCTAssertEqual(history.items.count, 2)
+    XCTAssertTrue(history.all.allSatisfy { $0.item.collection == nil })
+  }
+
   func testRecopyingAPinnedItemRefreshesTheVisibleList() {
     let first = historyItem("foo")
     history.add(first)

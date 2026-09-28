@@ -28,6 +28,7 @@ enum DockTheme {
   static let cardPadding: CGFloat = 12
   static let barPadding: CGFloat = 14
   static let chipHeight: CGFloat = 26
+  static let smallChipHeight: CGFloat = 22
   static let controlHeight: CGFloat = 30
 }
 

@@ -41,6 +41,8 @@ enum Backup {
     let numberOfCopies: Int
     let isPinned: Bool
     let contents: [Content]
+    // Optional so backups made before collections still decode.
+    var collection: String?
   }
 
   struct Archive: Codable, Equatable {
@@ -70,7 +72,8 @@ enum Backup {
       lastCopiedAt: item.lastCopiedAt,
       numberOfCopies: item.numberOfCopies,
       isPinned: item.pin != nil,
-      contents: contents
+      contents: contents,
+      collection: item.collection
     )
   }
 

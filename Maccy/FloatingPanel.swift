@@ -106,6 +106,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     setHostingSizing(.standardBounds)
     // Filters only exist in the docked panel; never leave the classic list filtered.
     AppState.shared.history.contentFilter = .all
+    AppState.shared.history.collectionFilter = nil
     applyCornerRadius(docked: false)
     AppState.shared.preview.contentWidth = Defaults[.windowSize].width
     let size = Defaults[.windowSize]

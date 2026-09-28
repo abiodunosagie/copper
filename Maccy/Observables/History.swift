@@ -23,9 +23,15 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
   var contentFilter: ContentFilter = .all {
     didSet {
       guard contentFilter != oldValue else { return }
-      updateItems(search.search(string: searchQuery, within: all))
-      AppState.shared.navigator.highlightFirst()
-      AppState.shared.popup.needsResize = true
+      refilter()
+    }
+  }
+
+  // Collection chip selected in the docked panel; nil shows every collection.
+  var collectionFilter: String? {
+    didSet {
+      guard collectionFilter != oldValue else { return }
+      refilter()
     }
   }
 
@@ -185,6 +191,9 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       item.firstCopiedAt = existingHistoryItem.firstCopiedAt
       item.numberOfCopies += existingHistoryItem.numberOfCopies
       item.pin = existingHistoryItem.pin
+      if item.collection == nil {
+        item.collection = existingHistoryItem.collection
+      }
       if item.pin != nil {
         item.expiresAt = nil
       }
@@ -503,6 +512,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       item.firstCopiedAt = backupItem.firstCopiedAt
       item.lastCopiedAt = backupItem.lastCopiedAt
       item.numberOfCopies = backupItem.numberOfCopies
+      item.collection = backupItem.collection
 
       // A restore keeps the larger of the two copy counts instead of adding them like a fresh copy,
       // so importing the same backup twice never inflates it.
@@ -580,12 +590,59 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     updateUnpinnedShortcuts()
   }
 
+  private func passesFilters(_ item: HistoryItemDecorator) -> Bool {
+    if let collectionFilter, item.item.collection != collectionFilter { return false }
+    return contentFilter.matches(item)
+  }
+
+  private var isFiltering: Bool { contentFilter != .all || collectionFilter != nil }
+
   private func visible(_ decorators: [HistoryItemDecorator]) -> [HistoryItemDecorator] {
-    contentFilter == .all ? decorators : decorators.filter(contentFilter.matches)
+    isFiltering ? decorators.filter(passesFilters) : decorators
   }
 
   private func visible(_ results: [Search.SearchResult]) -> [Search.SearchResult] {
-    contentFilter == .all ? results : results.filter { contentFilter.matches($0.object) }
+    isFiltering ? results.filter { passesFilters($0.object) } : results
+  }
+
+  private func refilter() {
+    updateItems(search.search(string: searchQuery, within: all))
+    AppState.shared.navigator.highlightFirst()
+    AppState.shared.popup.needsResize = true
+  }
+
+  // MARK: - Collections
+
+  // Adds a collection name; returns false for an empty or duplicate name.
+  @discardableResult
+  func createCollection(named rawName: String) -> Bool {
+    let name = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !name.isEmpty,
+          !Defaults[.collections].contains(where: { $0.caseInsensitiveCompare(name) == .orderedSame }) else {
+      return false
+    }
+    Defaults[.collections].append(name)
+    return true
+  }
+
+  @MainActor
+  func setCollection(_ name: String?, for item: HistoryItemDecorator) {
+    item.item.collection = name
+    try? Storage.shared.context.save()
+    refilter()
+  }
+
+  // Removes the collection; its items stay in history without a collection.
+  @MainActor
+  func deleteCollection(_ name: String) {
+    all.filter { $0.item.collection == name }.forEach { $0.item.collection = nil }
+    try? Storage.shared.context.save()
+    Defaults[.collections].removeAll { $0 == name }
+    if collectionFilter == name {
+      collectionFilter = nil
+    } else {
+      refilter()
+    }
   }
 
   private func updateShortcuts() {
