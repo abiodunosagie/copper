@@ -78,3 +78,5 @@
 "library_apps" = "Apps";
 "library_empty" = "Nothing here yet";
 "library_copied" = "Copied";
+"history_item_send_to" = "Send to";
+"peer_received" = "New item from %@";

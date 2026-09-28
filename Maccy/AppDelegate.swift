@@ -48,6 +48,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     Clipboard.shared.onNewCopy { History.shared.add($0) }
     Clipboard.shared.start()
 
+    PeerShareService.shared.update()
+    Task {
+      for await _ in Defaults.updates([.peerShareEnabled, .peerShareName], initial: false) {
+        PeerShareService.shared.update()
+      }
+    }
+
     // Detected secrets can be set to expire; sweep them out every 30 seconds.
     expiryTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
       Task { @MainActor in

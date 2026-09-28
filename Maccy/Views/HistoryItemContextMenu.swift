@@ -42,6 +42,16 @@ struct HistoryItemContextMenu: View {
         }
       }
     }
+    if !PeerShareService.shared.peers.isEmpty {
+      Menu("history_item_send_to") {
+        ForEach(PeerShareService.shared.peers) { peer in
+          Button(peer.name) {
+            PeerShareService.shared.send(item.item, to: peer)
+          }
+        }
+      }
+      .disabled(item.contentKind == .secret)
+    }
     Menu("history_item_transform_menu") {
       ForEach(TextTransform.Category.allCases) { category in
         Menu(category.title) {

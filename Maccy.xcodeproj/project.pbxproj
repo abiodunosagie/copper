@@ -181,6 +181,11 @@
 		D95EB33C0B254AB954D2EB7F /* HistoryItemContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65867568AA93009811FDC27A /* HistoryItemContextMenu.swift */; };
 		26B274E725B94F2C42B0D0F0 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9B6027C95E0382294AF92 /* LibraryView.swift */; };
 		DBC45F71E3BB9036E649E251 /* LibraryWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45A4C999B6B91BB643F5D27 /* LibraryWindowController.swift */; };
+		9CA75EDA8650172EE8EA386A /* PeerFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB2B8B873CD7D723BFDE01 /* PeerFrame.swift */; };
+		D9445884768EE857E7DED14C /* PeerPairing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DE228DFC0D9D953A85C7F4 /* PeerPairing.swift */; };
+		8D4CD5428EFEADC188155E6D /* PeerShareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD9BEE66FD1357909658E55 /* PeerShareService.swift */; };
+		65B26C4EE9590AB388048774 /* PeerShareSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C00A4F404B20A1AF546CE2C /* PeerShareSettingsView.swift */; };
+		CB4A9AB1C07ACBA25191F32D /* PeerShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67542CD1E8A79F27A3D9B0D3 /* PeerShareTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -643,6 +648,11 @@
 		65867568AA93009811FDC27A /* HistoryItemContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItemContextMenu.swift; sourceTree = "<group>"; };
 		08E9B6027C95E0382294AF92 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		A45A4C999B6B91BB643F5D27 /* LibraryWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryWindowController.swift; sourceTree = "<group>"; };
+		40AB2B8B873CD7D723BFDE01 /* PeerFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerFrame.swift; sourceTree = "<group>"; };
+		70DE228DFC0D9D953A85C7F4 /* PeerPairing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerPairing.swift; sourceTree = "<group>"; };
+		DBD9BEE66FD1357909658E55 /* PeerShareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerShareService.swift; sourceTree = "<group>"; };
+		7C00A4F404B20A1AF546CE2C /* PeerShareSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerShareSettingsView.swift; sourceTree = "<group>"; };
+		67542CD1E8A79F27A3D9B0D3 /* PeerShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerShareTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -745,6 +755,7 @@
 				DA689FC32C1CF0F00009B887 /* AppearanceSettingsPane.swift */,
 				DA689FCD2C1DEE570009B887 /* AppearanceSettings.strings */,
 				DAA5ACB12C1B3F8800B58513 /* GeneralSettingsPane.swift */,
+				7C00A4F404B20A1AF546CE2C /* PeerShareSettingsView.swift */,
 				DAA5ACB32C1B803000B58513 /* GeneralSettings.strings */,
 				DA9C3C632C20E1E80056795D /* IgnoreSettingsPane */,
 				DA9C3C442C207AF80056795D /* IgnoreSettingsPane.swift */,
@@ -825,6 +836,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				67542CD1E8A79F27A3D9B0D3 /* PeerShareTests.swift */,
 				4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */,
 				AC6D770205840C2AF998BB86 /* CardItemViewTests.swift */,
 				332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */,
@@ -945,6 +957,9 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				DBD9BEE66FD1357909658E55 /* PeerShareService.swift */,
+				70DE228DFC0D9D953A85C7F4 /* PeerPairing.swift */,
+				40AB2B8B873CD7D723BFDE01 /* PeerFrame.swift */,
 				A45A4C999B6B91BB643F5D27 /* LibraryWindowController.swift */,
 				D732EAF255750310C8FCE1AF /* QuickLookController.swift */,
 				BD39DF8503E0BC513DF7DACD /* LinkPreviewLoader.swift */,
@@ -1187,6 +1202,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				CB4A9AB1C07ACBA25191F32D /* PeerShareTests.swift in Sources */,
 				4F96258FAB606B9CD970A98B /* ContentKindTests.swift in Sources */,
 				4FA7B7B631B945581A8448EF /* CardItemViewTests.swift in Sources */,
 				178DF7340112D94DD8D671D2 /* PopupPositionTests.swift in Sources */,
@@ -1247,6 +1263,7 @@
 				2FA81FE02E43D9B700C12F92 /* Dictionary+RemoveItem.swift in Sources */,
 				2F9B42F12F1A499D006548E5 /* ToolbarView.swift in Sources */,
 				DAA5ACB22C1B3F8800B58513 /* GeneralSettingsPane.swift in Sources */,
+				65B26C4EE9590AB388048774 /* PeerShareSettingsView.swift in Sources */,
 				DA1969122C3F0DD200258481 /* HistoryItemView.swift in Sources */,
 				26B274E725B94F2C42B0D0F0 /* LibraryView.swift in Sources */,
 				D95EB33C0B254AB954D2EB7F /* HistoryItemContextMenu.swift in Sources */,
@@ -1285,6 +1302,9 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				8D4CD5428EFEADC188155E6D /* PeerShareService.swift in Sources */,
+				D9445884768EE857E7DED14C /* PeerPairing.swift in Sources */,
+				9CA75EDA8650172EE8EA386A /* PeerFrame.swift in Sources */,
 				DBC45F71E3BB9036E649E251 /* LibraryWindowController.swift in Sources */,
 				D37013170ED230FF31403212 /* QuickLookController.swift in Sources */,
 				58A3A6A570C7DAF07DC24234 /* LinkPreviewLoader.swift in Sources */,

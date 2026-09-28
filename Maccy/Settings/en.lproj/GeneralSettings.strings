@@ -18,3 +18,11 @@
 "Regex" = "Regular expressions";
 "Mixed" = "Mixed";
 "NotificationsAndSounds" = "Notifications and sounds 􀱁";
+"PeerShare" = "Other Macs:";
+"PeerShareEnable" = "Send and receive items on this network";
+"PeerShareName" = "This Mac's name:";
+"PeerShareCode" = "Pairing code:";
+"PeerShareSaveCode" = "Save code";
+"PeerShareCodeTooShort" = "Use at least 8 characters.";
+"PeerShareCodeSaved" = "Code saved in the Keychain.";
+"PeerShareDescription" = "Use the same pairing code on each Mac. Items are encrypted with it, and a Mac with a different code cannot connect. Received items go to history, not the clipboard. Detected secrets are never sent.";

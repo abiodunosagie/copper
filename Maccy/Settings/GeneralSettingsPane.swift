@@ -96,6 +96,10 @@ struct GeneralSettingsPane: View {
         .controlSize(.small)
       }
 
+      Settings.Section(label: { Text("PeerShare", tableName: "GeneralSettings") }) {
+        PeerShareSettingsView()
+      }
+
       Settings.Section(title: "") {
         if let notificationsURL = notificationsURL {
           Link(destination: notificationsURL, label: {
