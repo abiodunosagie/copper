@@ -44,12 +44,17 @@ class AppState: Sendable {
     navigator = NavigationManager(history: history, footer: footer)
     preview = SlideoutController(
       onContentResize: { contentWidth in
-        Defaults[.windowSize].width = contentWidth
+        // The docked panel has its own width, so docking never changes the popup size.
+        if Defaults[.popupPosition].isDocked {
+          Defaults[.dockWidth] = contentWidth
+        } else {
+          Defaults[.windowSize].width = contentWidth
+        }
       },
       onSlideoutResize: { previewWidth in
         Defaults[.previewWidth] = previewWidth
       })
-    preview.contentWidth = Defaults[.windowSize].width
+    preview.contentWidth = Defaults[.popupPosition].isDocked ? Defaults[.dockWidth] : Defaults[.windowSize].width
     preview.slideoutWidth = Defaults[.previewWidth]
   }
 

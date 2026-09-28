@@ -6,7 +6,7 @@
 "PopupAtScreenCenter" = "Screen center";
 "PopupAtLastPosition" = "Last position";
 "PopupAtLastLocationReset" = "Reset position";
-"PopupAtTooltip" = "Change the location where popup appears.\nDefault: Cursor.";
+"PopupAtTooltip" = "Change the location where popup appears.\nDefault: Right edge.";
 "SearchVisibilityAlways" = "Always";
 "SearchVisibilityDuringSearch" = "During search";
 "ActiveScreen" = "Active screen";
@@ -36,3 +36,6 @@
 "ShowHexColorSwatchTooltip" = "Show color swatch next to hex color codes.";
 "ShowFooter" = "Show footer";
 "OpenPreferencesWarning" = "⚠️ Press ⌘, (command+comma) to open preferences when footer is hidden.";
+"PopupDockedRight" = "Right edge";
+"PopupDockedLeft" = "Left edge";
+"DockWidth" = "Width:";

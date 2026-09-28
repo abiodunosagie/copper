@@ -9,9 +9,11 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   let onClose: () -> Void
 
   override var isMovable: Bool {
-    get { Defaults[.popupPosition] != .statusItem }
+    get { Defaults[.popupPosition] != .statusItem && !Defaults[.popupPosition].isDocked }
     set {}
   }
+
+  private var isDocked: Bool { Defaults[.popupPosition].isDocked }
 
   init(
     contentRect: NSRect,
@@ -65,8 +67,15 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     contentView?.layer?.cornerRadius = Popup.cornerRadius + Popup.horizontalPadding
   }
 
+  // True when a docked panel is open on a different screen than the mouse.
+  var isDockedOnOtherScreen: Bool {
+    isPresented && isDocked && screen != PopupPosition.mouseScreen
+  }
+
   func toggle(height: CGFloat, at popupPosition: PopupPosition = Defaults[.popupPosition]) {
-    if isPresented {
+    if isDockedOnOtherScreen {
+      open(height: height, at: popupPosition)
+    } else if isPresented {
       close()
     } else {
       open(height: height, at: popupPosition)
@@ -74,6 +83,13 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   func open(height: CGFloat, at popupPosition: PopupPosition = Defaults[.popupPosition]) {
+    isMovableByWindowBackground = !popupPosition.isDocked
+    if popupPosition.isDocked {
+      openDocked(at: popupPosition)
+      return
+    }
+
+    AppState.shared.preview.contentWidth = Defaults[.windowSize].width
     let size = Defaults[.windowSize]
     let miniumHeight: CGFloat = AppState.shared.popup.minimumHeight
     let finalWidth = min(frame.width, size.width)
@@ -91,7 +107,23 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     }
   }
 
+  // Docked: full height on the screen under the mouse, glued to the chosen edge.
+  private func openDocked(at popupPosition: PopupPosition) {
+    guard let screen = PopupPosition.mouseScreen else { return }
+
+    let range = PopupPosition.dockWidthRange
+    let width = min(max(Defaults[.dockWidth], range.lowerBound), range.upperBound)
+    let dockFrame = popupPosition.dockedFrame(width: width, in: screen.visibleFrame)
+    AppState.shared.preview.contentWidth = dockFrame.width
+    setFrame(dockFrame, display: true)
+    orderFrontRegardless()
+    makeKey()
+    isPresented = true
+  }
+
   func verticallyResize(to newHeight: CGFloat) {
+    // A docked panel always spans the full screen height.
+    guard !isDocked else { return }
     var newSize = frame.size
     newSize.height = newHeight
     var newOrigin = frame.origin
@@ -111,6 +143,8 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   func saveWindowPosition() {
+    // Docked frames are derived from the screen, never stored as the popup position.
+    guard !isDocked else { return }
     if let screenFrame = screen?.visibleFrame {
       // Only store the size of the window without the preview
       let width = AppState.shared.preview.contentWidth
@@ -122,11 +156,14 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   func saveWindowFrame(frame: NSRect) {
+    guard !isDocked else { return }
     Defaults[.windowSize] = frame.size
     saveWindowPosition()
   }
 
   func windowWillResize(_ sender: NSWindow, to frameSize: NSSize) -> NSSize {
+    // Docked width is set in Appearance settings; the edge and height are fixed.
+    guard !isDocked else { return frame.size }
     let preview = AppState.shared.preview
 
     if inLiveResize && preview.resizingMode == .none {

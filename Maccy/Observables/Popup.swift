@@ -127,6 +127,12 @@ class Popup {
       return
     }
 
+    // Docked on another display: move to the screen the user is working on instead of closing.
+    if AppState.shared.appDelegate?.panel.isDockedOnOtherScreen == true {
+      open(height: height)
+      return
+    }
+
     // Maccy was not opened via shortcut. We assume toggle mode and close it
     close()
   }

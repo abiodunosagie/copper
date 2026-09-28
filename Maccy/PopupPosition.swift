@@ -3,6 +3,8 @@ import Defaults
 import Foundation
 
 enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible, Defaults.Serializable {
+  case dockedRight
+  case dockedLeft
   case cursor
   case statusItem
   case window
@@ -11,8 +13,18 @@ enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible,
 
   var id: Self { self }
 
+  // Docked positions glue a full-height panel to a screen edge, like a sidebar.
+  var isDocked: Bool { self == .dockedRight || self == .dockedLeft }
+
+  static let dockMargin: CGFloat = 8
+  static let dockWidthRange: ClosedRange<Double> = 260...640
+
   var description: String {
     switch self {
+    case .dockedRight:
+      return NSLocalizedString("PopupDockedRight", tableName: "AppearanceSettings", comment: "")
+    case .dockedLeft:
+      return NSLocalizedString("PopupDockedLeft", tableName: "AppearanceSettings", comment: "")
     case .cursor:
       return NSLocalizedString("PopupAtCursor", tableName: "AppearanceSettings", comment: "")
     case .statusItem:
@@ -61,6 +73,25 @@ enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible,
     let point = NSPoint(x: mouseLocation.x, y: mouseLocation.y - size.height)
     let screen = NSScreen.screens.first { NSMouseInRect(mouseLocation, $0.frame, false) }
     return constrained(point, ofSize: size, to: screen)
+  }
+
+  // Full-height frame glued to the left or right edge of `visibleFrame` (menu bar and Dock excluded).
+  func dockedFrame(width: CGFloat, in visibleFrame: NSRect) -> NSRect {
+    let margin = Self.dockMargin
+    let clampedWidth = min(width, visibleFrame.width - 2 * margin)
+    let originX = self == .dockedLeft ? visibleFrame.minX + margin : visibleFrame.maxX - clampedWidth - margin
+    return NSRect(
+      x: originX,
+      y: visibleFrame.minY + margin,
+      width: clampedWidth,
+      height: visibleFrame.height - 2 * margin
+    )
+  }
+
+  // The screen under the mouse, so the panel follows the user between displays.
+  static var mouseScreen: NSScreen? {
+    let mouseLocation = NSEvent.mouseLocation
+    return NSScreen.screens.first { NSMouseInRect(mouseLocation, $0.frame, false) } ?? NSScreen.main
   }
 
   // Ensure that window doesn't spill over to an adjacent screen.

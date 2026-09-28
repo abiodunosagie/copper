@@ -166,6 +166,7 @@
 		779D3FFEE3902633F271F48F /* TextTransform+Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD54544D22B08281B0960 /* TextTransform+Hash.swift */; };
 		36DF9D1F710AB4EFCE6C44DD /* TextTransform+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE06F7E27549C18E5DCE6F22 /* TextTransform+Text.swift */; };
 		3BA2B643F1A89932D93386B6 /* TextTransform+Developer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5695D554D5383D7DCDC3883B /* TextTransform+Developer.swift */; };
+		178DF7340112D94DD8D671D2 /* PopupPositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -613,6 +614,7 @@
 		073FD54544D22B08281B0960 /* TextTransform+Hash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextTransform+Hash.swift"; sourceTree = "<group>"; };
 		EE06F7E27549C18E5DCE6F22 /* TextTransform+Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextTransform+Text.swift"; sourceTree = "<group>"; };
 		5695D554D5383D7DCDC3883B /* TextTransform+Developer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextTransform+Developer.swift"; sourceTree = "<group>"; };
+		332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPositionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -788,6 +790,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */,
 				6FA433A6B4702502EB7A2EF2 /* BackupTests.swift */,
 				0655534B769A618ABEBF9E27 /* TextTransformTests.swift */,
 				0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */,
@@ -1142,6 +1145,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				178DF7340112D94DD8D671D2 /* PopupPositionTests.swift in Sources */,
 				15DBFCF6462E7C37B452051A /* BackupTests.swift in Sources */,
 				EF18B21119F439194E949554 /* TextTransformTests.swift in Sources */,
 				323FE09681F97581DFD46CF2 /* SecretDetectorTests.swift in Sources */,

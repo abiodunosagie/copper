@@ -139,6 +139,9 @@ class SlideoutController {
     if newState.isOpen {
       newSize.width += slideoutWidth
     }
+    // A docked panel keeps its full height while the preview opens and closes.
+    guard !Defaults[.popupPosition].isDocked else { return newSize }
+
     let popup = AppState.shared.popup
     newSize.height = popup.preferredHeight(for: popup.height)
     return newSize

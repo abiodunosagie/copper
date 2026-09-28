@@ -5,6 +5,7 @@ import Settings
 
 struct AppearanceSettingsPane: View {
   @Default(.popupPosition) private var popupAt
+  @Default(.dockWidth) private var dockWidth
   @Default(.popupScreen) private var popupScreen
   @Default(.pinTo) private var pinTo
   @Default(.imageMaxHeight) private var imageHeight
@@ -66,6 +67,16 @@ struct AppearanceSettingsPane: View {
           .frame(width: 141, alignment: .leading)
           .help(Text("PopupAtTooltip", tableName: "AppearanceSettings"))
           .accessibilityLabel(Text("PopupAt", tableName: "AppearanceSettings"))
+
+          if popupAt.isDocked {
+            Text("DockWidth", tableName: "AppearanceSettings")
+            TextField("", value: $dockWidth, format: .number)
+              .frame(width: 50)
+              .accessibilityLabel(Text("DockWidth", tableName: "AppearanceSettings"))
+            Stepper("", value: $dockWidth, in: PopupPosition.dockWidthRange, step: 20)
+              .labelsHidden()
+              .accessibilityLabel(Text("DockWidth", tableName: "AppearanceSettings"))
+          }
 
           if popupAt == .lastPosition {
             Button {
