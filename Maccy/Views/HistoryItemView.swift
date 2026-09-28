@@ -62,6 +62,26 @@ struct HistoryItemView: View {
     .onAppear {
       item.ensureThumbnailImage()
     }
+    .contextMenu {
+      Button(LocalizedStringKey(item.isPinned ? "history_item_unpin_action" : "history_item_pin_action")) {
+        appState.history.togglePin(item)
+      }
+      Menu("history_item_transform_menu") {
+        ForEach(TextTransform.Category.allCases) { category in
+          Menu(category.rawValue) {
+            ForEach(TextTransform.transforms(in: category)) { transform in
+              Button(transform.name) {
+                appState.history.apply(transform, to: item)
+              }
+            }
+          }
+        }
+      }
+      Divider()
+      Button("history_item_delete_action", role: .destructive) {
+        appState.history.delete(item)
+      }
+    }
     .accessibilityAction(named: Text(item.isPinned ? "history_item_unpin_action" : "history_item_pin_action")) {
       appState.history.togglePin(item)
     }

@@ -460,6 +460,17 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     pasteStack = nil
   }
 
+  // Copies the transformed text as a new history item. Beeps when the transform does not apply.
+  @MainActor
+  func apply(_ transform: TextTransform, to item: HistoryItemDecorator) {
+    guard let result = transform.apply(item.item.previewableText), !result.isEmpty else {
+      NSSound.beep()
+      return
+    }
+
+    Clipboard.shared.copyInMaccy(result)
+  }
+
   @MainActor
   func togglePin(_ item: HistoryItemDecorator?) {
     guard let item else { return }

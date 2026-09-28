@@ -24,3 +24,4 @@
 "history_item_image_accessibility_generic" = "Image";
 "toolbar_remove_paste_stack_action" = "Stop paste stack";
 "SecretCopiedNotification" = "Secret copied. It will be deleted automatically.";
+"history_item_transform_menu" = "Transform";

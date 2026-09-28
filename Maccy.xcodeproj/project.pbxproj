@@ -153,6 +153,8 @@
 		904B51C2763F5B16E37411A2 /* SecretDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E60BC36850EE0EE554F0DB4 /* SecretDetector.swift */; };
 		B546A2812C8646D6426CD8ED /* IgnoreSecretsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EE175376329414B4646FB7 /* IgnoreSecretsSettingsView.swift */; };
 		323FE09681F97581DFD46CF2 /* SecretDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */; };
+		174DA6E07CDBC99A5CBBD5C2 /* TextTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741AC50031998B2DA6B58416 /* TextTransform.swift */; };
+		EF18B21119F439194E949554 /* TextTransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655534B769A618ABEBF9E27 /* TextTransformTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -587,6 +589,8 @@
 		9E60BC36850EE0EE554F0DB4 /* SecretDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetector.swift; sourceTree = "<group>"; };
 		98EE175376329414B4646FB7 /* IgnoreSecretsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreSecretsSettingsView.swift; sourceTree = "<group>"; };
 		0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetectorTests.swift; sourceTree = "<group>"; };
+		741AC50031998B2DA6B58416 /* TextTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTransform.swift; sourceTree = "<group>"; };
+		0655534B769A618ABEBF9E27 /* TextTransformTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTransformTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -761,6 +765,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				0655534B769A618ABEBF9E27 /* TextTransformTests.swift */,
 				0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */,
 				DA360DB41E3DF137005C6F6B /* Info.plist */,
 			);
@@ -875,6 +880,7 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				741AC50031998B2DA6B58416 /* TextTransform.swift */,
 				9E60BC36850EE0EE554F0DB4 /* SecretDetector.swift */,
 				B21DCA6C3D17E48D33D6E608 /* VoiceOver.swift */,
 				DAB8CE4024E3677F00A2500E /* Maccy.entitlements */,
@@ -1103,6 +1109,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				EF18B21119F439194E949554 /* TextTransformTests.swift in Sources */,
 				323FE09681F97581DFD46CF2 /* SecretDetectorTests.swift in Sources */,
 				CA110ED10000000000000001 /* CollectionSurroundingTests.swift in Sources */,
 				C0FFEE000000000000000003 /* ShortenedTests.swift in Sources */,
@@ -1187,6 +1194,7 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				174DA6E07CDBC99A5CBBD5C2 /* TextTransform.swift in Sources */,
 				904B51C2763F5B16E37411A2 /* SecretDetector.swift in Sources */,
 				21FFF308D9217B43FD4C393F /* VoiceOver.swift in Sources */,
 				DA05B5112C234CB2006980FE /* MaccyApp.swift in Sources */,
