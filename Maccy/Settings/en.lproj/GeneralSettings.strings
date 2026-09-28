@@ -33,3 +33,5 @@
 "PlainTextAppsAdd" = "Add app...";
 "PlainTextAppsRemove" = "Remove";
 "PlainTextAppsDescription" = "When Copper pastes into these apps, formatting is dropped, for example Slack or Terminal.";
+"Sounds" = "Sounds:";
+"PlaySounds" = "Play a sound when copying";

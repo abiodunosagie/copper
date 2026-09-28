@@ -96,6 +96,12 @@ struct GeneralSettingsPane: View {
         .controlSize(.small)
       }
 
+      Settings.Section(label: { Text("Sounds", tableName: "GeneralSettings") }) {
+        Defaults.Toggle(key: .playSounds) {
+          Text("PlaySounds", tableName: "GeneralSettings")
+        }
+      }
+
       Settings.Section(label: { Text("PlainTextApps", tableName: "GeneralSettings") }) {
         PlainTextAppsSettingsView()
       }

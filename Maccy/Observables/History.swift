@@ -219,6 +219,10 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       if let removedItemIndex {
         all.remove(at: removedItemIndex)
       }
+      // Copying something again still gets the copy sound, just no second notification.
+      if notify {
+        Notifier.playSound(.write)
+      }
     } else if notify {
       Task {
         Notifier.notify(body: item.notificationBody, sound: .write)
