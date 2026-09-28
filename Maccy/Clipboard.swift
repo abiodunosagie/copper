@@ -221,6 +221,10 @@ class Clipboard {
       return
     }
 
+    if Self.isFromIgnoredFolder(contents, folders: Defaults[.ignoredFolders]) {
+      return
+    }
+
     guard let historyItem = HistoryItem.forHistory(
       contents: contents,
       scannedText: Self.scannableText(of: contents),
@@ -233,6 +237,18 @@ class Clipboard {
     if ContentKind.of(historyItem) == .secret {
       scheduleSecretClear()
     }
+  }
+
+  // True when any copied file sits inside one of the ignored folders (or their subfolders).
+  static func isFromIgnoredFolder(_ contents: [HistoryItemContent], folders: [String]) -> Bool {
+    guard !folders.isEmpty else { return false }
+    let folderPrefixes = folders.map { URL(filePath: $0).standardizedFileURL.path(percentEncoded: false) }
+      .map { $0.hasSuffix("/") ? $0 : $0 + "/" }
+    return contents
+      .filter { $0.type == NSPasteboard.PasteboardType.fileURL.rawValue }
+      .compactMap { $0.value.flatMap { URL(dataRepresentation: $0, relativeTo: nil, isAbsolute: true) } }
+      .map { $0.standardizedFileURL.path(percentEncoded: false) }
+      .contains { path in folderPrefixes.contains { path.hasPrefix($0) } }
   }
 
   // Wipes the system clipboard a while after a secret lands on it, unless something else was

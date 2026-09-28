@@ -20,3 +20,6 @@
 "SecretClearSeconds" = "%d seconds";
 "SecretClearMinutes" = "%d min";
 "PauseInSensitiveApps" = "Do not record copies from password managers";
+"FoldersTab" = "Folders";
+"IgnoredFoldersAdd" = "Add folder...";
+"IgnoredFoldersDescription" = "Files copied from these folders, or any folder inside them, are not recorded.";

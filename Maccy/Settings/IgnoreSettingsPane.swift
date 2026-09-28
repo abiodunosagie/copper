@@ -15,6 +15,10 @@ struct IgnoreSettingsPane: View {
         .tabItem {
           Text("RegexpTab", tableName: "IgnoreSettings")
         }
+      IgnoreFoldersSettingsView()
+        .tabItem {
+          Text("FoldersTab", tableName: "IgnoreSettings")
+        }
       IgnoreSecretsSettingsView()
         .tabItem {
           Text("SecretsTab", tableName: "IgnoreSettings")

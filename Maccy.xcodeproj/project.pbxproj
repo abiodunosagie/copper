@@ -195,6 +195,7 @@
 		CD6169A94007D6E85FDD1C9F /* PlainTextAppsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEC8D83414DCAEF4283BA50 /* PlainTextAppsSettingsView.swift */; };
 		73512CBBFFEB943F9B40F0DF /* Snippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56974EBC1940E239684AB8 /* Snippet.swift */; };
 		3BEC74C2452E7D9AACCCCA06 /* SnippetsSettingsPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */; };
+		28E29ADCFE046733EE607DF8 /* IgnoreFoldersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB643950919796016DC3CA3F /* IgnoreFoldersSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -671,6 +672,7 @@
 		0EEC8D83414DCAEF4283BA50 /* PlainTextAppsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextAppsSettingsView.swift; sourceTree = "<group>"; };
 		3D56974EBC1940E239684AB8 /* Snippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snippet.swift; sourceTree = "<group>"; };
 		F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsSettingsPane.swift; sourceTree = "<group>"; };
+		BB643950919796016DC3CA3F /* IgnoreFoldersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreFoldersSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -915,6 +917,7 @@
 				DA9C3C5D2C20E1190056795D /* IgnoreApplicationsSettingsView.swift */,
 				DA9C3C5F2C20E1890056795D /* IgnorePasteboardTypesSettingsView.swift */,
 				DA9C3C612C20E1BF0056795D /* IgnoreRegexpsSettingsView.swift */,
+				BB643950919796016DC3CA3F /* IgnoreFoldersSettingsView.swift */,
 				98EE175376329414B4646FB7 /* IgnoreSecretsSettingsView.swift */,
 			);
 			path = IgnoreSettingsPane;
@@ -1260,6 +1263,7 @@
 				2F0EC77D2E773314003E2EA9 /* Selection.swift in Sources */,
 				DA1969102C3F0AAC00258481 /* KeyShortcut.swift in Sources */,
 				DA9C3C622C20E1BF0056795D /* IgnoreRegexpsSettingsView.swift in Sources */,
+				28E29ADCFE046733EE607DF8 /* IgnoreFoldersSettingsView.swift in Sources */,
 				B546A2812C8646D6426CD8ED /* IgnoreSecretsSettingsView.swift in Sources */,
 				DA243D142C2F66DD0012A27F /* Storage.swift in Sources */,
 				2F0EC7812E773F1D003E2EA9 /* PasteStack.swift in Sources */,

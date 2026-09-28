@@ -45,6 +45,7 @@ extension Defaults.Keys {
   static let plainTextApps = Key<[String]>("plainTextApps", default: [], suite: preferencesSuite)
   static let pauseInSensitiveApps = Key<Bool>("pauseInSensitiveApps", default: true, suite: preferencesSuite)
   static let secretExpiryMinutes = Key<Int>("secretExpiryMinutes", default: 60, suite: preferencesSuite)
+  static let ignoredFolders = Key<[String]>("ignoredFolders", default: [], suite: preferencesSuite)
   static let ignoredApps = Key<[String]>("ignoredApps", default: [], suite: preferencesSuite)
   static let ignoredPasteboardTypes = Key<Set<String>>(
     "ignoredPasteboardTypes",
