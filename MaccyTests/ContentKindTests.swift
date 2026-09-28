@@ -64,4 +64,10 @@ class ContentKindTests: XCTestCase {
       XCTAssertNotNil(DockFooterView.icons[item.title], "no dock icon for \(item.title)")
     }
   }
+
+  func testDragProvidesTextForTextItems() {
+    let provider = item("drag me").dragItemProvider
+    XCTAssertTrue(provider.canLoadObject(ofClass: NSString.self))
+    XCTAssertFalse(provider.canLoadObject(ofClass: NSImage.self))
+  }
 }

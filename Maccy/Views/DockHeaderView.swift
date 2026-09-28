@@ -6,6 +6,7 @@ struct DockHeaderView: View {
   @FocusState.Binding var searchFocused: Bool
 
   @Environment(AppState.self) private var appState
+  @Environment(\.scenePhase) private var scenePhase
   @Default(.popupPosition) private var popupPosition
   @Default(.unlimitedHistory) private var unlimitedHistory
   @Default(.size) private var size
@@ -20,6 +21,12 @@ struct DockHeaderView: View {
       SearchFieldView(placeholder: "dock_search_placeholder", query: $history.searchQuery)
         .focused($searchFocused)
         .foregroundStyle(DockTheme.text)
+        // Every opening starts with an empty search, like the classic popup.
+        .onChange(of: scenePhase) {
+          if scenePhase == .background && !history.searchQuery.isEmpty {
+            history.searchQuery = ""
+          }
+        }
 
       filterRow
 

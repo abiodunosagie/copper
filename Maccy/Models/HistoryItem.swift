@@ -86,6 +86,17 @@ class HistoryItem {
     self.contents = contents
   }
 
+  // What a card hands to another app when dragged out: files, then an image, then text.
+  var dragItemProvider: NSItemProvider {
+    if let url = fileURLs.first, let provider = NSItemProvider(contentsOf: url) {
+      return provider
+    }
+    if let image {
+      return NSItemProvider(object: image)
+    }
+    return NSItemProvider(object: previewableText as NSString)
+  }
+
   // Safe text for system notifications: a detected secret is never shown.
   var notificationBody: String {
     expiresAt == nil ? title : NSLocalizedString("secret_copied_notification", comment: "")

@@ -76,6 +76,7 @@ struct HistoryItemView: View {
       .accessibilityLabel(Text(item.accessibilityLabel))
       .accessibilityAddTraits(item.isSelected ? .isSelected : [])
       .hoverSelectionId(item.id)
+      .onDrag { item.item.dragItemProvider }
   }
 
   private var row: some View {
