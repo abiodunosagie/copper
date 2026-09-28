@@ -7,3 +7,11 @@
 "IgnoredPasteboardTypesReset" = "Reset";
 "RegexpTab" = "Regular expressions";
 "IgnoredRegexpsDescription" = "It's possible to ignore certain copies from remembering based on defined regular expressions.";
+"SecretsTab" = "Secrets";
+"SecretHandlingLabel" = "When an API key, token or private key is copied:";
+"SecretHandlingKeep" = "Keep it like any other copy";
+"SecretHandlingSkip" = "Do not save it";
+"SecretHandlingExpire" = "Save it, then delete it automatically";
+"SecretExpiryLabel" = "Delete after";
+"SecretExpiryUnit" = "minutes";
+"SecretsDescription" = "Detects keys from AWS, GitHub, GitLab, Anthropic, OpenAI, Stripe, Paystack, Google, Slack, SendGrid, npm and Hugging Face, plus JSON Web Tokens and private keys. Pinned items never expire.";

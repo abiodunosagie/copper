@@ -32,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
 
   private var statusItemVisibilityObserver: NSKeyValueObservation?
+  private var expiryTimer: Timer?
 
   func applicationWillFinishLaunching(_ notification: Notification) { // swiftlint:disable:this function_body_length
     #if DEBUG
@@ -46,6 +47,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     Clipboard.shared.onNewCopy { History.shared.add($0) }
     Clipboard.shared.start()
+
+    // Detected secrets can be set to expire; sweep them out every 30 seconds.
+    expiryTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+      Task { @MainActor in
+        History.shared.deleteExpiredItems()
+      }
+    }
 
     Task {
       for await _ in Defaults.updates(.clipboardCheckInterval, initial: false) {

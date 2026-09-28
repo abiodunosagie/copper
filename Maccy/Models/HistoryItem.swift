@@ -69,6 +69,8 @@ class HistoryItem {
   var lastCopiedAt: Date = Date.now
   var numberOfCopies: Int = 1
   var pin: String?
+  // Set when the item holds a detected secret; the item is deleted after this date unless pinned.
+  var expiresAt: Date?
   var title = ""
 
   @Relationship(deleteRule: .cascade, inverse: \HistoryItemContent.item)

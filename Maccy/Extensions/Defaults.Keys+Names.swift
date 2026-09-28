@@ -35,6 +35,8 @@ extension Defaults.Keys {
   static let ignoreEvents = Key<Bool>("ignoreEvents", default: false, suite: preferencesSuite)
   static let ignoreOnlyNextEvent = Key<Bool>("ignoreOnlyNextEvent", default: false, suite: preferencesSuite)
   static let ignoreRegexp = Key<[String]>("ignoreRegexp", default: [], suite: preferencesSuite)
+  static let secretHandling = Key<SecretHandling>("secretHandling", default: .skip, suite: preferencesSuite)
+  static let secretExpiryMinutes = Key<Int>("secretExpiryMinutes", default: 5, suite: preferencesSuite)
   static let ignoredApps = Key<[String]>("ignoredApps", default: [], suite: preferencesSuite)
   static let ignoredPasteboardTypes = Key<Set<String>>(
     "ignoredPasteboardTypes",

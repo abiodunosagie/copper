@@ -212,6 +212,8 @@ class HistoryItemDecorator: Identifiable, Hashable, HasVisibility {
     } else {
       let pin = HistoryItem.randomAvailablePin
       item.pin = pin
+      // Pinning is an explicit choice to keep the item, so it no longer expires.
+      item.expiresAt = nil
     }
   }
 

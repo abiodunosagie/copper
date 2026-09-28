@@ -217,7 +217,19 @@ class Clipboard {
       return
     }
 
+    let secretHandling = Defaults[.secretHandling]
+    var secretExpiresAt: Date?
+    if secretHandling != .keep,
+       let string = pasteboard.string(forType: .string),
+       SecretDetector.detect(in: string) != nil {
+      if secretHandling == .skip {
+        return
+      }
+      secretExpiresAt = Date.now.addingTimeInterval(TimeInterval(Defaults[.secretExpiryMinutes] * 60))
+    }
+
     let historyItem = HistoryItem(contents: contents)
+    historyItem.expiresAt = secretExpiresAt
 
     if #unavailable(macOS 15.0) {
       // On macOS 14 the history item needs to be inserted into storage directly after creating it.

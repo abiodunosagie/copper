@@ -10,12 +10,14 @@ class HistoryItemDecoratorTests: XCTestCase {
 
   var firstCopiedAt: Date! {
     let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "en_US_POSIX")
     formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
     return formatter.date(from: "2020/07/10 12:31:34")
   }
 
   var lastCopiedAt: Date! {
     let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "en_US_POSIX")
     formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
     return formatter.date(from: "2020/07/10 12:41:34")
   }

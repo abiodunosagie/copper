@@ -150,6 +150,9 @@
 		DAFE2DE9268A9B1B00990986 /* HistoryItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */; };
 		DAFEF0B8249D7DEE006029E8 /* KeyboardShortcuts.Name+Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFEF0B7249D7DEE006029E8 /* KeyboardShortcuts.Name+Shortcuts.swift */; };
 		F18F166970893C503065D056 /* View+ButtonAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2945CD7912BE7C7D330C27 /* View+ButtonAction.swift */; };
+		904B51C2763F5B16E37411A2 /* SecretDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E60BC36850EE0EE554F0DB4 /* SecretDetector.swift */; };
+		B546A2812C8646D6426CD8ED /* IgnoreSecretsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EE175376329414B4646FB7 /* IgnoreSecretsSettingsView.swift */; };
+		323FE09681F97581DFD46CF2 /* SecretDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -581,6 +584,9 @@
 		EB2945CD7912BE7C7D330C27 /* View+ButtonAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ButtonAction.swift"; sourceTree = "<group>"; };
 		E5885F0587B04A99933245E6 /* km */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = km; path = km.lproj/AdvancedSettings.strings; sourceTree = "<group>"; };
 		F2E5FA9061DA4866BCFAFE90 /* km */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = km; path = km.lproj/AppearanceSettings.strings; sourceTree = "<group>"; };
+		9E60BC36850EE0EE554F0DB4 /* SecretDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetector.swift; sourceTree = "<group>"; };
+		98EE175376329414B4646FB7 /* IgnoreSecretsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreSecretsSettingsView.swift; sourceTree = "<group>"; };
+		0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetectorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -755,6 +761,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */,
 				DA360DB41E3DF137005C6F6B /* Info.plist */,
 			);
 			path = MaccyTests;
@@ -803,6 +810,7 @@
 				DA9C3C5D2C20E1190056795D /* IgnoreApplicationsSettingsView.swift */,
 				DA9C3C5F2C20E1890056795D /* IgnorePasteboardTypesSettingsView.swift */,
 				DA9C3C612C20E1BF0056795D /* IgnoreRegexpsSettingsView.swift */,
+				98EE175376329414B4646FB7 /* IgnoreSecretsSettingsView.swift */,
 			);
 			path = IgnoreSettingsPane;
 			sourceTree = "<group>";
@@ -867,6 +875,7 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				9E60BC36850EE0EE554F0DB4 /* SecretDetector.swift */,
 				B21DCA6C3D17E48D33D6E608 /* VoiceOver.swift */,
 				DAB8CE4024E3677F00A2500E /* Maccy.entitlements */,
 				DAEE384D1E3DBEB100DD2966 /* Info.plist */,
@@ -1094,6 +1103,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				323FE09681F97581DFD46CF2 /* SecretDetectorTests.swift in Sources */,
 				CA110ED10000000000000001 /* CollectionSurroundingTests.swift in Sources */,
 				C0FFEE000000000000000003 /* ShortenedTests.swift in Sources */,
 				FFFC00000000000000000003 /* UnsafeForTitleLayoutTests.swift in Sources */,
@@ -1116,6 +1126,7 @@
 				2F0EC77D2E773314003E2EA9 /* Selection.swift in Sources */,
 				DA1969102C3F0AAC00258481 /* KeyShortcut.swift in Sources */,
 				DA9C3C622C20E1BF0056795D /* IgnoreRegexpsSettingsView.swift in Sources */,
+				B546A2812C8646D6426CD8ED /* IgnoreSecretsSettingsView.swift in Sources */,
 				DA243D142C2F66DD0012A27F /* Storage.swift in Sources */,
 				2F0EC7812E773F1D003E2EA9 /* PasteStack.swift in Sources */,
 				DA5078992CF2676B00215488 /* MouseMovedViewModifer.swift in Sources */,
@@ -1176,6 +1187,7 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				904B51C2763F5B16E37411A2 /* SecretDetector.swift in Sources */,
 				21FFF308D9217B43FD4C393F /* VoiceOver.swift in Sources */,
 				DA05B5112C234CB2006980FE /* MaccyApp.swift in Sources */,
 				2F0EC77F2E773DBA003E2EA9 /* MultipleSelectionListView.swift in Sources */,

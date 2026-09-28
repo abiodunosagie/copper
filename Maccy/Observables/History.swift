@@ -109,6 +109,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     items = all
 
     limitHistorySize(to: Defaults[.size])
+    deleteExpiredItems()
 
     updateShortcuts()
     // Ensure that panel size is proper *after* loading all items.
@@ -123,6 +124,14 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     if unpinned.count >= maxSize {
       unpinned[maxSize...].forEach(delete)
     }
+  }
+
+  // Deletes unpinned items whose secret expiry has passed.
+  @MainActor
+  func deleteExpiredItems(now: Date = .now) {
+    all
+      .filter { $0.isUnpinned && ($0.item.expiresAt.map { $0 <= now } ?? false) }
+      .forEach(delete)
   }
 
   @MainActor
@@ -151,6 +160,9 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       item.firstCopiedAt = existingHistoryItem.firstCopiedAt
       item.numberOfCopies += existingHistoryItem.numberOfCopies
       item.pin = existingHistoryItem.pin
+      if item.pin != nil {
+        item.expiresAt = nil
+      }
       item.title = existingHistoryItem.title
       if !item.fromMaccy {
         item.application = existingHistoryItem.application
@@ -165,8 +177,10 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
         all.remove(at: removedItemIndex)
       }
     } else {
+      // Never put a detected secret into a system notification.
+      let body = item.expiresAt == nil ? item.title : NSLocalizedString("SecretCopiedNotification", comment: "")
       Task {
-        Notifier.notify(body: item.title, sound: .write)
+        Notifier.notify(body: body, sound: .write)
       }
     }
 
