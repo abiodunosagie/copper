@@ -146,7 +146,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
 
   @MainActor
   func insertIntoStorage(_ item: HistoryItem) throws {
-    logger.info("Inserting item with id '\(item.title)'")
+    logger.info("Inserting item with id '\(item.logDescription)'")
     Storage.shared.context.insert(item)
     Storage.shared.context.processPendingChanges()
     try? Storage.shared.context.save()
@@ -177,7 +177,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       if !item.fromMaccy {
         item.application = existingHistoryItem.application
       }
-      logger.info("Removing duplicate item '\(item.title)'")
+      logger.info("Removing duplicate item '\(item.logDescription)'")
       removedItemIndex = all.firstIndex(where: { $0.item == existingHistoryItem })
       if let removedItemIndex {
         cleanup(all[removedItemIndex])
@@ -394,7 +394,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     pasteStack = stack
 
     logger.info("Initialising PasteStack with \(stack.items.count) items")
-    logger.info("Copying \(item.item.title) from PasteStack")
+    logger.info("Copying \(item.item.logDescription) from PasteStack")
 
     if modifierFlags.isEmpty {
       AppState.shared.popup.close()
@@ -432,7 +432,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       return
     }
 
-    logger.info("PasteStack pasted \(pasted.item.title)")
+    logger.info("PasteStack pasted \(pasted.item.logDescription)")
 
     stack.items.removeFirst()
 
@@ -442,7 +442,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       return
     }
 
-    logger.info("Copying \(item.item.title) from PasteStack. \(stack.items.count) items remaining in stack.")
+    logger.info("Copying \(item.item.logDescription) from PasteStack. \(stack.items.count) items remaining in stack.")
 
     Task {
       if stack.modifierFlags.isEmpty {
@@ -474,9 +474,17 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
   @discardableResult
   @MainActor
   func restore(_ archive: Backup.Archive) -> Int {
+    var restored = 0
     for backupItem in archive.items {
       let contents = backupItem.contents.map { HistoryItemContent(type: $0.type, value: $0.value) }
+      let text = contents
+        .first { $0.type == NSPasteboard.PasteboardType.string.rawValue }
+        .flatMap { $0.value.flatMap { String(data: $0, encoding: .utf8) } }
+      // Secrets inside a backup follow this Mac's secret settings, like a fresh copy would.
+      guard case .save(let expiresAt) = SecretDetector.decision(for: text) else { continue }
+
       let item = HistoryItem(contents: contents)
+      item.expiresAt = expiresAt
       if #unavailable(macOS 15.0) {
         try? insertIntoStorage(item)
       }
@@ -490,9 +498,10 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       if backupItem.isPinned && decorator.isUnpinned {
         togglePin(decorator)
       }
+      restored += 1
     }
 
-    return archive.items.count
+    return restored
   }
 
   // Copies the transformed text as a new history item. Beeps when the transform does not apply.

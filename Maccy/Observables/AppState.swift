@@ -26,7 +26,9 @@ class AppState: Sendable {
   }
 
   var menuIconText: String {
-    var title = history.unpinnedItems.first?.text.shortened(to: 100)
+    // A detected secret is never shown in the menu bar.
+    let recent = history.unpinnedItems.first { $0.item.expiresAt == nil }
+    var title = recent?.text.shortened(to: 100)
       .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     title.unicodeScalars.removeAll(where: CharacterSet.newlines.contains)
     return title.shortened(to: 20)

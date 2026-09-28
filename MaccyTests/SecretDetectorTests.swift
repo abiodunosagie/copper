@@ -70,6 +70,40 @@ class SecretDetectorTests: XCTestCase {
     XCTAssertNotNil(SecretDetector.detect(in: fake("gh", "p_", run(36)) + padding))
   }
 
+  func testDecisionFollowsSettingsAndClampsExpiry() {
+    let secret = fake("gh", "p_", run(36))
+    let now = Date(timeIntervalSince1970: 1_000_000)
+
+    Defaults[.secretHandling] = .keep
+    XCTAssertEqual(SecretDetector.decision(for: secret, now: now), .save(expiresAt: nil))
+
+    Defaults[.secretHandling] = .skip
+    XCTAssertEqual(SecretDetector.decision(for: secret, now: now), .skip)
+    XCTAssertEqual(SecretDetector.decision(for: "hello", now: now), .save(expiresAt: nil))
+    XCTAssertEqual(SecretDetector.decision(for: nil, now: now), .save(expiresAt: nil))
+
+    Defaults[.secretHandling] = .expire
+    Defaults[.secretExpiryMinutes] = 60
+    XCTAssertEqual(SecretDetector.decision(for: secret, now: now), .save(expiresAt: now.addingTimeInterval(3_600)))
+    Defaults[.secretExpiryMinutes] = -5
+    XCTAssertEqual(SecretDetector.decision(for: secret, now: now), .save(expiresAt: now.addingTimeInterval(60)))
+    Defaults[.secretExpiryMinutes] = 99_999
+    XCTAssertEqual(SecretDetector.decision(for: secret, now: now), .save(expiresAt: now.addingTimeInterval(86_400)))
+  }
+
+  func testDefaultKeepsSecretsForAnHour() {
+    XCTAssertEqual(Defaults.Keys.secretHandling.defaultValue, .expire)
+    XCTAssertEqual(Defaults.Keys.secretExpiryMinutes.defaultValue, 60)
+  }
+
+  func testLogDescriptionRedactsSecrets() {
+    let item = HistoryItem()
+    item.title = "plain title"
+    XCTAssertEqual(item.logDescription, "plain title")
+    item.expiresAt = .now
+    XCTAssertFalse(item.logDescription.contains("plain title"))
+  }
+
   func testSkipModeDoesNotSaveSecrets() {
     Defaults[.secretHandling] = .skip
     let hookExpectation = expectation(description: "Hook is not called")

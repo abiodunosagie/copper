@@ -92,6 +92,25 @@ class BackupTests: XCTestCase {
     XCTAssertEqual(history.all.first { $0.title == "existing" }?.isPinned, false)
   }
 
+  func testRestoreAppliesThisMacsSecretSettings() {
+    let savedHandling = Defaults[.secretHandling]
+    defer { Defaults[.secretHandling] = savedHandling }
+    let secret = ["gh", "p_", String(repeating: "a", count: 36)].joined()
+    let archive = Backup.Archive(items: [
+      Backup.Item(title: "key", application: nil, firstCopiedAt: .now, lastCopiedAt: .now, numberOfCopies: 1,
+                  isPinned: false, contents: [Backup.Content(type: NSPasteboard.PasteboardType.string.rawValue,
+                                                             value: Data(secret.utf8))])
+    ])
+
+    Defaults[.secretHandling] = .skip
+    XCTAssertEqual(history.restore(archive), 0)
+    XCTAssertTrue(history.all.isEmpty)
+
+    Defaults[.secretHandling] = .expire
+    XCTAssertEqual(history.restore(archive), 1)
+    XCTAssertNotNil(history.all.first?.item.expiresAt)
+  }
+
   func testRestoringTwiceMergesDuplicates() throws {
     history.add(item("once"))
     let archive = Backup.archive(of: history.all.map(\.item))

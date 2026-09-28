@@ -37,12 +37,13 @@ struct Get: AppIntent, CustomIntentMigratedAppIntent {
       item = AppState.shared.navigator.selection.first?.item
     } else {
       let index = number - positionOffset
-      if AppState.shared.history.items.count >= index {
+      if AppState.shared.history.items.indices.contains(index) {
         item = AppState.shared.history.items[index].item
       }
     }
 
-    guard let item else {
+    // Detected secrets are never handed to Shortcuts or other automation.
+    guard let item, item.expiresAt == nil else {
       throw AppIntentError.notFound
     }
 

@@ -5,7 +5,7 @@ import Security
 
 // Password-protected export and import of clipboard history.
 // File layout: "COPPERBK" magic, 1 byte format version, 16 byte salt, AES-GCM sealed box (nonce + ciphertext + tag).
-// The key is derived from the password with PBKDF2-HMAC-SHA256.
+// The key is derived from the password with PBKDF2-HMAC-SHA256; the round count depends on the format version.
 enum Backup {
   enum BackupError: LocalizedError {
     case notABackup
@@ -46,9 +46,10 @@ enum Backup {
 
   static let fileExtension = "copperbackup"
   private static let magic = Data("COPPERBK".utf8)
-  private static let formatVersion: UInt8 = 1
+  private static let formatVersion: UInt8 = 2
   private static let saltLength = 16
-  private static let keyDerivationRounds: UInt32 = 200_000
+  // Version 1 files used 200k rounds; version 2 follows current OWASP guidance for PBKDF2-HMAC-SHA256.
+  private static let keyDerivationRounds: [UInt8: UInt32] = [1: 200_000, 2: 600_000]
 
   // Items that are set to expire (detected secrets) are never exported.
   static func archive(of items: [HistoryItem]) -> Archive {
@@ -76,7 +77,7 @@ enum Backup {
     let status = salt.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, saltLength, $0.baseAddress!) }
     guard status == errSecSuccess else { throw BackupError.keyDerivationFailed }
 
-    let key = try deriveKey(password: password, salt: salt)
+    let key = try deriveKey(password: password, salt: salt, version: formatVersion)
     guard let sealed = try AES.GCM.seal(plaintext, using: key).combined else {
       throw BackupError.keyDerivationFailed
     }
@@ -87,13 +88,14 @@ enum Backup {
   static func decrypt(_ data: Data, password: String) throws -> Archive {
     let headerLength = magic.count + 1 + saltLength
     guard data.count > headerLength, data.prefix(magic.count) == magic else { throw BackupError.notABackup }
-    guard data[data.startIndex + magic.count] == formatVersion else { throw BackupError.unsupportedVersion }
+    let version = data[data.startIndex + magic.count]
+    guard keyDerivationRounds[version] != nil else { throw BackupError.unsupportedVersion }
 
     let saltStart = data.startIndex + magic.count + 1
     let salt = data[saltStart..<(saltStart + saltLength)]
     let sealed = data[(saltStart + saltLength)...]
 
-    let key = try deriveKey(password: password, salt: Data(salt))
+    let key = try deriveKey(password: password, salt: Data(salt), version: version)
     let plaintext: Data
     do {
       plaintext = try AES.GCM.open(AES.GCM.SealedBox(combined: sealed), using: key)
@@ -104,7 +106,8 @@ enum Backup {
     return try JSONDecoder().decode(Archive.self, from: plaintext)
   }
 
-  private static func deriveKey(password: String, salt: Data) throws -> SymmetricKey {
+  private static func deriveKey(password: String, salt: Data, version: UInt8) throws -> SymmetricKey {
+    guard let rounds = keyDerivationRounds[version] else { throw BackupError.unsupportedVersion }
     let passwordBytes = Array(password.utf8)
     var derived = [UInt8](repeating: 0, count: 32)
     let status = salt.withUnsafeBytes { saltBuffer in
@@ -113,7 +116,7 @@ enum Backup {
         passwordBytes.map { Int8(bitPattern: $0) }, passwordBytes.count,
         saltBuffer.bindMemory(to: UInt8.self).baseAddress, salt.count,
         CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256),
-        keyDerivationRounds,
+        rounds,
         &derived, derived.count
       )
     }

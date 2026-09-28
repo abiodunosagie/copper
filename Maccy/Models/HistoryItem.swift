@@ -84,6 +84,9 @@ class HistoryItem {
     self.contents = contents
   }
 
+  // Safe text for logs: detected secrets are redacted.
+  var logDescription: String { expiresAt == nil ? title : "<redacted secret>" }
+
   func supersedes(_ item: HistoryItem) -> Bool {
     return item.contents
       .filter { content in

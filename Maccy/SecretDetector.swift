@@ -51,6 +51,23 @@ enum SecretDetector {
     Pattern(name: name, regex: try! NSRegularExpression(pattern: pattern))
   }
 
+  static let expiryMinutesRange = 1...1_440
+
+  enum Decision: Equatable {
+    case save(expiresAt: Date?)
+    case skip
+  }
+
+  // What to do with copied text under the current settings.
+  static func decision(for text: String?, now: Date = .now) -> Decision {
+    let handling = Defaults[.secretHandling]
+    guard handling != .keep, let text, detect(in: text) != nil else { return .save(expiresAt: nil) }
+    guard handling == .expire else { return .skip }
+
+    let minutes = min(max(Defaults[.secretExpiryMinutes], expiryMinutesRange.lowerBound), expiryMinutesRange.upperBound)
+    return .save(expiresAt: now.addingTimeInterval(TimeInterval(minutes * 60)))
+  }
+
   // Returns the kind of the first secret found, or nil when the text looks safe.
   static func detect(in text: String) -> String? {
     let scanned = text.count > maxScannedLength ? String(text.prefix(maxScannedLength)) : text

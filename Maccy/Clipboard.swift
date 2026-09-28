@@ -217,15 +217,12 @@ class Clipboard {
       return
     }
 
-    let secretHandling = Defaults[.secretHandling]
-    var secretExpiresAt: Date?
-    if secretHandling != .keep,
-       let string = pasteboard.string(forType: .string),
-       SecretDetector.detect(in: string) != nil {
-      if secretHandling == .skip {
-        return
-      }
-      secretExpiresAt = Date.now.addingTimeInterval(TimeInterval(Defaults[.secretExpiryMinutes] * 60))
+    let secretExpiresAt: Date?
+    switch SecretDetector.decision(for: pasteboard.string(forType: .string)) {
+    case .skip:
+      return
+    case .save(let expiresAt):
+      secretExpiresAt = expiresAt
     }
 
     let historyItem = HistoryItem(contents: contents)
