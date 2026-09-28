@@ -1,6 +1,5 @@
 import Defaults
 import KeyboardShortcuts
-import Sparkle
 import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -24,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   private func updateStatusItemAccessibilityLabel() {
     let base = NSLocalizedString("status_item_accessibility_label", comment: "")
     statusItem.button?.setAccessibilityLabel(
-      isStatusItemDisabled ? "\(base) — \(NSLocalizedString("status_item_disabled_accessibility_suffix", comment: ""))" : base
+      isStatusItemDisabled ? "\(base), \(NSLocalizedString("status_item_disabled_accessibility_suffix", comment: ""))" : base
     )
   }
 
@@ -37,11 +36,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   func applicationWillFinishLaunching(_ notification: Notification) { // swiftlint:disable:this function_body_length
     #if DEBUG
     if Self.isTesting {
-      SPUUpdater(hostBundle: Bundle.main,
-                 applicationBundle: Bundle.main,
-                 userDriver: SPUStandardUserDriver(hostBundle: Bundle.main, delegate: nil),
-                 delegate: nil)
-      .automaticallyChecksForUpdates = false
       // Start from a clean slate for the isolated testing preferences.
       UserDefaults.standard.removePersistentDomain(forName: Defaults.Keys.testingSuiteName)
     }
@@ -111,7 +105,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     panel = FloatingPanel(
       contentRect: NSRect(origin: .zero, size: Defaults[.windowSize]),
-      identifier: Bundle.main.bundleIdentifier ?? "org.p0deje.Maccy",
+      identifier: Bundle.main.bundleIdentifier ?? "com.abiodunosagie.Copper",
       statusBarButton: statusItem.button,
       onClose: { AppState.shared.popup.reset() }
     ) {
