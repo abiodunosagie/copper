@@ -155,6 +155,9 @@
 		323FE09681F97581DFD46CF2 /* SecretDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */; };
 		174DA6E07CDBC99A5CBBD5C2 /* TextTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741AC50031998B2DA6B58416 /* TextTransform.swift */; };
 		EF18B21119F439194E949554 /* TextTransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655534B769A618ABEBF9E27 /* TextTransformTests.swift */; };
+		17EE5487950A5F725B4A1F73 /* Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A352032B46F2482CB56B9BFB /* Backup.swift */; };
+		CC2FBDBA7D13D6D8A73E6463 /* BackupActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF19BEEB0AF16E2EADAFF1B /* BackupActions.swift */; };
+		15DBFCF6462E7C37B452051A /* BackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA433A6B4702502EB7A2EF2 /* BackupTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -591,6 +594,9 @@
 		0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetectorTests.swift; sourceTree = "<group>"; };
 		741AC50031998B2DA6B58416 /* TextTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTransform.swift; sourceTree = "<group>"; };
 		0655534B769A618ABEBF9E27 /* TextTransformTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTransformTests.swift; sourceTree = "<group>"; };
+		A352032B46F2482CB56B9BFB /* Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backup.swift; sourceTree = "<group>"; };
+		3AF19BEEB0AF16E2EADAFF1B /* BackupActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupActions.swift; sourceTree = "<group>"; };
+		6FA433A6B4702502EB7A2EF2 /* BackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -698,6 +704,7 @@
 				DA9C3C442C207AF80056795D /* IgnoreSettingsPane.swift */,
 				DA9C3C482C20D4B40056795D /* IgnoreSettings.strings */,
 				DA44C5E32C1C858400819834 /* StorageSettingsPane.swift */,
+				3AF19BEEB0AF16E2EADAFF1B /* BackupActions.swift */,
 				DA689FAE2C1CD3B00009B887 /* StorageSettings.strings */,
 				DAA365CD2C4BF9DD00A394F8 /* PinsSettingsPane.swift */,
 				DAA365CF2C4C147400A394F8 /* PinsSettings.strings */,
@@ -765,6 +772,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				6FA433A6B4702502EB7A2EF2 /* BackupTests.swift */,
 				0655534B769A618ABEBF9E27 /* TextTransformTests.swift */,
 				0536EEAF0D430AC89C8AA10E /* SecretDetectorTests.swift */,
 				DA360DB41E3DF137005C6F6B /* Info.plist */,
@@ -880,6 +888,7 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				A352032B46F2482CB56B9BFB /* Backup.swift */,
 				741AC50031998B2DA6B58416 /* TextTransform.swift */,
 				9E60BC36850EE0EE554F0DB4 /* SecretDetector.swift */,
 				B21DCA6C3D17E48D33D6E608 /* VoiceOver.swift */,
@@ -1109,6 +1118,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				15DBFCF6462E7C37B452051A /* BackupTests.swift in Sources */,
 				EF18B21119F439194E949554 /* TextTransformTests.swift in Sources */,
 				323FE09681F97581DFD46CF2 /* SecretDetectorTests.swift in Sources */,
 				CA110ED10000000000000001 /* CollectionSurroundingTests.swift in Sources */,
@@ -1179,6 +1189,7 @@
 				DA19691A2C3F369800258481 /* HeaderView.swift in Sources */,
 				DA555F082CF0F994009608BD /* ApplicationImageCache.swift in Sources */,
 				DA44C5E42C1C858400819834 /* StorageSettingsPane.swift in Sources */,
+				CC2FBDBA7D13D6D8A73E6463 /* BackupActions.swift in Sources */,
 				DA05B5142C234DCF006980FE /* HistoryItemContent.swift in Sources */,
 				DAA072D32C40A961006DDFD2 /* Color+Random.swift in Sources */,
 				DA05B5152C234DCF006980FE /* HistoryItem.swift in Sources */,
@@ -1194,6 +1205,7 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				17EE5487950A5F725B4A1F73 /* Backup.swift in Sources */,
 				174DA6E07CDBC99A5CBBD5C2 /* TextTransform.swift in Sources */,
 				904B51C2763F5B16E37411A2 /* SecretDetector.swift in Sources */,
 				21FFF308D9217B43FD4C393F /* VoiceOver.swift in Sources */,

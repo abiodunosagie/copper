@@ -139,6 +139,20 @@ struct StorageSettingsPane: View {
         .help(Text("KeepForTooltip", tableName: "StorageSettings"))
       }
 
+      Settings.Section(label: { Text("Backup", tableName: "StorageSettings") }) {
+        HStack {
+          Button(action: BackupActions.exportHistory) {
+            Text("BackupExport", tableName: "StorageSettings")
+          }
+          Button(action: BackupActions.importHistory) {
+            Text("BackupImport", tableName: "StorageSettings")
+          }
+        }
+        Text("BackupDescription", tableName: "StorageSettings")
+          .controlSize(.small)
+          .foregroundStyle(.gray)
+      }
+
       Settings.Section(label: { Text("SortBy", tableName: "StorageSettings") }) {
         Picker("", selection: $sortBy) {
           ForEach(Sorter.By.allCases) { mode in

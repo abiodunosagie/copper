@@ -154,7 +154,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
 
   @discardableResult
   @MainActor
-  func add(_ item: HistoryItem) -> HistoryItemDecorator {
+  func add(_ item: HistoryItem, notify: Bool = true) -> HistoryItemDecorator {
     if #available(macOS 15.0, *) {
       try? History.shared.insertIntoStorage(item)
     } else {
@@ -186,7 +186,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       if let removedItemIndex {
         all.remove(at: removedItemIndex)
       }
-    } else {
+    } else if notify {
       // Never put a detected secret into a system notification.
       let body = item.expiresAt == nil ? item.title : NSLocalizedString("SecretCopiedNotification", comment: "")
       Task {
@@ -468,6 +468,31 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     }
     logger.info("Interrupting PasteStack")
     pasteStack = nil
+  }
+
+  // Adds every item from a backup. Duplicates merge with existing items; pinned items stay pinned.
+  @discardableResult
+  @MainActor
+  func restore(_ archive: Backup.Archive) -> Int {
+    for backupItem in archive.items {
+      let contents = backupItem.contents.map { HistoryItemContent(type: $0.type, value: $0.value) }
+      let item = HistoryItem(contents: contents)
+      if #unavailable(macOS 15.0) {
+        try? insertIntoStorage(item)
+      }
+      item.title = backupItem.title
+      item.application = backupItem.application
+      item.firstCopiedAt = backupItem.firstCopiedAt
+      item.lastCopiedAt = backupItem.lastCopiedAt
+      item.numberOfCopies = backupItem.numberOfCopies
+
+      let decorator = add(item, notify: false)
+      if backupItem.isPinned && decorator.isUnpinned {
+        togglePin(decorator)
+      }
+    }
+
+    return archive.items.count
   }
 
   // Copies the transformed text as a new history item. Beeps when the transform does not apply.
