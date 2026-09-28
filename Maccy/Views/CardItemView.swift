@@ -10,6 +10,8 @@ struct CardItemView: View {
   static let maxMaskedDots = 12
   static let imageMaxHeight: CGFloat = 140
   static let linkThumbnailHeight: CGFloat = 90
+  static let emojiSize: CGFloat = 44
+  static let pdfPreviewWidth: CGFloat = 520
 
   @Bindable var item: HistoryItemDecorator
   var isSelected: Bool
@@ -19,6 +21,8 @@ struct CardItemView: View {
 
   @Environment(ModifierFlags.self) private var modifierFlags
   @Default(.loadLinkPreviews) private var loadLinkPreviews
+  // PDF first pages are rendered once, off the view body.
+  @State private var pdfPreview: NSImage?
 
   private var contentText: String { item.item.previewableText }
 
@@ -42,8 +46,13 @@ struct CardItemView: View {
     }
     .contentShape(RoundedRectangle(cornerRadius: DockTheme.cardCornerRadius, style: .continuous))
     .task(id: item.id) {
-      if case .link(let url) = item.contentKind {
+      switch item.contentKind {
+      case .link(let url):
         await LinkPreviewLoader.loadIfNeeded(for: item.item, url: url)
+      case .pdf:
+        pdfPreview = CardPreviews.pdfThumbnail(for: item.item, width: Self.pdfPreviewWidth)
+      default:
+        break
       }
     }
   }
@@ -126,7 +135,40 @@ struct CardItemView: View {
         .font(.system(size: 14, design: .monospaced))
         .foregroundStyle(DockTheme.text)
         .lineLimit(1)
-    case .text, .file:
+    case .gif:
+      if let data = item.item.imageData {
+        AnimatedImageView(data: data)
+          .frame(maxWidth: .infinity, maxHeight: Self.imageMaxHeight)
+          .clipShape(RoundedRectangle(cornerRadius: DockTheme.contentCornerRadius, style: .continuous))
+      }
+    case .pdf:
+      if let pdfPreview {
+        Image(nsImage: pdfPreview)
+          .resizable()
+          .scaledToFit()
+          .frame(maxWidth: .infinity, maxHeight: Self.imageMaxHeight)
+          .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+      } else {
+        FileListView(urls: item.item.fileURLs)
+      }
+    case .emoji:
+      Text(contentText.trimmingCharacters(in: .whitespacesAndNewlines))
+        .font(.system(size: Self.emojiSize))
+        .frame(maxWidth: .infinity, alignment: .center)
+    case .richText:
+      Group {
+        if let formatted = CardPreviews.readableRichText(item.item.rtf ?? item.item.html) {
+          Text(formatted)
+        } else {
+          Text(contentText)
+        }
+      }
+      .foregroundStyle(DockTheme.text)
+      .lineLimit(4)
+      .frame(maxWidth: .infinity, alignment: .leading)
+    case .file, .files:
+      FileListView(urls: item.item.fileURLs)
+    case .text:
       Text(item.title.isEmpty ? contentText : item.title)
         .font(.system(size: 13))
         .foregroundStyle(DockTheme.text)
@@ -192,7 +234,7 @@ struct CardItemView: View {
 
   private func detail(_ kind: ContentKind) -> String {
     switch kind {
-    case .image:
+    case .image, .gif:
       guard let size = item.item.image?.pixelSize else { return "" }
       return "\(Int(size.width)) × \(Int(size.height))"
     case .color(let color):
@@ -200,6 +242,8 @@ struct CardItemView: View {
       return "rgb(\(Int(rgb.redComponent * 255)), \(Int(rgb.greenComponent * 255)), \(Int(rgb.blueComponent * 255)))"
     case .link:
       return item.application ?? ""
+    case .pdf, .file, .files:
+      return item.item.fileURLs.first?.deletingLastPathComponent().lastPathComponent ?? ""
     default:
       let text = contentText
       let lines = text.split(separator: "\n", omittingEmptySubsequences: false).count

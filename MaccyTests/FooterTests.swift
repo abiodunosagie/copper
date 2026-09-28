@@ -16,7 +16,9 @@ class FooterTests: XCTestCase {
 
 class IgnoredFolderTests: XCTestCase {
   private func fileContent(_ path: String) -> HistoryItemContent {
-    HistoryItemContent(type: NSPasteboard.PasteboardType.fileURL.rawValue, value: URL(filePath: path).dataRepresentation)
+    HistoryItemContent(
+      type: NSPasteboard.PasteboardType.fileURL.rawValue, value: URL(filePath: path).dataRepresentation
+    )
   }
 
   func testFilesFromIgnoredFoldersAreDetected() {

@@ -145,4 +145,42 @@ class ContentKindTests: XCTestCase {
     XCTAssertEqual(withSecret.expiresAt, soon)
     XCTAssertEqual(ItemActions.merged([item("")], separator: .space).text, "")
   }
+
+  func testRicherKinds() {
+    XCTAssertEqual(ContentKind.of(item("😀")), .emoji)
+    XCTAssertEqual(ContentKind.of(item(" 👍🏽🎉 ")), .emoji)
+    XCTAssertEqual(ContentKind.of(item("ok 👍")), .text)
+    XCTAssertEqual(ContentKind.of(item("1")), .text, "digits are emoji-capable but not emoji")
+
+    let rich = HistoryItem(contents: [
+      HistoryItemContent(type: NSPasteboard.PasteboardType.string.rawValue, value: Data("Bold words".utf8)),
+      HistoryItemContent(type: NSPasteboard.PasteboardType.html.rawValue, value: Data("<b>Bold</b> words".utf8))
+    ])
+    XCTAssertEqual(ContentKind.of(rich), .richText)
+    XCTAssertTrue(ContentFilter.text.matches(HistoryItemDecorator(rich)))
+
+    func files(_ paths: [String]) -> HistoryItem {
+      HistoryItem(contents: paths.map {
+        HistoryItemContent(
+          type: NSPasteboard.PasteboardType.fileURL.rawValue, value: URL(filePath: $0).dataRepresentation
+        )
+      })
+    }
+    XCTAssertEqual(ContentKind.of(files(["/tmp/a.txt"])), .file)
+    XCTAssertEqual(ContentKind.of(files(["/tmp/report.PDF"])), .pdf)
+    XCTAssertEqual(ContentKind.of(files(["/tmp/a.txt", "/tmp/b.png", "/tmp/c.zip"])), .files(3))
+    XCTAssertTrue(ContentFilter.files.matches(HistoryItemDecorator(files(["/tmp/a.txt", "/tmp/b.txt"]))))
+  }
+
+  func testRichTextDropsColorsButKeepsText() throws {
+    let source = NSAttributedString(string: "Hello", attributes: [
+      .foregroundColor: NSColor.black, .font: NSFont.boldSystemFont(ofSize: 40)
+    ])
+    let readable = try XCTUnwrap(CardPreviews.readableRichText(source))
+    XCTAssertEqual(String(readable.characters), "Hello")
+    let converted = NSAttributedString(readable)
+    XCTAssertNil(converted.attribute(.foregroundColor, at: 0, effectiveRange: nil))
+    let font = try XCTUnwrap(converted.attribute(.font, at: 0, effectiveRange: nil) as? NSFont)
+    XCTAssertEqual(font.pointSize, CardPreviews.richTextFontRange.upperBound)
+  }
 }

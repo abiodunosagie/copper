@@ -196,6 +196,7 @@
 		73512CBBFFEB943F9B40F0DF /* Snippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56974EBC1940E239684AB8 /* Snippet.swift */; };
 		3BEC74C2452E7D9AACCCCA06 /* SnippetsSettingsPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */; };
 		28E29ADCFE046733EE607DF8 /* IgnoreFoldersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB643950919796016DC3CA3F /* IgnoreFoldersSettingsView.swift */; };
+		9F92A9F456C0765EA597213B /* CardPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F4F052F8BC3182DCA3C339 /* CardPreviews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -673,6 +674,7 @@
 		3D56974EBC1940E239684AB8 /* Snippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snippet.swift; sourceTree = "<group>"; };
 		F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsSettingsPane.swift; sourceTree = "<group>"; };
 		BB643950919796016DC3CA3F /* IgnoreFoldersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreFoldersSettingsView.swift; sourceTree = "<group>"; };
+		A2F4F052F8BC3182DCA3C339 /* CardPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPreviews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -811,6 +813,7 @@
 				23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */,
 				99A867044F80963410ED44ED /* DockTheme.swift */,
 				C1EB2B4DE518A5C426B1173E /* CardItemView.swift */,
+				A2F4F052F8BC3182DCA3C339 /* CardPreviews.swift */,
 				DAA072D42C40AC52006DDFD2 /* HistoryListView.swift */,
 				2F0EC7882E7743D9003E2EA9 /* HoverSelectionModifier.swift */,
 				DA19690D2C3EEFA900258481 /* KeyboardShortcutView.swift */,
@@ -1307,6 +1310,7 @@
 				FFF98EA3D8DDAC3AB55B0091 /* DockHeaderView.swift in Sources */,
 				7935CCDD92FB29593A2B8379 /* DockTheme.swift in Sources */,
 				C72BE82FD4E57589B665222E /* CardItemView.swift in Sources */,
+				9F92A9F456C0765EA597213B /* CardPreviews.swift in Sources */,
 				DA0EF1881E444B2A00E58577 /* Clipboard.swift in Sources */,
 				DA3F1B452C90084600267632 /* Sauce+KeyboardShortcuts.swift in Sources */,
 				DA689FCC2C1D1D510009B887 /* MenuIcon.swift in Sources */,

@@ -94,3 +94,8 @@
 "snippet_name" = "Name";
 "snippet_empty" = "Add a snippet with +, then pick it from the Snippets button in the panel.";
 "snippet_placeholders" = "Placeholders: %@";
+"kind_rich_text" = "Rich text";
+"kind_gif" = "GIF";
+"kind_pdf" = "PDF";
+"kind_files" = "%d files";
+"card_more_files" = "and %d more";
