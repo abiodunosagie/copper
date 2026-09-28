@@ -193,6 +193,8 @@
 		2A731834F0AEF6EC1509980D /* DateQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618CF6A2E9C7BBCD643CC3ED /* DateQueryTests.swift */; };
 		93DA3E68F741251CAAB2E1DA /* ItemActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CAF8A308D394B0F1EF5272 /* ItemActions.swift */; };
 		CD6169A94007D6E85FDD1C9F /* PlainTextAppsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEC8D83414DCAEF4283BA50 /* PlainTextAppsSettingsView.swift */; };
+		73512CBBFFEB943F9B40F0DF /* Snippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56974EBC1940E239684AB8 /* Snippet.swift */; };
+		3BEC74C2452E7D9AACCCCA06 /* SnippetsSettingsPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -667,6 +669,8 @@
 		618CF6A2E9C7BBCD643CC3ED /* DateQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateQueryTests.swift; sourceTree = "<group>"; };
 		F5CAF8A308D394B0F1EF5272 /* ItemActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemActions.swift; sourceTree = "<group>"; };
 		0EEC8D83414DCAEF4283BA50 /* PlainTextAppsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextAppsSettingsView.swift; sourceTree = "<group>"; };
+		3D56974EBC1940E239684AB8 /* Snippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snippet.swift; sourceTree = "<group>"; };
+		F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsSettingsPane.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -770,6 +774,7 @@
 				DA689FC32C1CF0F00009B887 /* AppearanceSettingsPane.swift */,
 				DA689FCD2C1DEE570009B887 /* AppearanceSettings.strings */,
 				DAA5ACB12C1B3F8800B58513 /* GeneralSettingsPane.swift */,
+				F0B37F36822265EF68277672 /* SnippetsSettingsPane.swift */,
 				0EEC8D83414DCAEF4283BA50 /* PlainTextAppsSettingsView.swift */,
 				7C00A4F404B20A1AF546CE2C /* PeerShareSettingsView.swift */,
 				DAA5ACB32C1B803000B58513 /* GeneralSettings.strings */,
@@ -975,6 +980,7 @@
 				DA696BCD240177E800DE80CF /* Sorter.swift */,
 				DA243D132C2F66DD0012A27F /* Storage.swift */,
 				DA81D673252A056B009977BC /* Throttler.swift */,
+				3D56974EBC1940E239684AB8 /* Snippet.swift */,
 				F5CAF8A308D394B0F1EF5272 /* ItemActions.swift */,
 				3785380EBAE60C78E0B89A21 /* DateQuery.swift */,
 				DBD9BEE66FD1357909658E55 /* PeerShareService.swift */,
@@ -1286,6 +1292,7 @@
 				2FA81FE02E43D9B700C12F92 /* Dictionary+RemoveItem.swift in Sources */,
 				2F9B42F12F1A499D006548E5 /* ToolbarView.swift in Sources */,
 				DAA5ACB22C1B3F8800B58513 /* GeneralSettingsPane.swift in Sources */,
+				3BEC74C2452E7D9AACCCCA06 /* SnippetsSettingsPane.swift in Sources */,
 				CD6169A94007D6E85FDD1C9F /* PlainTextAppsSettingsView.swift in Sources */,
 				65B26C4EE9590AB388048774 /* PeerShareSettingsView.swift in Sources */,
 				DA1969122C3F0DD200258481 /* HistoryItemView.swift in Sources */,
@@ -1326,6 +1333,7 @@
 				DA689FCA2C1D18890009B887 /* HighlightMatch.swift in Sources */,
 				DA6491B029ABCF2400837D93 /* NSScreen+ForPopup.swift in Sources */,
 				DA81D674252A056B009977BC /* Throttler.swift in Sources */,
+				73512CBBFFEB943F9B40F0DF /* Snippet.swift in Sources */,
 				93DA3E68F741251CAAB2E1DA /* ItemActions.swift in Sources */,
 				CBDD753D25656B288679BA2D /* DateQuery.swift in Sources */,
 				8D4CD5428EFEADC188155E6D /* PeerShareService.swift in Sources */,

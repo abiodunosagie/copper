@@ -127,7 +127,10 @@ class AppState: Sendable {
       let pinsTitle = NSLocalizedString("Title", tableName: "PinsSettings", comment: "")
       let ignoreTitle = NSLocalizedString("Title", tableName: "IgnoreSettings", comment: "")
       let advancedTitle = NSLocalizedString("Title", tableName: "AdvancedSettings", comment: "")
-      let toolbarTitles = [generalTitle, storageTitle, appearanceTitle, pinsTitle, ignoreTitle, advancedTitle]
+      let snippetsTitle = NSLocalizedString("snippets_title", comment: "")
+      let toolbarTitles = [
+        generalTitle, storageTitle, appearanceTitle, pinsTitle, snippetsTitle, ignoreTitle, advancedTitle
+      ]
       let titleAttributes: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: NSFont.systemFontSize)]
       let titleWidth = toolbarTitles.reduce(CGFloat.zero) {
         $0 + ($1 as NSString).size(withAttributes: titleAttributes).width
@@ -170,6 +173,14 @@ class AppState: Sendable {
             PinsSettingsPane()
               .environment(self)
               .modelContainer(Storage.shared.container)
+              .frame(minWidth: minimumWidth)
+          },
+          Settings.Pane(
+            identifier: Settings.PaneIdentifier(rawValue: "snippets"),
+            title: snippetsTitle,
+            toolbarIcon: NSImage(systemSymbolName: "text.badge.plus", accessibilityDescription: nil)!
+          ) {
+            SnippetsSettingsPane()
               .frame(minWidth: minimumWidth)
           },
           Settings.Pane(

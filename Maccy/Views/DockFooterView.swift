@@ -9,6 +9,7 @@ struct DockFooterView: View {
   @Environment(AppState.self) private var appState
   @Environment(ModifierFlags.self) private var modifierFlags
   @Default(.showFooter) private var showFooter
+  @Default(.snippets) private var snippets
 
   // Keyed by FooterItem.title; ContentKindTests checks every footer item has one.
   static let icons: [String: String] = [
@@ -36,6 +37,29 @@ struct DockFooterView: View {
       .buttonStyle(.plain)
       .help(Text("library_open"))
       .accessibilityLabel(Text("library_open"))
+      Menu {
+        ForEach(snippets) { snippet in
+          Button(snippet.name) {
+            snippet.insert()
+          }
+        }
+        if !snippets.isEmpty {
+          Divider()
+        }
+        Button("snippets_manage") {
+          AppState.shared.openPreferences()
+        }
+      } label: {
+        Image(systemName: "text.badge.plus")
+          .font(.system(size: 13))
+          .foregroundStyle(DockTheme.text)
+          .dockControl()
+      }
+      .menuStyle(.borderlessButton)
+      .menuIndicator(.hidden)
+      .fixedSize()
+      .help(Text("snippets_title"))
+      .accessibilityLabel(Text("snippets_title"))
       Spacer(minLength: 0)
       ForEach(footer.items.suffix(from: 2)) { item in
         icon(for: item)

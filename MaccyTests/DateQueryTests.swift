@@ -53,3 +53,17 @@ class DateQueryTests: XCTestCase {
     XCTAssertNil(DateQuery.parse("birthdaytoday", now: now, calendar: calendar).range)
   }
 }
+
+class SnippetTests: XCTestCase {
+  func testPlaceholdersAreFilled() {
+    let now = Date(timeIntervalSince1970: 1_790_000_000)
+    let uuid = UUID()
+    let text = Snippet.expand("On {date}: {clipboard} ({uuid})", now: now, clipboard: "copied", uuid: uuid)
+    XCTAssertTrue(text.hasPrefix("On " + now.formatted(.iso8601.year().month().day())))
+    XCTAssertTrue(text.contains(": copied ("))
+    XCTAssertTrue(text.contains(uuid.uuidString))
+    XCTAssertEqual(Snippet.expand("{clipboard}", clipboard: nil), "")
+    XCTAssertEqual(Snippet.expand("no placeholders", clipboard: "x"), "no placeholders")
+    XCTAssertFalse(Snippet.expand("{datetime}", now: now, clipboard: nil).contains("{"))
+  }
+}

@@ -87,3 +87,10 @@
 "merge_spaces" = "With spaces";
 "edit_title" = "Edit, then copy";
 "edit_copy" = "Copy";
+"snippets_title" = "Snippets";
+"snippets_manage" = "Manage snippets...";
+"snippet_untitled" = "Untitled";
+"snippet_new" = "New snippet";
+"snippet_name" = "Name";
+"snippet_empty" = "Add a snippet with +, then pick it from the Snippets button in the panel.";
+"snippet_placeholders" = "Placeholders: %@";
