@@ -92,15 +92,15 @@ enum ContentFilter: String, CaseIterable, Identifiable {
     switch self {
     case .all: return true
     case .pinned: return item.isPinned
-    case .text: return ContentKind.of(item.item) == .text
-    case .code: return ContentKind.of(item.item) == .code
-    case .images: return ContentKind.of(item.item) == .image
-    case .files: return ContentKind.of(item.item) == .file
+    case .text: return item.contentKind == .text
+    case .code: return item.contentKind == .code
+    case .images: return item.contentKind == .image
+    case .files: return item.contentKind == .file
     case .links:
-      if case .link = ContentKind.of(item.item) { return true }
+      if case .link = item.contentKind { return true }
       return false
     case .colors:
-      if case .color = ContentKind.of(item.item) { return true }
+      if case .color = item.contentKind { return true }
       return false
     }
   }

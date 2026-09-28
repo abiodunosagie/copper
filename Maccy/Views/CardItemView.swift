@@ -19,13 +19,13 @@ struct CardItemView: View {
 
   var body: some View {
     // Classify once per render; header, content and footer all depend on it.
-    let kind = ContentKind.of(item.item)
-    VStack(alignment: .leading, spacing: 10) {
+    let kind = item.contentKind
+    VStack(alignment: .leading, spacing: Self.spacing) {
       header(kind)
       content(kind)
       footer(kind)
     }
-    .padding(12)
+    .padding(DockTheme.cardPadding)
     .frame(maxWidth: .infinity, alignment: .leading)
     .background(
       isSelected ? DockTheme.cardSelected : DockTheme.card,
@@ -74,7 +74,7 @@ struct CardItemView: View {
     case .image:
       imageContent
     case .color(let color):
-      RoundedRectangle(cornerRadius: 10, style: .continuous)
+      RoundedRectangle(cornerRadius: DockTheme.contentCornerRadius, style: .continuous)
         .fill(Color(nsColor: color))
         .frame(height: 72)
         .overlay(alignment: .bottomLeading) {
@@ -125,7 +125,7 @@ struct CardItemView: View {
           .resizable()
           .scaledToFit()
           .frame(maxWidth: .infinity, maxHeight: Self.imageMaxHeight)
-          .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+          .clipShape(RoundedRectangle(cornerRadius: DockTheme.contentCornerRadius, style: .continuous))
       }
       // For images the title holds the text recognized in them.
       if !item.title.isEmpty {

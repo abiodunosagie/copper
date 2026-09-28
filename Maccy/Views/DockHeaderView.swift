@@ -10,68 +10,87 @@ struct DockHeaderView: View {
   @Default(.unlimitedHistory) private var unlimitedHistory
   @Default(.size) private var size
 
-  private var queueCount: Int { appState.history.pasteStack?.items.count ?? 0 }
-
   var body: some View {
     @Bindable var history = appState.history
 
     VStack(alignment: .leading, spacing: 10) {
-      HStack(spacing: 8) {
-        Image(systemName: "list.clipboard")
-          .font(.system(size: 17, weight: .medium))
-          .foregroundStyle(DockTheme.accent)
-          .accessibilityHidden(true)
-        Text(verbatim: "Copper")
-          .font(.system(size: 16, weight: .semibold))
-          .foregroundStyle(DockTheme.text)
-
-        Spacer(minLength: 4)
-
-        if queueCount > 0 {
-          HStack(spacing: 5) {
-            Image(systemName: "list.bullet")
-            Text("dock_queue")
-            Text("\(queueCount)")
-              .font(.system(size: 11, weight: .semibold))
-              .frame(minWidth: 18, minHeight: 18)
-              .background(DockTheme.accent, in: Circle())
-              .foregroundStyle(DockTheme.onAccent)
-          }
-          .font(.system(size: 12))
-          .padding(.horizontal, 8)
-          .frame(height: DockTheme.controlHeight)
-          .background(DockTheme.control, in: RoundedRectangle(cornerRadius: 9))
-          .accessibilityElement(children: .combine)
-        }
-
-        iconButton("rectangle.lefthalf.inset.filled", help: "dock_move_edge") {
-          let newPosition: PopupPosition = popupPosition == .dockedRight ? .dockedLeft : .dockedRight
-          popupPosition = newPosition
-          appState.popup.open(height: appState.popup.height, at: newPosition)
-        }
-        .scaleEffect(x: popupPosition == .dockedRight ? -1 : 1)
-      }
+      titleBar
 
       SearchFieldView(placeholder: "dock_search_placeholder", query: $history.searchQuery)
         .focused($searchFocused)
         .foregroundStyle(DockTheme.text)
 
-      ScrollView(.horizontal, showsIndicators: false) {
-        HStack(spacing: 6) {
-          ForEach(ContentFilter.allCases) { filter in
-            chip(filter)
-          }
-        }
-      }
+      filterRow
 
       Text(itemCountLine)
         .font(.system(size: 11))
         .foregroundStyle(DockTheme.mutedText)
     }
-    .padding(.horizontal, 14)
-    .padding(.top, 14)
+    .padding(.horizontal, DockTheme.barPadding)
+    .padding(.top, DockTheme.barPadding)
     .padding(.bottom, 6)
     .readHeight(appState, into: \.popup.headerHeight)
+  }
+
+  private var titleBar: some View {
+    HStack(spacing: 8) {
+      Image(systemName: "list.clipboard")
+        .font(.system(size: 17, weight: .medium))
+        .foregroundStyle(DockTheme.accent)
+        .accessibilityHidden(true)
+      Text(verbatim: "Copper")
+        .font(.system(size: 16, weight: .semibold))
+        .foregroundStyle(DockTheme.text)
+
+      Spacer(minLength: 4)
+
+      queueBadge
+
+      Button {
+        appState.popup.toggleDockEdge()
+      } label: {
+        Image(systemName: "rectangle.lefthalf.inset.filled")
+          .font(.system(size: 13))
+          .foregroundStyle(DockTheme.text)
+          .scaleEffect(x: popupPosition == .dockedRight ? -1 : 1)
+          .dockControl()
+      }
+      .buttonStyle(.plain)
+      .help(Text("dock_move_edge"))
+      .accessibilityLabel(Text("dock_move_edge"))
+    }
+  }
+
+  @ViewBuilder
+  private var queueBadge: some View {
+    let count = appState.history.pasteStack?.items.count ?? 0
+    if count > 0 {
+      HStack(spacing: 5) {
+        Image(systemName: "list.bullet")
+        Text("dock_queue")
+        Text("\(count)")
+          .font(.system(size: 11, weight: .semibold))
+          .frame(minWidth: 18, minHeight: 18)
+          .background(DockTheme.accent, in: Circle())
+          .foregroundStyle(DockTheme.onAccent)
+      }
+      .font(.system(size: 12))
+      .foregroundStyle(DockTheme.text)
+      .padding(.horizontal, 8)
+      .frame(height: DockTheme.controlHeight)
+      .background(DockTheme.control, in: RoundedRectangle(cornerRadius: DockTheme.controlCornerRadius))
+      .accessibilityElement(children: .combine)
+    }
+  }
+
+  private var filterRow: some View {
+    ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: 6) {
+        ForEach(ContentFilter.allCases) { filter in
+          chip(filter)
+        }
+      }
+    }
   }
 
   private var itemCountLine: String {
@@ -97,19 +116,5 @@ struct DockHeaderView: View {
     }
     .buttonStyle(.plain)
     .accessibilityAddTraits(active ? .isSelected : [])
-  }
-
-  private func iconButton(_ systemName: String, help: LocalizedStringKey, action: @escaping () -> Void) -> some View {
-    Button(action: action) {
-      Image(systemName: systemName)
-        .font(.system(size: 13))
-        .foregroundStyle(DockTheme.text)
-        .frame(width: DockTheme.controlHeight, height: DockTheme.controlHeight)
-        .background(DockTheme.control, in: RoundedRectangle(cornerRadius: 9))
-        .overlay(RoundedRectangle(cornerRadius: 9).strokeBorder(DockTheme.controlBorder))
-    }
-    .buttonStyle(.plain)
-    .help(help)
-    .accessibilityLabel(Text(help))
   }
 }

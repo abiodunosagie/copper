@@ -34,6 +34,15 @@ class AppState: Sendable {
     return title.shortened(to: 20)
   }
 
+  // Set by AppDelegate once the panel exists. Kept separate from `shared` because this is read
+  // while `shared` itself is still being initialised.
+  static var presentedPositionProvider: (() -> PopupPosition)?
+
+  // Whether the panel is showing (or will show) in a docked position.
+  static var isPanelDocked: Bool {
+    (presentedPositionProvider?() ?? Defaults[.popupPosition]).isDocked
+  }
+
   private let about = About()
   private var settingsWindowController: SettingsWindowController?
 
@@ -45,7 +54,7 @@ class AppState: Sendable {
     preview = SlideoutController(
       onContentResize: { contentWidth in
         // The docked width comes from settings only; resizing while docked must not change either size.
-        guard !Defaults[.popupPosition].isDocked else { return }
+        guard !AppState.isPanelDocked else { return }
         Defaults[.windowSize].width = contentWidth
       },
       onSlideoutResize: { previewWidth in

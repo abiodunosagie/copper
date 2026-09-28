@@ -173,6 +173,7 @@
 		7935CCDD92FB29593A2B8379 /* DockTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A867044F80963410ED44ED /* DockTheme.swift */; };
 		FFF98EA3D8DDAC3AB55B0091 /* DockHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */; };
 		A837C45EBF5B10D2E45EAE55 /* DockFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EBEE149EE5C40E39707101 /* DockFooterView.swift */; };
+		4F96258FAB606B9CD970A98B /* ContentKindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -627,6 +628,7 @@
 		99A867044F80963410ED44ED /* DockTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockTheme.swift; sourceTree = "<group>"; };
 		23B41FA06A7994D4EE0AA2CE /* DockHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockHeaderView.swift; sourceTree = "<group>"; };
 		C3EBEE149EE5C40E39707101 /* DockFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockFooterView.swift; sourceTree = "<group>"; };
+		4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentKindTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -806,6 +808,7 @@
 				DAFE2DE8268A9B1B00990986 /* HistoryItemTests.swift */,
 				DA384E85232746D800603999 /* SearchTests.swift */,
 				DA696BD12401EEE900DE80CF /* SorterTests.swift */,
+				4BC5DA0904D672A8322B07A9 /* ContentKindTests.swift */,
 				AC6D770205840C2AF998BB86 /* CardItemViewTests.swift */,
 				332E7216F43449FB6BD5D397 /* PopupPositionTests.swift */,
 				6FA433A6B4702502EB7A2EF2 /* BackupTests.swift */,
@@ -1163,6 +1166,7 @@
 				DAE2850223225BD90080E394 /* ColorImageTests.swift in Sources */,
 				DA384E86232746D800603999 /* SearchTests.swift in Sources */,
 				DA696BD22401EEE900DE80CF /* SorterTests.swift in Sources */,
+				4F96258FAB606B9CD970A98B /* ContentKindTests.swift in Sources */,
 				4FA7B7B631B945581A8448EF /* CardItemViewTests.swift in Sources */,
 				178DF7340112D94DD8D671D2 /* PopupPositionTests.swift in Sources */,
 				15DBFCF6462E7C37B452051A /* BackupTests.swift in Sources */,

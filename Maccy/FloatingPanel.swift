@@ -9,11 +9,14 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   let onClose: () -> Void
 
   override var isMovable: Bool {
-    get { Defaults[.popupPosition] != .statusItem && !Defaults[.popupPosition].isDocked }
+    get { presentedPosition != .statusItem && !presentedPosition.isDocked }
     set {}
   }
 
-  private var isDocked: Bool { Defaults[.popupPosition].isDocked }
+  // The position the panel was last opened at. Callers can override the setting
+  // (for example the menu bar icon), so behaviour follows this, not Defaults.
+  private(set) var presentedPosition: PopupPosition = Defaults[.popupPosition]
+  private var isDocked: Bool { presentedPosition.isDocked }
 
   // By default the SwiftUI content may grow the window to fit wide items. A docked panel's frame
   // must come only from the screen edge and the width setting, so docking turns that off.
@@ -70,7 +73,11 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     )
     setHostingSizing = { hostingView.sizingOptions = $0 }
     contentView = hostingView
-    contentView?.layer?.cornerRadius = Popup.cornerRadius + Popup.horizontalPadding
+    applyCornerRadius(docked: false)
+  }
+
+  private func applyCornerRadius(docked: Bool) {
+    contentView?.layer?.cornerRadius = docked ? DockTheme.panelCornerRadius : Popup.cornerRadius + Popup.horizontalPadding
   }
 
   // True when a docked panel is open on a different screen than the mouse.
@@ -89,6 +96,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   func open(height: CGFloat, at popupPosition: PopupPosition = Defaults[.popupPosition]) {
+    presentedPosition = popupPosition
     isMovableByWindowBackground = !popupPosition.isDocked
     if popupPosition.isDocked {
       openDocked(at: popupPosition)
@@ -96,7 +104,9 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     }
 
     setHostingSizing(.standardBounds)
-    contentView?.layer?.cornerRadius = Popup.cornerRadius + Popup.horizontalPadding
+    // Filters only exist in the docked panel; never leave the classic list filtered.
+    AppState.shared.history.contentFilter = .all
+    applyCornerRadius(docked: false)
     AppState.shared.preview.contentWidth = Defaults[.windowSize].width
     let size = Defaults[.windowSize]
     let miniumHeight: CGFloat = AppState.shared.popup.minimumHeight
@@ -125,7 +135,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     setHostingSizing([])
     AppState.shared.preview.contentWidth = dockFrame.width
     setFrame(dockFrame, display: true)
-    contentView?.layer?.cornerRadius = DockTheme.panelCornerRadius
+    applyCornerRadius(docked: true)
     orderFrontRegardless()
     makeKey()
     isPresented = true
@@ -172,8 +182,9 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   func windowWillResize(_ sender: NSWindow, to frameSize: NSSize) -> NSSize {
-    // Docked width is set in Appearance settings; the edge and height are fixed.
-    guard !isDocked else { return frame.size }
+    // Docked width is set in Appearance settings, so dragging the edge does nothing.
+    // Programmatic resizes (the preview sliding open) still go through.
+    if isDocked && inLiveResize { return frame.size }
     let preview = AppState.shared.preview
 
     if inLiveResize && preview.resizingMode == .none {

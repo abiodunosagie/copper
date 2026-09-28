@@ -258,8 +258,10 @@ class Clipboard {
       }
     }
 
-    let plain = text(.string)
-    let texts = plain.isEmpty ? text(.rtf) + text(.html) : plain
+    // Cheapest first; rich text is only decoded when nothing cheaper had text.
+    var texts = text(.string)
+    if texts.isEmpty { texts = text(.rtf) }
+    if texts.isEmpty { texts = text(.html) }
     return texts.isEmpty ? nil : texts.joined(separator: "\n")
   }
 

@@ -18,8 +18,26 @@ enum DockTheme {
 
   static let panelCornerRadius: CGFloat = 18
   static let cardCornerRadius: CGFloat = 14
+  static let contentCornerRadius: CGFloat = 10
+  static let controlCornerRadius: CGFloat = 9
+  static let cardPadding: CGFloat = 12
+  static let barPadding: CGFloat = 14
   static let chipHeight: CGFloat = 26
   static let controlHeight: CGFloat = 30
+}
+
+extension View {
+  // The square dark control used for icon buttons in the docked panel.
+  func dockControl(selected: Bool = false) -> some View {
+    let shape = RoundedRectangle(cornerRadius: DockTheme.controlCornerRadius)
+    return self
+      .frame(width: DockTheme.controlHeight, height: DockTheme.controlHeight)
+      .background(DockTheme.control, in: shape)
+      .overlay(
+        shape.strokeBorder(selected ? DockTheme.accent : DockTheme.controlBorder, lineWidth: selected ? 2 : 1)
+      )
+      .contentShape(shape)
+  }
 }
 
 extension Color {

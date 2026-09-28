@@ -7,7 +7,8 @@ struct DockFooterView: View {
 
   @Environment(AppState.self) private var appState
 
-  private static let icons: [String: String] = [
+  // Keyed by FooterItem.title; DockFooterViewTests checks every footer item has one.
+  static let icons: [String: String] = [
     "clear": "eraser",
     "clear_all": "trash",
     "preferences": "gearshape",
@@ -24,7 +25,7 @@ struct DockFooterView: View {
         }
       }
     }
-    .padding(.horizontal, 14)
+    .padding(.horizontal, DockTheme.barPadding)
     .padding(.vertical, 10)
     .overlay(alignment: .top) {
       Rectangle().fill(DockTheme.border).frame(height: 1)
@@ -37,16 +38,7 @@ struct DockFooterView: View {
       Image(systemName: Self.icons[item.title] ?? "circle")
         .font(.system(size: 13))
         .foregroundStyle(item.title == "quit" ? DockTheme.mutedText : DockTheme.text)
-        .frame(width: DockTheme.controlHeight, height: DockTheme.controlHeight)
-        .background(DockTheme.control, in: RoundedRectangle(cornerRadius: 9))
-        .overlay(
-          RoundedRectangle(cornerRadius: 9)
-            .strokeBorder(
-              item.isSelected ? DockTheme.accent : DockTheme.controlBorder,
-              lineWidth: item.isSelected ? 2 : 1
-            )
-        )
-        .contentShape(RoundedRectangle(cornerRadius: 9))
+        .dockControl(selected: item.isSelected)
     }
     .help(Text(item.help ?? LocalizedStringKey(item.title)))
     .accessibilityLabel(Text(LocalizedStringKey(item.title)))

@@ -119,6 +119,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     ) {
       ContentView()
     }
+    AppState.presentedPositionProvider = { [unowned self] in panel.presentedPosition }
   }
 
   func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -195,7 +196,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       }
     }
 
-    panel.toggle(height: AppState.shared.popup.height, at: .statusItem)
+    // Docked is its own place on screen; otherwise the popup hangs from the menu bar icon.
+    let position = Defaults[.popupPosition]
+    panel.toggle(height: AppState.shared.popup.height, at: position.isDocked ? position : .statusItem)
   }
 
   private func synchronizeMenuIconText() {

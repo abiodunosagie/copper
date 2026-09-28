@@ -81,6 +81,13 @@ class Popup {
     AppState.shared.appDelegate?.panel.open(height: height, at: popupPosition)
   }
 
+  // Moves the docked panel to the opposite screen edge and keeps it open there.
+  func toggleDockEdge() {
+    let newPosition: PopupPosition = Defaults[.popupPosition] == .dockedRight ? .dockedLeft : .dockedRight
+    Defaults[.popupPosition] = newPosition
+    open(height: height, at: newPosition)
+  }
+
   func reset() {
     state = .toggle
     KeyboardShortcuts.enable(.popup)

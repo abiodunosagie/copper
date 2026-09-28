@@ -53,6 +53,16 @@ class HistoryItemDecorator: Identifiable, Hashable, HasVisibility {
   // 10k characters seems to be more than enough on large displays
   var text: String { previewText.shortened(to: 10_000) }
 
+  // Classifying runs regexes, so the result is cached until the title or secret state changes.
+  @ObservationIgnored private var cachedKind: (key: String, kind: ContentKind)?
+  var contentKind: ContentKind {
+    let key = "\(item.title)|\(item.expiresAt != nil)|\(item.contents.count)"
+    if let cachedKind, cachedKind.key == key { return cachedKind.kind }
+    let kind = ContentKind.of(item)
+    cachedKind = (key, kind)
+    return kind
+  }
+
   var isPinned: Bool { item.pin != nil }
   var isUnpinned: Bool { item.pin == nil }
 

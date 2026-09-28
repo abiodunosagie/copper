@@ -40,7 +40,7 @@
 "kind_color" = "Color";
 "kind_image" = "Image";
 "kind_file" = "File";
-"kind_secret" = "API key";
+"kind_secret" = "Secret";
 "filter_all" = "All";
 "filter_pinned" = "Pinned";
 "filter_text" = "Text";

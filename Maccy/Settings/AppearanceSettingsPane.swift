@@ -6,13 +6,6 @@ import Settings
 struct AppearanceSettingsPane: View {
   @Default(.popupPosition) private var popupAt
   @Default(.dockWidth) private var dockWidth
-
-  private let dockWidthFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.minimum = NSNumber(value: PopupPosition.dockWidthRange.lowerBound)
-    formatter.maximum = NSNumber(value: PopupPosition.dockWidthRange.upperBound)
-    return formatter
-  }()
   @Default(.popupScreen) private var popupScreen
   @Default(.pinTo) private var pinTo
   @Default(.imageMaxHeight) private var imageHeight
@@ -28,6 +21,13 @@ struct AppearanceSettingsPane: View {
   @Default(.showApplicationIcons) private var showApplicationIcons
 
   @State private var screens = NSScreen.screens
+
+  private let dockWidthFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimum = NSNumber(value: PopupPosition.dockWidthRange.lowerBound)
+    formatter.maximum = NSNumber(value: PopupPosition.dockWidthRange.upperBound)
+    return formatter
+  }()
 
   private let imageHeightFormatter: NumberFormatter = {
     let formatter = NumberFormatter()

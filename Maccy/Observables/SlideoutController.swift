@@ -140,7 +140,7 @@ class SlideoutController {
       newSize.width += slideoutWidth
     }
     // A docked panel keeps its full height while the preview opens and closes.
-    guard !Defaults[.popupPosition].isDocked else { return newSize }
+    guard !AppState.isPanelDocked else { return newSize }
 
     let popup = AppState.shared.popup
     newSize.height = popup.preferredHeight(for: popup.height)
@@ -228,7 +228,7 @@ class SlideoutController {
 
     guard Defaults[.openPreviewAutomatically] else { return }
     // The docked panel stays narrow; its preview opens on demand only.
-    guard !Defaults[.popupPosition].isDocked else { return }
+    guard !AppState.isPanelDocked else { return }
     guard autoOpenEnabled else { return }
     guard !autoOpenSuppressed else { return }
     guard !state.isOpen else { return }
