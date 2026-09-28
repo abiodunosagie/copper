@@ -21,6 +21,7 @@ struct GlassEffectView: NSViewRepresentable {
   let glassEffectView = NSGlassEffectView()
 
   var style: NSGlassEffectView.Style = .regular
+  var tintColor: NSColor?
 
   func makeNSView(context: Context) -> NSGlassEffectView {
     return glassEffectView
@@ -28,6 +29,7 @@ struct GlassEffectView: NSViewRepresentable {
 
   func updateNSView(_ view: NSGlassEffectView, context: Context) {
     glassEffectView.style = style
+    glassEffectView.tintColor = tintColor
   }
 }
 

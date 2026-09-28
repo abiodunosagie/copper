@@ -1,20 +1,25 @@
+import AppKit
 import SwiftUI
 
-// Colors and metrics of the docked panel, taken from the approved Copper design.
+// Colors and metrics of the docked panel, from the approved Copper design.
 enum DockTheme {
-  static let background = Color(hex: 0x1B1917)
-  static let card = Color(hex: 0x221F1C)
-  static let cardSelected = Color(hex: 0x2A2622)
-  static let control = Color(hex: 0x262320)
+  // The approved Copper palette (charcoal, warm cards, copper accent) laid over macOS's own
+  // glass: the charcoal tints the glass, and the cards are slightly see-through.
+  static let glassTint = NSColor(red: 0.106, green: 0.098, blue: 0.090, alpha: 0.72)
+  static let background = Color(hex: 0x1B1917).opacity(0.86)
+  static let card = Color(hex: 0x221F1C).opacity(0.78)
+  static let cardSelected = Color(hex: 0x2A2622).opacity(0.9)
+  static let control = Color(hex: 0x262320).opacity(0.85)
   static let border = Color(hex: 0x34302B)
   static let controlBorder = Color(hex: 0x3A352F)
   static let text = Color(hex: 0xEFE9E3)
   static let secondaryText = Color(hex: 0xD6CFC7)
   static let mutedText = Color(hex: 0xA79E94)
-  static let codeBackground = Color(hex: 0x161412)
+  static let codeBackground = Color(hex: 0x161412).opacity(0.9)
   static let codeText = Color(hex: 0xD9E6C8)
   static let accent = Color(hex: 0xD08A55)
   static let onAccent = Color(hex: 0x1B1917)
+  static let destructive = Color(nsColor: .systemRed)
 
   static let panelCornerRadius: CGFloat = 18
   static let cardCornerRadius: CGFloat = 14

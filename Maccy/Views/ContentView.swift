@@ -14,7 +14,12 @@ struct ContentView: View {
   var body: some View {
     ZStack {
       if popupPosition.isDocked {
-        DockTheme.background
+        if #available(macOS 26.0, *) {
+          GlassEffectView(style: .regular, tintColor: DockTheme.glassTint)
+        } else {
+          VisualEffectView(material: .hudWindow)
+          DockTheme.background
+        }
       } else if #available(macOS 26.0, *) {
         GlassEffectView()
       } else {

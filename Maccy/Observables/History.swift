@@ -35,7 +35,8 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
         updateItems(search.search(string: searchQuery, within: all))
 
         if searchQuery.isEmpty {
-          AppState.shared.navigator.select(item: unpinnedItems.first)
+          // Under the Pinned filter there are no unpinned items, so fall back to the first pinned one.
+          AppState.shared.navigator.select(item: unpinnedItems.first ?? pinnedItems.first)
         } else {
           AppState.shared.navigator.highlightFirst()
         }
@@ -73,7 +74,11 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
   // - `all` stores all history items, even the ones that are currently hidden by a search
   // - `items` stores only visible history items, updated during a search
   @ObservationIgnored
-  var all: [HistoryItemDecorator] = []
+  var all: [HistoryItemDecorator] = [] {
+    didSet { totalCount = all.count }
+  }
+  // Tracked mirror of `all.count`: `all` is not observed, so views showing the count read this.
+  private(set) var totalCount = 0
 
   init() {
     Task {

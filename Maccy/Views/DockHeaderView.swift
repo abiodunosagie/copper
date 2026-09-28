@@ -94,7 +94,7 @@ struct DockHeaderView: View {
   }
 
   private var itemCountLine: String {
-    let count = String(format: NSLocalizedString("dock_item_count", comment: ""), appState.history.all.count)
+    let count = String(format: NSLocalizedString("dock_item_count", comment: ""), appState.history.totalCount)
     let limit = unlimitedHistory
       ? NSLocalizedString("dock_unlimited", comment: "")
       : String(format: NSLocalizedString("dock_limit", comment: ""), size)

@@ -10,13 +10,6 @@ struct FooterView: View {
   @State private var showClear = true
   @State private var showClearAll = false
 
-  var clearAllModifiersPressed: Bool {
-    let clearModifiers = footer.items[0].shortcuts.first?.modifierFlags ?? []
-    let clearAllModifiers = footer.items[1].shortcuts.first?.modifierFlags ?? []
-    return !modifierFlags.flags.isEmpty
-      && !modifierFlags.flags.isSubset(of: clearModifiers)
-      && modifierFlags.flags.isSubset(of: clearAllModifiers)
-  }
 
   var body: some View {
     VStack(spacing: 0) {
@@ -31,23 +24,16 @@ struct FooterView: View {
           .invisible(!showClearAll)
       }
       .onChange(of: modifierFlags.flags) {
-        if clearAllModifiersPressed {
-          showClear = false
-          showClearAll = true
-          footer.items[0].isVisible = false
-          footer.items[1].isVisible = true
-          if appState.footer.selectedItem == footer.items[0] {
-            appState.navigator.select(footerItem: footer.items[1])
-          }
-        } else {
-          showClear = true
-          showClearAll = false
-          footer.items[0].isVisible = true
-          footer.items[1].isVisible = false
-          if appState.footer.selectedItem == footer.items[1] {
-            appState.navigator.select(footerItem: footer.items[0])
-          }
-        }
+        let clearAll = footer.isClearAllChord(modifierFlags.flags)
+        showClear = !clearAll
+        showClearAll = clearAll
+        footer.showClearAll(clearAll)
+      }
+      .onAppear {
+        // The footer is shared with the docked panel; start from a known state.
+        showClear = true
+        showClearAll = false
+        footer.showClearAll(false)
       }
 
       ForEach(footer.items.suffix(from: 2)) { item in

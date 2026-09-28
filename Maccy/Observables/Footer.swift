@@ -24,6 +24,27 @@ class Footer: ItemsContainer {
     return showFooter
   }
 
+  // "Clear" and the more destructive "Clear all" share one slot. "Clear all" only takes it
+  // while its modifier keys are held, in the popup and the docked panel alike.
+  func isClearAllChord(_ flags: NSEvent.ModifierFlags) -> Bool {
+    let clearModifiers = items[0].shortcuts.first?.modifierFlags ?? []
+    let clearAllModifiers = items[1].shortcuts.first?.modifierFlags ?? []
+    return !flags.isEmpty && !flags.isSubset(of: clearModifiers) && flags.isSubset(of: clearAllModifiers)
+  }
+
+  // Returns the item that now occupies the clear slot, so selection can follow it.
+  @discardableResult
+  func showClearAll(_ show: Bool) -> FooterItem {
+    items[0].isVisible = !show
+    items[1].isVisible = show
+    let shown = show ? items[1] : items[0]
+    let hidden = show ? items[0] : items[1]
+    if selectedItem == hidden {
+      AppState.shared.navigator.select(footerItem: shown)
+    }
+    return shown
+  }
+
   init() { // swiftlint:disable:this function_body_length
     items = [
       FooterItem(
