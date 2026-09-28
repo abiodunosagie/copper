@@ -8,6 +8,7 @@ struct CardItemView: View {
   static let secretPreviewLength = 8
   static let maxMaskedDots = 12
   static let imageMaxHeight: CGFloat = 140
+  static let linkThumbnailHeight: CGFloat = 90
 
   @Bindable var item: HistoryItemDecorator
   var isSelected: Bool
@@ -36,6 +37,11 @@ struct CardItemView: View {
         .strokeBorder(isSelected ? DockTheme.accent : DockTheme.border, lineWidth: isSelected ? 2 : 1)
     }
     .contentShape(RoundedRectangle(cornerRadius: DockTheme.cardCornerRadius, style: .continuous))
+    .task(id: item.id) {
+      if case .link(let url) = item.contentKind {
+        await LinkPreviewLoader.loadIfNeeded(for: item.item, url: url)
+      }
+    }
   }
 
   private func header(_ kind: ContentKind) -> some View {
@@ -85,10 +91,18 @@ struct CardItemView: View {
         }
     case .link(let url):
       VStack(alignment: .leading, spacing: 4) {
-        Text(url.host(percentEncoded: false) ?? url.absoluteString)
+        if let data = item.item.linkImageData, let thumbnail = NSImage(data: data) {
+          Image(nsImage: thumbnail)
+            .resizable()
+            .scaledToFill()
+            .frame(maxWidth: .infinity, maxHeight: Self.linkThumbnailHeight)
+            .clipShape(RoundedRectangle(cornerRadius: DockTheme.contentCornerRadius, style: .continuous))
+            .padding(.bottom, 4)
+        }
+        Text(item.item.linkTitle ?? url.host(percentEncoded: false) ?? url.absoluteString)
           .font(.system(size: 13, weight: .semibold))
           .foregroundStyle(DockTheme.text)
-          .lineLimit(1)
+          .lineLimit(2)
         Text(url.absoluteString)
           .font(.system(size: 12))
           .foregroundStyle(DockTheme.mutedText)

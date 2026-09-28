@@ -70,4 +70,18 @@ class ContentKindTests: XCTestCase {
     XCTAssertTrue(provider.canLoadObject(ofClass: NSString.self))
     XCTAssertFalse(provider.canLoadObject(ofClass: NSImage.self))
   }
+
+  @MainActor
+  func testLinkThumbnailsAreDownscaled() throws {
+    let big = NSImage(size: NSSize(width: 2_000, height: 1_000))
+    big.lockFocus()
+    NSColor.orange.setFill()
+    NSRect(x: 0, y: 0, width: 2_000, height: 1_000).fill()
+    big.unlockFocus()
+
+    let data = try XCTUnwrap(LinkPreviewLoader.thumbnailData(big))
+    let thumbnail = try XCTUnwrap(NSBitmapImageRep(data: data))
+    XCTAssertLessThanOrEqual(CGFloat(thumbnail.pixelsWide), LinkPreviewLoader.maxThumbnailWidth * 2)
+    XCTAssertNil(LinkPreviewLoader.thumbnailData(NSImage(size: .zero)))
+  }
 }

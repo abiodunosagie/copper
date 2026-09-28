@@ -73,6 +73,10 @@ class HistoryItem {
   var expiresAt: Date?
   // Name of the collection the owner filed this item under, if any.
   var collection: String?
+  // Link preview, fetched once for link items (LinkPreviewLoader).
+  var linkTitle: String?
+  @Attribute(.externalStorage) var linkImageData: Data?
+  var linkPreviewFetchedAt: Date?
   var title = ""
 
   @Relationship(deleteRule: .cascade, inverse: \HistoryItemContent.item)

@@ -58,6 +58,7 @@ struct StorageSettingsPane: View {
 
   @Default(.size) private var size
   @Default(.unlimitedHistory) private var unlimitedHistory
+  @Default(.loadLinkPreviews) private var loadLinkPreviews
   @Default(.historyRetentionDays) private var historyRetentionDays
 
   private let retentionChoices = [0, 1, 7, 30, 90, 365]
@@ -99,6 +100,10 @@ struct StorageSettingsPane: View {
           isOn: $viewModel.saveText,
           label: { Text("Text", tableName: "StorageSettings") }
         )
+        Toggle(isOn: $loadLinkPreviews) {
+          Text("LinkPreviews", tableName: "StorageSettings")
+        }
+        .help(Text("LinkPreviewsTooltip", tableName: "StorageSettings"))
         Text("SaveDescription", tableName: "StorageSettings")
           .controlSize(.small)
           .foregroundStyle(.gray)

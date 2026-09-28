@@ -37,3 +37,5 @@
 "BackupErrorKey" = "Could not prepare encryption. Please try again.";
 "BackupErrorEncrypt" = "Could not encrypt the backup. Please try again.";
 "BackupErrorDamaged" = "The backup opened but its contents are damaged.";
+"LinkPreviews" = "Link previews";
+"LinkPreviewsTooltip" = "Shows the page title and picture on link cards. Copper contacts the website once per copied link. Secrets are never fetched.";
