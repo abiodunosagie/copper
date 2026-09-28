@@ -44,12 +44,9 @@ class AppState: Sendable {
     navigator = NavigationManager(history: history, footer: footer)
     preview = SlideoutController(
       onContentResize: { contentWidth in
-        // The docked panel has its own width, so docking never changes the popup size.
-        if Defaults[.popupPosition].isDocked {
-          Defaults[.dockWidth] = contentWidth
-        } else {
-          Defaults[.windowSize].width = contentWidth
-        }
+        // The docked width comes from settings only; resizing while docked must not change either size.
+        guard !Defaults[.popupPosition].isDocked else { return }
+        Defaults[.windowSize].width = contentWidth
       },
       onSlideoutResize: { previewWidth in
         Defaults[.previewWidth] = previewWidth

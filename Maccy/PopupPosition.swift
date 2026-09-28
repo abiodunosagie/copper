@@ -17,7 +17,7 @@ enum PopupPosition: String, CaseIterable, Identifiable, CustomStringConvertible,
   var isDocked: Bool { self == .dockedRight || self == .dockedLeft }
 
   static let dockMargin: CGFloat = 8
-  static let dockWidthRange: ClosedRange<Double> = 260...640
+  static let dockWidthRange: ClosedRange<Double> = 240...520
 
   var description: String {
     switch self {

@@ -227,6 +227,8 @@ class SlideoutController {
     cancelAutoOpen()
 
     guard Defaults[.openPreviewAutomatically] else { return }
+    // The docked panel stays narrow; its preview opens on demand only.
+    guard !Defaults[.popupPosition].isDocked else { return }
     guard autoOpenEnabled else { return }
     guard !autoOpenSuppressed else { return }
     guard !state.isOpen else { return }
