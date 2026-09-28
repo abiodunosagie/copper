@@ -29,7 +29,8 @@ class Footer: ItemsContainer {
   func isClearAllChord(_ flags: NSEvent.ModifierFlags) -> Bool {
     let clearModifiers = items[0].shortcuts.first?.modifierFlags ?? []
     let clearAllModifiers = items[1].shortcuts.first?.modifierFlags ?? []
-    return !flags.isEmpty && !flags.isSubset(of: clearModifiers) && flags.isSubset(of: clearAllModifiers)
+    // All of Clear all's modifiers held, and more than Clear's; Shift alone never qualifies.
+    return clearAllModifiers.isSubset(of: flags) && !flags.isSubset(of: clearModifiers)
   }
 
   // Returns the item that now occupies the clear slot, so selection can follow it.
@@ -46,6 +47,10 @@ class Footer: ItemsContainer {
   }
 
   init() { // swiftlint:disable:this function_body_length
+    defer {
+      // Clear shows until the Clear all chord is held.
+      items[1].isVisible = false
+    }
     items = [
       FooterItem(
         title: "clear",

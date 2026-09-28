@@ -14,4 +14,4 @@
 "SecretHandlingExpire" = "Save it, then delete it automatically";
 "SecretExpiryLabel" = "Delete after";
 "SecretExpiryUnit" = "minutes";
-"SecretsDescription" = "Detects keys from AWS, GitHub, GitLab, Anthropic, OpenAI, Stripe, Paystack, Google, Slack, SendGrid, npm and Hugging Face, plus JSON Web Tokens and private keys. Pinned items never expire.";
+"SecretsDescription" = "Detects keys from AWS, GitHub, GitLab, Anthropic, OpenAI, Stripe, Paystack, Google, Slack, SendGrid, npm, Hugging Face, Vercel, Supabase and Resend, plus JSON Web Tokens and private keys. Pinned items never expire.";

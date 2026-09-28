@@ -45,6 +45,9 @@ enum SecretDetector {
     ("Slack token", #"\bxox[abposr]-[A-Za-z0-9-]{10,}\b"#),
     ("SendGrid key", #"\bSG\.[A-Za-z0-9_-]{22}\.[A-Za-z0-9_-]{43}\b"#),
     ("npm token", #"\bnpm_[A-Za-z0-9]{36}\b"#),
+    ("Vercel token", #"\bvc[pk]_[A-Za-z0-9]{20,}\b"#),
+    ("Supabase token", #"\bsbp_[a-f0-9]{40}\b"#),
+    ("Resend key", #"\bre_[A-Za-z0-9]{8,}_[A-Za-z0-9]{16,}\b"#),
     ("Hugging Face token", #"\bhf_[A-Za-z0-9]{34,}\b"#),
     ("JSON Web Token", #"\beyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}"#)
   ].map { name, pattern in

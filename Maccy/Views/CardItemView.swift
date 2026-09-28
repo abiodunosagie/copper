@@ -1,4 +1,5 @@
 import AppKit
+import Defaults
 import SwiftUI
 
 // One history item as a card in the docked panel, in the approved Copper design:
@@ -13,8 +14,11 @@ struct CardItemView: View {
   @Bindable var item: HistoryItemDecorator
   var isSelected: Bool
   var selectionIndex: Int?
+  // The ⌘ number only means something in the panel, where the shortcut works.
+  var showsShortcut = true
 
   @Environment(ModifierFlags.self) private var modifierFlags
+  @Default(.loadLinkPreviews) private var loadLinkPreviews
 
   private var contentText: String { item.item.previewableText }
 
@@ -91,7 +95,7 @@ struct CardItemView: View {
         }
     case .link(let url):
       VStack(alignment: .leading, spacing: 4) {
-        if let data = item.item.linkImageData, let thumbnail = NSImage(data: data) {
+        if loadLinkPreviews, let data = item.item.linkImageData, let thumbnail = NSImage(data: data) {
           Image(nsImage: thumbnail)
             .resizable()
             .scaledToFill()
@@ -99,7 +103,7 @@ struct CardItemView: View {
             .clipShape(RoundedRectangle(cornerRadius: DockTheme.contentCornerRadius, style: .continuous))
             .padding(.bottom, 4)
         }
-        Text(item.item.linkTitle ?? url.host(percentEncoded: false) ?? url.absoluteString)
+        Text((loadLinkPreviews ? item.item.linkTitle : nil) ?? url.host(percentEncoded: false) ?? url.absoluteString)
           .font(.system(size: 13, weight: .semibold))
           .foregroundStyle(DockTheme.text)
           .lineLimit(2)
@@ -170,7 +174,7 @@ struct CardItemView: View {
 
       Spacer(minLength: 4)
 
-      if let shortcut = visibleShortcut {
+      if showsShortcut, let shortcut = visibleShortcut {
         KeyboardShortcutView(shortcut: shortcut)
           .font(.system(size: 11, design: .monospaced))
           .padding(.horizontal, 6)

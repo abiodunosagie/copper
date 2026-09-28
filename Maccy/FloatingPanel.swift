@@ -269,6 +269,11 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
 
   override func close() {
     super.close()
+    // Every opening of the docked panel starts with an empty search. Done on close rather than on
+    // focus loss, so an alert (like naming a collection) does not wipe what was typed.
+    if isDocked && !AppState.shared.history.searchQuery.isEmpty {
+      AppState.shared.history.searchQuery = ""
+    }
     AppState.shared.preview.state = .closed
     isPresented = false
     statusBarButton?.isHighlighted = false

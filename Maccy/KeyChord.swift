@@ -41,6 +41,7 @@ enum KeyChord: CaseIterable {
   case close
   case togglePreview
   case quickLook
+  case openLibrary
   case unknown
 
   init(_ event: NSEvent?) {
@@ -128,6 +129,8 @@ enum KeyChord: CaseIterable {
       self = .togglePreview
     case (.space, [.option]):
       self = .quickLook
+    case (.l, [.command, .option]):
+      self = .openLibrary
     case (_, _) where !modifierFlags.isDisjoint(with: [.command, .control, .option]):
       self = .ignored
     default:

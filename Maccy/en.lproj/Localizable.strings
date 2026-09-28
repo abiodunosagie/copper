@@ -71,3 +71,10 @@
 "collection_delete_title" = "Delete the collection \"%@\"?";
 "collection_delete_info" = "Its items stay in your history, they just leave the collection.";
 "collection_delete_confirm" = "Delete";
+"library_title" = "Copper";
+"library_open" = "Open the main window (Command-Option-L)";
+"library_all" = "All items";
+"library_types" = "Types";
+"library_apps" = "Apps";
+"library_empty" = "Nothing here yet";
+"library_copied" = "Copied";

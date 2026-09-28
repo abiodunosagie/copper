@@ -27,15 +27,22 @@ enum LinkPreviewLoader {
     provider.timeout = timeout
     let metadata: LPLinkMetadata
     do {
-      metadata = try await provider.startFetchingMetadata(for: url)
+      metadata = try await withTaskCancellationHandler {
+        try await provider.startFetchingMetadata(for: url)
+      } onCancel: {
+        provider.cancel()
+      }
     } catch {
       logger.info("Link preview failed for \(url.host() ?? "", privacy: .public): \(error.localizedDescription)")
       return
     }
 
+    // The item may have been deleted or replaced by a re-copy while the page loaded.
+    guard item.modelContext != nil, !item.isDeleted else { return }
     item.linkTitle = metadata.title
     if let imageProvider = metadata.imageProvider ?? metadata.iconProvider,
        let image = await loadImage(from: imageProvider) {
+      guard item.modelContext != nil, !item.isDeleted else { return }
       item.linkImageData = thumbnailData(image)
     }
     do {

@@ -194,6 +194,10 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       if item.collection == nil {
         item.collection = existingHistoryItem.collection
       }
+      // Keep a fetched link preview instead of fetching the page again.
+      item.linkTitle = item.linkTitle ?? existingHistoryItem.linkTitle
+      item.linkImageData = item.linkImageData ?? existingHistoryItem.linkImageData
+      item.linkPreviewFetchedAt = item.linkPreviewFetchedAt ?? existingHistoryItem.linkPreviewFetchedAt
       if item.pin != nil {
         item.expiresAt = nil
       }

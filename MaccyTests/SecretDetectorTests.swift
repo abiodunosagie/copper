@@ -42,7 +42,10 @@ class SecretDetectorTests: XCTestCase {
       "SendGrid key": fake("SG", ".", run(22), ".", run(43)),
       "npm token": fake("np", "m_", run(36)),
       "Hugging Face token": fake("h", "f_", run(34)),
-      "JSON Web Token": fake("ey", "J", run(12), ".ey", "J", run(12), ".", run(12))
+      "JSON Web Token": fake("ey", "J", run(12), ".ey", "J", run(12), ".", run(12)),
+      "Vercel token": fake("vc", "p_", run(24)),
+      "Supabase token": fake("sb", "p_", run(40, "f")),
+      "Resend key": fake("r", "e_", run(10), "_", run(20))
     ]
 
     for (kind, sample) in samples {

@@ -25,6 +25,17 @@ struct DockFooterView: View {
 
     HStack(spacing: 6) {
       icon(for: clearSlot)
+      Button {
+        LibraryWindowController.shared.show()
+      } label: {
+        Image(systemName: "square.grid.2x2")
+          .font(.system(size: 13))
+          .foregroundStyle(DockTheme.text)
+          .dockControl()
+      }
+      .buttonStyle(.plain)
+      .help(Text("library_open"))
+      .accessibilityLabel(Text("library_open"))
       Spacer(minLength: 0)
       ForEach(footer.items.suffix(from: 2)) { item in
         icon(for: item)
