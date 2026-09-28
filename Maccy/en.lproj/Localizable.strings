@@ -23,6 +23,6 @@
 "history_item_image_accessibility_label_no_app" = "Image, %dx%d";
 "history_item_image_accessibility_generic" = "Image";
 "toolbar_remove_paste_stack_action" = "Stop paste stack";
-"SecretCopiedNotification" = "Secret copied. It will be deleted automatically.";
+"secret_copied_notification" = "Secret copied. It will be deleted automatically.";
 "history_item_transform_menu" = "Transform";
 "history_item_copy_image_text" = "Copy text from image";

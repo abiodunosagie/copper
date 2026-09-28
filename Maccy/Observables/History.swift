@@ -188,7 +188,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       }
     } else if notify {
       // Never put a detected secret into a system notification.
-      let body = item.expiresAt == nil ? item.title : NSLocalizedString("SecretCopiedNotification", comment: "")
+      let body = item.expiresAt == nil ? item.title : NSLocalizedString("secret_copied_notification", comment: "")
       Task {
         Notifier.notify(body: body, sound: .write)
       }

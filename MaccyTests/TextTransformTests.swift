@@ -11,11 +11,17 @@ class TextTransformTests: XCTestCase {
   }
 
   func testRegistryIsLargeAndUnique() {
-    XCTAssertGreaterThanOrEqual(TextTransform.all.count, 75)
+    // Exact count, so a transform that goes missing fails the test.
+    XCTAssertEqual(TextTransform.all.count, 79)
     XCTAssertEqual(Set(TextTransform.all.map(\.id)).count, TextTransform.all.count)
     for category in TextTransform.Category.allCases {
       XCTAssertFalse(TextTransform.transforms(in: category).isEmpty, "\(category) is empty")
     }
+  }
+
+  func testTitlesFallBackToEnglishNames() {
+    XCTAssertEqual(TextTransform.named("uppercase")?.title, "UPPERCASE")
+    XCTAssertEqual(TextTransform.Category.json.title, "JSON")
   }
 
   func testEveryTransformHandlesEmptyAndUnicodeInput() {
@@ -75,6 +81,7 @@ class TextTransformTests: XCTestCase {
     XCTAssertEqual(apply("urlEncode", "a b&c"), "a%20b%26c")
     XCTAssertEqual(apply("htmlEncode", "<a href=\"x\">&</a>"), "&lt;a href=&quot;x&quot;&gt;&amp;&lt;/a&gt;")
     XCTAssertEqual(apply("htmlDecode", "&lt;b&gt; &amp; &quot;"), "<b> & \"")
+    XCTAssertEqual(apply("htmlDecode", "it&#39;s &#x27;ok&#x27; &amp;lt;"), "it's 'ok' &lt;")
     XCTAssertEqual(apply("rot13", "Hello"), "Uryyb")
     XCTAssertNil(apply("base64Decode", "%%%not base64"))
     XCTAssertNil(apply("hexDecode", "abc"))
@@ -112,6 +119,9 @@ class TextTransformTests: XCTestCase {
     XCTAssertEqual(apply("rgbToHex", "rgb(255, 170, 0)"), "#FFAA00")
     XCTAssertNil(apply("rgbToHex", "rgb(300, 0, 0)"))
     XCTAssertEqual(apply("escapeShell", "it's"), "'it'\\''s'")
-    XCTAssertEqual(apply("queryToJSON", "https://x.y/?b=2&a=hello%20there"), "{\n  \"a\" : \"hello there\",\n  \"b\" : \"2\"\n}")
+    XCTAssertEqual(
+      apply("queryToJSON", "https://x.y/?b=2&a=hello%20there"),
+      "{\n  \"a\" : \"hello there\",\n  \"b\" : \"2\"\n}"
+    )
   }
 }

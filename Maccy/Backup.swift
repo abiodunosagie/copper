@@ -12,13 +12,18 @@ enum Backup {
     case unsupportedVersion
     case wrongPassword
     case keyDerivationFailed
+    case encryptionFailed
+    case damaged
 
     var errorDescription: String? {
       switch self {
       case .notABackup: return NSLocalizedString("BackupErrorNotABackup", tableName: "StorageSettings", comment: "")
-      case .unsupportedVersion: return NSLocalizedString("BackupErrorVersion", tableName: "StorageSettings", comment: "")
+      case .unsupportedVersion:
+        return NSLocalizedString("BackupErrorVersion", tableName: "StorageSettings", comment: "")
       case .wrongPassword: return NSLocalizedString("BackupErrorPassword", tableName: "StorageSettings", comment: "")
       case .keyDerivationFailed: return NSLocalizedString("BackupErrorKey", tableName: "StorageSettings", comment: "")
+      case .encryptionFailed: return NSLocalizedString("BackupErrorEncrypt", tableName: "StorageSettings", comment: "")
+      case .damaged: return NSLocalizedString("BackupErrorDamaged", tableName: "StorageSettings", comment: "")
       }
     }
   }
@@ -75,11 +80,11 @@ enum Backup {
 
     var salt = Data(count: saltLength)
     let status = salt.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, saltLength, $0.baseAddress!) }
-    guard status == errSecSuccess else { throw BackupError.keyDerivationFailed }
+    guard status == errSecSuccess else { throw BackupError.encryptionFailed }
 
     let key = try deriveKey(password: password, salt: salt, version: formatVersion)
     guard let sealed = try AES.GCM.seal(plaintext, using: key).combined else {
-      throw BackupError.keyDerivationFailed
+      throw BackupError.encryptionFailed
     }
 
     return magic + Data([formatVersion]) + salt + sealed
@@ -103,7 +108,11 @@ enum Backup {
       throw BackupError.wrongPassword
     }
 
-    return try JSONDecoder().decode(Archive.self, from: plaintext)
+    do {
+      return try JSONDecoder().decode(Archive.self, from: plaintext)
+    } catch {
+      throw BackupError.damaged
+    }
   }
 
   private static func deriveKey(password: String, salt: Data, version: UInt8) throws -> SymmetricKey {

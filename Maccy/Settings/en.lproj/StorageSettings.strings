@@ -30,8 +30,10 @@
 "BackupContinue" = "Continue";
 "BackupCancel" = "Cancel";
 "BackupExportDone" = "Exported %d items.";
-"BackupImportDone" = "Imported %d items.";
+"BackupImportDone" = "Imported %d items. Items already in your history were merged.";
 "BackupErrorNotABackup" = "This file is not a Copper backup.";
 "BackupErrorVersion" = "This backup was made by a newer version of Copper.";
 "BackupErrorPassword" = "The password is wrong or the file is damaged.";
 "BackupErrorKey" = "Could not prepare encryption. Please try again.";
+"BackupErrorEncrypt" = "Could not encrypt the backup. Please try again.";
+"BackupErrorDamaged" = "The backup opened but its contents are damaged.";

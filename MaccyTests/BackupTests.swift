@@ -60,6 +60,14 @@ class BackupTests: XCTestCase {
     XCTAssertThrowsError(try Backup.decrypt(Data(), password: "x"))
   }
 
+  func testUnsupportedVersionIsRejected() throws {
+    var data = try Backup.encrypt(Backup.Archive(items: []), password: "p")
+    data[8] = 99
+    XCTAssertThrowsError(try Backup.decrypt(data, password: "p")) { error in
+      XCTAssertEqual(error as? Backup.BackupError, .unsupportedVersion)
+    }
+  }
+
   func testTamperedFilesAreRejected() throws {
     var data = try Backup.encrypt(Backup.Archive(items: []), password: "p")
     data[data.count - 1] ^= 0xFF

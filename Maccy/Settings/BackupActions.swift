@@ -60,7 +60,9 @@ enum BackupActions {
     alert.addButton(withTitle: NSLocalizedString("BackupCancel", tableName: "StorageSettings", comment: ""))
 
     let password = NSSecureTextField(frame: NSRect(x: 0, y: confirm ? 30 : 0, width: 260, height: 24))
-    password.placeholderString = NSLocalizedString("BackupPasswordPlaceholder", tableName: "StorageSettings", comment: "")
+    password.placeholderString = NSLocalizedString(
+      "BackupPasswordPlaceholder", tableName: "StorageSettings", comment: ""
+    )
     let repeated = NSSecureTextField(frame: NSRect(x: 0, y: 0, width: 260, height: 24))
     repeated.placeholderString = NSLocalizedString("BackupRepeatPlaceholder", tableName: "StorageSettings", comment: "")
 

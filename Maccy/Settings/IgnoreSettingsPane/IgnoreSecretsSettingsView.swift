@@ -21,8 +21,10 @@ struct IgnoreSecretsSettingsView: View {
         TextField("", value: $secretExpiryMinutes, format: .number)
           .frame(width: 50)
           .multilineTextAlignment(.trailing)
-        Stepper("", value: $secretExpiryMinutes, in: 1...1_440)
+          .accessibilityLabel(Text("SecretExpiryLabel", tableName: "IgnoreSettings"))
+        Stepper("", value: $secretExpiryMinutes, in: SecretDetector.expiryMinutesRange)
           .labelsHidden()
+          .accessibilityLabel(Text("SecretExpiryLabel", tableName: "IgnoreSettings"))
         Text("SecretExpiryUnit", tableName: "IgnoreSettings")
       }
       .disabled(secretHandling != .expire)
@@ -36,7 +38,8 @@ struct IgnoreSecretsSettingsView: View {
     }
     .padding()
     .onChange(of: secretExpiryMinutes) { _, newValue in
-      secretExpiryMinutes = min(max(newValue, 1), 1_440)
+      let range = SecretDetector.expiryMinutesRange
+      secretExpiryMinutes = min(max(newValue, range.lowerBound), range.upperBound)
     }
   }
 }

@@ -73,9 +73,9 @@ struct HistoryItemView: View {
       }
       Menu("history_item_transform_menu") {
         ForEach(TextTransform.Category.allCases) { category in
-          Menu(category.rawValue) {
+          Menu(category.title) {
             ForEach(TextTransform.transforms(in: category)) { transform in
-              Button(transform.name) {
+              Button(transform.title) {
                 appState.history.apply(transform, to: item)
               }
             }

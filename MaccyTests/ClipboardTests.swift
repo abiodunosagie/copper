@@ -28,7 +28,8 @@ class ClipboardTests: XCTestCase {
 
   // The source app is whatever is frontmost when the copy happens: Xcode, Finder on CI, or a terminal.
   var frontmostAppBundles: [String] {
-    ["com.apple.dt.Xcode", "com.apple.finder"] + [NSWorkspace.shared.frontmostApplication?.bundleIdentifier].compactMap { $0 }
+    let frontmost = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
+    return ["com.apple.dt.Xcode", "com.apple.finder"] + [frontmost].compactMap { $0 }
   }
 
   override func setUp() {

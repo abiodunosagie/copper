@@ -31,6 +31,8 @@ enum SecretDetector {
   // Scanning is capped so a huge copy never stalls the clipboard check.
   static let maxScannedLength = 20_000
 
+  // Order matters: detect() returns the first match, so "sk-ant-" (Anthropic) must stay above
+  // the broader "sk-" (OpenAI) pattern.
   static let patterns: [Pattern] = [
     ("Private key", #"-----BEGIN (?:RSA |EC |DSA |OPENSSH |PGP |ENCRYPTED )?PRIVATE KEY(?: BLOCK)?-----"#),
     ("AWS access key", #"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b"#),

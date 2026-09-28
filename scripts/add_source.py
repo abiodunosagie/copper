@@ -10,6 +10,7 @@ Example: scripts/add_source.py Maccy/SecretDetector.swift Throttler.swift
 import os
 import re
 import secrets
+import subprocess
 import sys
 
 PROJECT = os.path.join(os.path.dirname(__file__), "..", "Maccy.xcodeproj", "project.pbxproj")
@@ -42,8 +43,10 @@ def main():
 
   build_line = (f"\t\t{build_id} /* {name} in Sources */ = {{isa = PBXBuildFile; "
                 f"fileRef = {ref_id} /* {name} */; }};\n")
+  # Names with characters outside [A-Za-z0-9._/] (for example "+") must be quoted in the project file.
+  path = name if re.fullmatch(r"[A-Za-z0-9._/]+", name) else f'"{name}"'
   ref_line = (f"\t\t{ref_id} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; "
-              f"path = {name}; sourceTree = \"<group>\"; }};\n")
+              f"path = {path}; sourceTree = \"<group>\"; }};\n")
 
   text = text.replace("/* End PBXBuildFile section */", build_line + "/* End PBXBuildFile section */", 1)
   text = text.replace("/* End PBXFileReference section */", ref_line + "/* End PBXFileReference section */", 1)
@@ -56,7 +59,12 @@ def main():
   text = text.replace(group_child, group_child + f"\t\t\t\t{ref_id} /* {name} */,\n", 1)
   text = text.replace(phase_child, phase_child + f"\t\t\t\t{build_id} /* {name} in Sources */,\n", 1)
 
+  original = open(PROJECT).read()
   open(PROJECT, "w").write(text)
+  # Never leave an unreadable project behind.
+  if subprocess.run(["plutil", "-lint", PROJECT], capture_output=True).returncode != 0:
+    open(PROJECT, "w").write(original)
+    sys.exit(f"adding {name} produced an invalid project file; nothing was changed")
   print(f"added {name} next to {sibling}")
 
 

@@ -24,7 +24,9 @@ class SecretDetectorTests: XCTestCase {
   }
 
   private func fake(_ parts: String...) -> String { parts.joined() }
-  private func run(_ length: Int, _ character: Character = "a") -> String { String(repeating: character, count: length) }
+  private func run(_ length: Int, _ character: Character = "a") -> String {
+    String(repeating: character, count: length)
+  }
 
   func testDetectsKnownSecretKinds() {
     let samples: [String: String] = [
@@ -46,6 +48,10 @@ class SecretDetectorTests: XCTestCase {
     for (kind, sample) in samples {
       XCTAssertEqual(SecretDetector.detect(in: "token: \(sample) end"), kind, "failed for \(kind)")
     }
+  }
+
+  func testAnthropicKeysAreNotReportedAsOpenAI() {
+    XCTAssertEqual(SecretDetector.detect(in: fake("sk", "-ant-", "api03-", run(40))), "Anthropic key")
   }
 
   func testIgnoresOrdinaryText() {
