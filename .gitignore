@@ -6,3 +6,6 @@ Maccy/.DS_Store
 build/
 build.log
 SESSION_GUIDE.md
+docs/.task-tracker.tsv.lock
+.envrc
+docs/task-tracker.tsv
